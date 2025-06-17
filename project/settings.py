@@ -56,8 +56,8 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            BASE_DIR / 'project' / 'templates', # template 위치 설정
-            BASE_DIR / 'main' / 'pages',  # mainpage.html 위치
+            # BASE_DIR / 'project' / 'templates', # template 위치 설정
+            # BASE_DIR / 'main' / 'pages',  # mainpage.html 위치
         ],
         'APP_DIRS': True,
         'OPTIONS': {
