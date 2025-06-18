@@ -1,10 +1,40 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <title>회원가입</title>
+    <link rel="stylesheet" href="{% static 'css/accounts/signup.css' %}" />
+
 </head>
 <body>
-    <h2>회원가입 페이지입니다.</h2>
+    <div class="container">
+        <div class="signup-box">
+        <form>
+            <label for="nickname">닉네임</label>
+            <div class="input-group">
+            <input type="text" id="nickname" placeholder="아기사자">
+            <button type="button" class="icon-button">🔍</button>
+            </div>
+
+            <label for="password">비밀번호</label>
+            <div class="input-group">
+                <input type="password" id="password" placeholder="likeLion123">
+                <button type="button" class="icon-button">👁️</button>
+            </div>
+
+            <label for="password-confirm">비밀번호 확인</label>
+            <div class="input-group">
+                <input type="password" id="password-confirm" placeholder="likeLion123">
+                <button type="button" class="icon-button">👁️</button>
+            </div>
+
+            <label for="univ">소속 대학</label>
+            <input type="text" id="univ" placeholder="중국대학교">
+
+            <button type="submit" class="submit-button">회원가입</button>
+        </form>
+        </div>
+    </div>
 </body>
 </html>
