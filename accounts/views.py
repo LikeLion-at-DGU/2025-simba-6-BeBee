@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib import auth
 from django.contrib.auth.models import User
 from .models import Profile
+from django.http import JsonResponse
 
 # Create your views here.
 
@@ -63,3 +64,15 @@ def signup(request):
         return redirect('/')
         
     return render(request, 'accounts/signup.html')
+
+
+def check_nickname(request):
+    nickname = request.GET.get('nickname', '')
+    exists = User.objects.filter(username=nickname).exists()
+    return JsonResponse({'exists': exists})
+
+
+def check_nickname(request):
+    nickname = request.GET.get('nickname')
+    exists = User.objects.filter(username=nickname).exists()
+    return JsonResponse({'exists': exists})
