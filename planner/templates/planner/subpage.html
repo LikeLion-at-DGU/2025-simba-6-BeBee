@@ -1,20 +1,32 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta charset="UTF-8">
     <title>BuzzList</title>
     <link rel="stylesheet" href="{% static 'css/planner/subpage.css' %}" />
     <link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap" rel="stylesheet">
-
 </head>
+
 <body>
     <!-- 꿀 이미지: 기존 설정 유지 -->
     <img src="{% static 'assets/planner/honey.png' %}" alt="honey" class="background-honey" />
 
     <!-- 전체 3분할 콘텐츠 -->
     <div class="wrapper">
+<<<<<<< HEAD
+=======
+
+        <!-- ✅ 상단 네비게이션 -->
+        <div class="top-nav">
+            <a href="/" class="nav-link">Calendar</a>
+            <a href="/buddy" class="nav-link">Buddy page</a>
+            <a href="/mypage" class="nav-link">My page</a>
+        </div>
+
+>>>>>>> f7af626 (feat:할일 입력 기능 추가(#18))
         <!-- 왼쪽 여백용 사이드바 -->
         <div class="sidebar"></div>
 
@@ -38,36 +50,49 @@
 
             <!-- ✅ box3 -->
             <div class="box3">
-                <p class="todo-placeholder-text">할일을 입력해주세요</p>
+                <p class="todo-placeholder-text" id="placeholder">할일을 입력해주세요</p>
+                <ul id="todo-list" class="todo-list"></ul>
             </div>
+
 
             <!-- ✅ box4 -->
             <div class="box4">
-                <input type="text" class="goal-input" placeholder="오늘의 목표 입력" />
-                <button class="goal-submit-btn">입력</button>
+                <form id="todo-form" method="POST">
+                    {% csrf_token %}
+                    <input type="text" id="todo-input" class="goal-input" placeholder="할일 입력" />
+                    <button id="add-task" type="submit" class="goal-submit-btn">입력</button>
+                </form>
             </div>
-        </main>
 
+        </main>
 
         <!-- 오른쪽 패널 -->
         <aside class="right-panel">
             <!-- ✅ right box1: 요일 선택 -->
             <div class="right-box1">
                 <div class="weekday-grid">
-                    <button class="day">MON</button>
-                    <button class="day">TUE</button>
-                    <button class="day">WED</button>
-                    <button class="day">THU</button>
-                    <button class="day">FRI</button>
-                    <button class="day">SAT</button>
-                    <button class="day">SUN</button>
+                    <div class="weekday-row top-row">
+                        <button class="hexagon active">MON</button>
+                        <button class="hexagon active">WED</button>
+                        <button class="hexagon active">FRI</button>
+                        <button class="hexagon active">SUN</button>
+                    </div>
+                    <div class="weekday-row bottom-row">
+                        <button class="hexagon active">TUE</button>
+                        <button class="hexagon active">THU</button>
+                        <button class="hexagon active">SAT</button>
+                    </div>
                 </div>
             </div>
 
             <!-- ✅ right box2: 집중 타이머 -->
             <div class="right-box2">
+<<<<<<< HEAD
                 <div class="timer-label">
                     집중 타이머 <span class="bulb">💡</span>
+=======
+                <div class="timer-label">집중 타이머 <span class="bulb">💡</span>
+>>>>>>> f7af626 (feat:할일 입력 기능 추가(#18))
                 </div>
                 <div class="counter">00 : 00 : 00</div>
                 <button class="start-btn">START</button>
@@ -75,6 +100,7 @@
         </aside>
 
     </div>
+    <script src="{% static 'js/planner/subpage.js' %}"></script>
 </body>
 
 </html>
