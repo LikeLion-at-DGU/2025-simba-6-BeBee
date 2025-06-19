@@ -38,8 +38,9 @@ def todo_create(request):
 
         new_todo.save()
         return redirect('planner:todo_create') 
-
+    
     if request.user.is_authenticated:
         todos = Todo.objects.filter(user=request.user)
 
     return render(request, 'planner/subpage.html', {'todos': todos})
+
