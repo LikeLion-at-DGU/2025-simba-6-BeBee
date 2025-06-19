@@ -12,7 +12,7 @@ def login(request):
     
         if user is not None:
             auth.login(request, user)
-            return redirect('main/mainpage')
+            return redirect('/main/mainpage')
         
         else: 
             return render(request, 'accounts/login.html')

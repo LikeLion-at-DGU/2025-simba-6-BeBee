@@ -29,7 +29,7 @@
                 <label for="password">비밀번호</label>
                 <input type="password" id="password" name="password" placeholder="비밀번호를 입력하세요" required />
 
-                <button type="submit" class="login-btn">로그인</button>
+                <button type="submit" id="login-btn" disabled>로그인</button>
 
                 <div class="signup-link">
                 <a href="{% url 'accounts:signup' %}">회원가입</a>
@@ -38,5 +38,7 @@
             </div>
         </div>
         </div>
+        <script src="{% static 'js/accounts/login.js' %}"></script>
+
     </body>
 </html>
