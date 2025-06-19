@@ -1,0 +1,191 @@
+body {
+    background-image: linear-gradient(#fffacd, #f4cd69);
+    width: 1920px;
+    height: 1080px;
+}
+
+.honey-head {
+    display: flex;
+    flex-direction: row;
+}
+
+.honey-drip-img {
+    max-width: 100%;
+    width: 960px;
+}
+
+.honey-foot {
+    display: flex;
+    flex-direction: row;
+}
+
+.honey-drip-img-flip-vertically{
+    bottom: 0;
+    max-width: 100%;
+    width: 960px;
+    transform: scaleY(-1);
+    position: absolute;
+    top: 860.5px;
+}
+
+.honey-drip-img-flip-vertically2 {
+    bottom: 0;
+    max-width: 100%;
+    width: 960px;
+    transform: scaleY(-1);
+    position: absolute;
+    top: 860.5px;
+    left: 960px;
+}
+
+
+.month-img {
+    margin-top: 55px;
+    margin-left: 120px;
+}
+
+.month-header {
+    display: flex;
+    flex-direction: row;
+}
+
+.month-header-text {
+    color: #736153;
+    font-family: locus_sangsang; /* 폰트 적용 안됨 */
+    font-size: 35px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin-top: 55px;
+    margin-left: 22px;
+}
+
+.three-honeys {
+    width: 89px;
+    height: 102px;
+    flex-shrink: 0;
+    aspect-ratio: 89/102;
+    margin-top: 55px;
+}
+
+.buzzlist-img {
+    width: 173px;
+    height: 46px;
+    aspect-ratio: 173/46;
+    margin-left: 16px;
+    margin-top: 25px
+}
+
+.buddypage-img {
+    width: 190px;
+    height: 46px;
+    aspect-ratio: 21/5;
+    margin-left: 16px;
+    margin-top: 25px;
+}
+
+.mypage-img {
+    width: 150px;
+    height: 46px;
+    aspect-ratio: 150/43;
+    margin-left: 16px;
+    margin-top: 25px
+}
+
+.honeypot-img {
+    width: 135px;
+    height: 135px;
+    flex-shrink: 0;
+    aspect-ratio: 1/1;
+}
+
+.amount-of-honey {
+    flex-direction: column;
+}
+
+.amount-of-honey-text {
+    color: #000;
+    font-family: locus_sangsang;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 160%; /* 19.2px */
+    margin-top: 50px;
+}
+
+.amount-of-honey-num {
+    color: #FFD640;
+    font-family: "Bagel Fat One";
+    font-size: 36px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.honey-deeper {
+    position: absolute;
+    top: 340px;
+    left: 20px;
+    width: 454px;
+    height: 453px;
+}
+
+.bee-text {
+    position: absolute;
+    top: 650px;
+    left: 360px;
+    width: 118px;
+    height: 92px;
+    font-size: 100px;
+}
+
+.mainpage-img3 {
+    width: 124px;
+    height: 120px;
+    position: absolute;
+    top: 710px;
+    left: 480px;
+}
+
+.flower-img {
+    position: absolute;
+    width: 131px;
+    height: 101px;
+    left: 1750px;
+    top: 650px;
+}
+
+.hex-container {
+    display: grid;
+    grid-template-columns: repeat(6, 100px);
+    gap: 8px;
+    justify-content: center;
+    margin-top: 80px;
+    position: relative;
+}
+
+.hex {
+    width: 100px;
+    height: 115px;
+    background-color: #f4cd69;
+    clip-path: polygon(
+        50% 0%, 100% 25%, 100% 75%,
+        50% 100%, 0% 75%, 0% 25%
+    );
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: #5a4a2c;
+    box-shadow: 0 0 0 2px #333; /* 육각형 테두리 */
+}
+
+/* 짝수 줄 밀어주기 (꿀벌집 배열) */
+.hex:nth-child(7n + 1),
+.hex:nth-child(7n + 2),
+.hex:nth-child(7n + 3),
+.hex:nth-child(7n + 4),
+.hex:nth-child(7n + 5) {
+    transform: translateY(58px);
+}

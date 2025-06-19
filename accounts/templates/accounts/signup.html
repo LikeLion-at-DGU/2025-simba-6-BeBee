@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>회원가입</title>
+    <link rel="stylesheet" href="{% static 'css/accounts/signup.css' %}" />
+</head>
+<body>
+    <div class="container">
+        <div class="signup-box">
+            <form method="POST">
+                {% csrf_token %}
+
+                {% if error %}
+                    <p class="error-message" style="color: red; margin-bottom: 10px;">
+                        {{ error }}
+                    </p>
+                {% endif %}
+
+                <label for="nickname">닉네임</label>
+                <div class="input-group">
+                    <input type="text" id="nickname" name="nickname" placeholder="아기사자" required>
+                    <button type="button" class="icon-button">🔍</button>
+                </div>
+
+                <label for="password">비밀번호</label>
+                <div class="input-group">
+                    <input type="password" id="password" name="password" placeholder="likeLion123" required>
+                    <button type="button" class="icon-button">👁️</button>
+                </div>
+
+                <label for="confirm">비밀번호 확인</label>
+                <div class="input-group">
+                    <input type="password" id="password-confirm" name="confirm" placeholder="likeLion123" required>
+                    <button type="button" class="icon-button">👁️</button>
+                </div>
+
+                <label for="univ">소속 대학</label>
+                <input type="text" id="univ" name="univ" placeholder="중국대학교" required>
+
+                <button type="submit" class="submit-button">회원가입</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
