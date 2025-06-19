@@ -1,0 +1,110 @@
+body {
+    background-image: linear-gradient(#fffacd, #f4cd69);
+    width: 1920px;
+    height: 1080px;
+}
+
+.honey-head {
+    display: flex;
+    flex-direction: row;
+}
+
+.honey-drip-img {
+    max-width: 100%;
+    width: 960px;
+}
+
+.honey-foot {
+    display: flex;
+    flex-direction: row;
+}
+
+.honey-drip-img-flip-vertically{
+    bottom: 0;
+    max-width: 100%;
+    width: 960px;
+    transform: scaleY(-1);
+}
+
+.month-img {
+    margin-top: 55px;
+    margin-left: 120px;
+}
+
+.month-header {
+    display: flex;
+    flex-direction: row;
+}
+
+.month-header-text {
+    color: #736153;
+    font-family: locus_sangsang; /* 폰트 적용 안됨 */
+    font-size: 35px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin-top: 55px;
+    margin-left: 22px;
+}
+
+.three-honeys {
+    width: 89px;
+    height: 102px;
+    flex-shrink: 0;
+    aspect-ratio: 89/102;
+    margin-top: 55px;
+}
+
+.buzzlist-img {
+    width: 173px;
+    height: 46px;
+    aspect-ratio: 173/46;
+    margin-left: 16px;
+    margin-top: 25px
+}
+
+.buddypage-img {
+    width: 190px;
+    height: 46px;
+    aspect-ratio: 21/5;
+    margin-left: 16px;
+    margin-top: 25px;
+}
+
+.mypage-img {
+    width: 150px;
+    height: 46px;
+    aspect-ratio: 150/43;
+    margin-left: 16px;
+    margin-top: 25px
+}
+
+.honeypot-img {
+    width: 135px;
+    height: 135px;
+    flex-shrink: 0;
+    aspect-ratio: 1/1;
+}
+
+.amount-of-honey {
+    flex-direction: column;
+}
+
+.amount-of-honey-text {
+    color: #000;
+    font-family: locus_sangsang;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 160%; /* 19.2px */
+    margin-top: 50px;
+}
+
+.amount-of-honey-num {
+    color: #FFD640;
+    font-family: "Bagel Fat One";
+    font-size: 36px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
