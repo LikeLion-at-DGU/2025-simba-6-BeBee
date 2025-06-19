@@ -24,7 +24,20 @@ body {
     max-width: 100%;
     width: 960px;
     transform: scaleY(-1);
+    position: absolute;
+    top: 860.5px;
 }
+
+.honey-drip-img-flip-vertically2 {
+    bottom: 0;
+    max-width: 100%;
+    width: 960px;
+    transform: scaleY(-1);
+    position: absolute;
+    top: 860.5px;
+    left: 960px;
+}
+
 
 .month-img {
     margin-top: 55px;
@@ -107,4 +120,72 @@ body {
     font-style: normal;
     font-weight: 400;
     line-height: normal;
+}
+
+.honey-deeper {
+    position: absolute;
+    top: 340px;
+    left: 20px;
+    width: 454px;
+    height: 453px;
+}
+
+.bee-text {
+    position: absolute;
+    top: 650px;
+    left: 360px;
+    width: 118px;
+    height: 92px;
+    font-size: 100px;
+}
+
+.mainpage-img3 {
+    width: 124px;
+    height: 120px;
+    position: absolute;
+    top: 710px;
+    left: 480px;
+}
+
+.flower-img {
+    position: absolute;
+    width: 131px;
+    height: 101px;
+    left: 1750px;
+    top: 650px;
+}
+
+.hex-container {
+    display: grid;
+    grid-template-columns: repeat(6, 100px);
+    gap: 8px;
+    justify-content: center;
+    margin-top: 80px;
+    position: relative;
+}
+
+.hex {
+    width: 100px;
+    height: 115px;
+    background-color: #f4cd69;
+    clip-path: polygon(
+        50% 0%, 100% 25%, 100% 75%,
+        50% 100%, 0% 75%, 0% 25%
+    );
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: #5a4a2c;
+    box-shadow: 0 0 0 2px #333; /* 육각형 테두리 */
+}
+
+/* 짝수 줄 밀어주기 (꿀벌집 배열) */
+.hex:nth-child(7n + 1),
+.hex:nth-child(7n + 2),
+.hex:nth-child(7n + 3),
+.hex:nth-child(7n + 4),
+.hex:nth-child(7n + 5) {
+    transform: translateY(58px);
 }
