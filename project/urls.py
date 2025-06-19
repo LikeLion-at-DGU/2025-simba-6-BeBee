@@ -21,6 +21,5 @@ from main.views import mainpage
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', mainpage), # default 로 mainpage 연결!,
-    path('accounts/', include(('accounts.urls', 'accounts'), namespace='accounts')),
-
+    path('accounts/', include('accounts.urls'))
 ]
