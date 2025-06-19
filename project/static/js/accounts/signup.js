@@ -42,8 +42,5 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
         }
     });
-<<<<<<< HEAD
+
 });
-=======
-});
->>>>>>> f8cfafe (feat: 회원가입 js 파일 추가 및 회원가입 html 수정(#12))
