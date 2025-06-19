@@ -1,9 +1,7 @@
-<<<<<<< HEAD
 from django.shortcuts import render, redirect
 from django.contrib import auth
 from django.contrib.auth.models import User
 from .models import Profile
-from django.http import JsonResponse
 
 # Create your views here.
 
@@ -65,26 +63,3 @@ def signup(request):
         return redirect('/')
         
     return render(request, 'accounts/signup.html')
-
-
-def check_nickname(request):
-    nickname = request.GET.get('nickname', '')
-    exists = User.objects.filter(username=nickname).exists()
-    return JsonResponse({'exists': exists})
-
-
-def check_nickname(request):
-    nickname = request.GET.get('nickname')
-    exists = User.objects.filter(username=nickname).exists()
-    return JsonResponse({'exists': exists})
-=======
-from django.shortcuts import render
-
-# Create your views here.
-
-def login_view(request):
-    return render(request, 'accounts/login.html')
-
-def signup_view(request):
-    return render(request, 'accounts/signup.html')
->>>>>>> 851ff7b (WIP: accounts 앱 초기 구조 및 로그인 페이지 구현(#2))
