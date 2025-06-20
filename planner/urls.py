@@ -3,7 +3,7 @@ from .views import *
 
 app_name = "planner"
 urlpatterns = [
-    path('', subpage, name='subpage'), 
+    path('subpage/<str:selected_date>/',subpage, name='subpage'),
     path('start/<int:todo_id>/', start_timer, name='start_timer'),
     path('stop/<int:todo_id>/', stop_timer, name='stop_timer'),
     path('create/', todo_create, name='todo_create'),  
