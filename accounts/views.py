@@ -75,7 +75,6 @@ def check_nickname(request):
     return JsonResponse({'exists': exists})
         
 
-
 def buddypage(request):
     return render(request, 'accounts/buddypage.html')
 
