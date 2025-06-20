@@ -2,8 +2,8 @@ body {
     margin: 0;
     padding: 0;
     background-color: #fff8e1;
-    width: 1920px;
-    height: 1080px;
+    width: 100vw;     /* ✅ 수정: 뷰포트 너비로 설정 */
+    height: 100vh;  
     overflow: hidden;
     position: relative;
 }
@@ -24,8 +24,7 @@ body {
     margin-top: 100px;
     flex-direction: row;
     width: 100%;
-    max-width: 1440px;
-    height: 100%;
+    height: calc(100vh - 100px);
     margin-inline: auto;
     position: relative;
     z-index: 2;
