@@ -188,15 +188,15 @@ body {
 */
 
 .calendar-container {
-    width: 800px;
+    width: 1000px;
     margin: 30px auto;
     border: 1px solid #ccc;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     padding: 10px;
-    background-color:#ffd700;
     position: absolute;
-    top: 350px;
-    left: 700px;
+    top: 300px;
+    left: 550px;
+    border-radius: 25px;
 }
 
 .calendar-header {
@@ -217,6 +217,7 @@ body {
     font-weight: bold;
     border-bottom: 1px solid #ccc;
     padding-bottom: 5px;
+    text-align: center;
 }
 /* grid-template-columns 속성을 사용하여 그리드 컨테이너의 열 크기를 유연하게 조정할 수 있으며, 
 반응형 웹 디자인에서 유용하게 활용된다. 
@@ -224,18 +225,18 @@ body {
 
 .day {
     padding: 5px;
-    font-size: 40px;
+    font-size: 28px;
 }
 
 .calendar-dates {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    grid-gap: 5px;
+    grid-gap: 8px;
 }
 
 .date {
-    width: 100px;
-    height: 115px;
+    width: 90px;
+    height: 105px;
     background-color: #fff8b3; /* 벌꿀 느낌 색상 */
     clip-path: polygon(
         50% 0%, 100% 25%, 100% 75%,
@@ -249,6 +250,7 @@ body {
     color: #5a4a2c;
     box-shadow: 0 0 0 2px #d4a017; /* 테두리 벌꿀색 */
     transition: transform 0.2s ease;
+    margin: auto;
 }
 
 .date:hover {
@@ -257,9 +259,13 @@ body {
 }
 
 .current-month {
-    font-size: 60px;
+    font-size: 40px;
 }
 
 .empty {
     visibility: hidden;
+}
+
+.next-button {
+    border-radius: 50%;
 }
