@@ -14,7 +14,7 @@ def login(request):
     
         if user is not None:
             auth.login(request, user)
-            return redirect('/')
+            return redirect('main:mainpage')
         else: 
             return render(request, 'accounts/login.html', {
                 'error': '아이디 또는 비밀번호가 틀렸습니다.'
@@ -25,7 +25,7 @@ def login(request):
 # 로그아웃
 def logout(request):
     auth.logout(request)
-    return redirect('/')
+    return redirect('accounts:login')
 
 # 회원가입
 def signup(request):
@@ -59,12 +59,14 @@ def signup(request):
             password=password
         )
 
-        # ✅ Profile도 반드시 생성!
-        Profile.objects.create(user=user, univ=univ)
+        # Profile도 생성
+        profile = Profile(user=user, univ=univ)
+        profile.save()
+
 
         # 로그인 처리 후 메인으로 리다이렉트
         auth.login(request, user)
-        return redirect('/')
+        return redirect('main:mainpage')
 
     return render(request, 'accounts/signup.html')
 

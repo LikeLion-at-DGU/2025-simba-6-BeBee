@@ -1,14 +1,16 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="ko">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>로그인 페이지</title>
-        <link rel="stylesheet" href="{% static 'css/accounts/login.css' %}" />
-    </head>
-    <body>
-        <div class="background">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>로그인 페이지</title>
+    <link rel="stylesheet" href="{% static 'css/accounts/login.css' %}" />
+</head>
+
+<body>
+    <div class="background">
         <!-- 🟡 노란 버블 배경 -->
         <div class="bubble small"></div>
         <div class="bubble medium"></div>
@@ -17,35 +19,29 @@
         <!-- 🔘 회색 원 배경 -->
         <div class="login-circle">
             <div class="login-wrapper">
-            <h1 class="site-title">Beebe</h1>
-            <p class="site-description">당신의 일상을 기록하는 공간</p>
+                <h1 class="site-title">Beebe</h1>
+                <p class="site-description">당신의 일상을 기록하는 공간</p>
 
-            <form method="POST" action="{% url 'accounts:login' %}" class="login-form">
-                {% csrf_token %}
+                <form method="POST" action="{% url 'accounts:login' %}" class="login-form">
+                    {% csrf_token %}
 
-                <label for="username">닉네임</label>
-                <input type="text" id="username" name="username" placeholder="닉네임을 입력하세요" required />
+                    <label for="username">닉네임</label>
+                    <input type="text" id="username" name="username" placeholder="닉네임을 입력하세요" required />
 
-                <label for="password">비밀번호</label>
-                <input type="password" id="password" name="password" placeholder="비밀번호를 입력하세요" required />
+                    <label for="password">비밀번호</label>
+                    <input type="password" id="password" name="password" placeholder="비밀번호를 입력하세요" required />
 
-<<<<<<< HEAD
-                <button type="submit" id="login-btn" disabled>로그인</button>
-=======
-                <button type="submit" class="login-btn">로그인</button>
->>>>>>> 851ff7b (WIP: accounts 앱 초기 구조 및 로그인 페이지 구현(#2))
+                    <button type="submit" class="login-btn">로그인</button>
 
-                <div class="signup-link">
-                <a href="{% url 'accounts:signup' %}">회원가입</a>
-                </div>
-            </form>
+                    <div class="signup-link">
+                        <a href="{% url 'accounts:signup' %}">회원가입</a>
+                    </div>
+                </form>
             </div>
         </div>
-        </div>
-<<<<<<< HEAD
-        <script src="{% static 'js/accounts/login.js' %}"></script>
+    </div>
 
-=======
->>>>>>> 851ff7b (WIP: accounts 앱 초기 구조 및 로그인 페이지 구현(#2))
-    </body>
+    <script src="{% static 'js/accounts/login.js' %}"></script>
+</body>
+
 </html>
