@@ -1,4 +1,3 @@
-
 {% block content %} 
 {% load static %}
 <link
@@ -36,53 +35,29 @@
             <div class="amount-of-honey-num">50g</div>
         </div>
     </div>
-    <div class="hex-container">
-        <div class="hex">1</div>
-        <div class="hex">2</div>
-        <div class="hex">3</div>
-        <div class="hex">4</div>
-        <div class="hex">5</div>
-        <div class="hex">6</div>
-        <div class="hex">7</div>
-        <div class="hex">8</div>
-        <div class="hex">9</div>
-        <div class="hex">10</div>
-        <div class="hex">11</div>
-        <div class="hex">12</div>
-        <div class="hex">13</div>
-        <div class="hex">14</div>
-        <div class="hex">15</div>
-        <div class="hex">16</div>
-        <div class="hex">17</div>
-        <div class="hex">18</div>
-        <div class="hex">19</div>
-        <div class="hex">20</div>
-        <div class="hex">21</div>
-        <div class="hex">22</div>
-        <div class="hex">23</div>
-        <div class="hex">24</div>
-        <div class="hex">25</div>
-        <div class="hex">26</div>
-        <div class="hex">27</div>
-        <div class="hex">28</div>
-        <div class="hex">29</div>
-        <div class="hex">30</div>
-    </div>
-    <div class="honey-foot">
-        <img src="{% static 'assets/images/mainpage_img6.png' %}"
-        alt="honey drip reverse"
-        class="honey-drip-img-flip-vertically">
-        <img src="{% static 'assets/images/mainpage_img6.png' %}"
-        alt="honey drip reverse"
-        class="honey-drip-img-flip-vertically2">
-    </div>
     <img src="{% static 'assets/images/mainpage_honey_img1.png' %}"
     class="honey-deeper">
-    <div class="bee-text">🐝</div>
-    <img src="{% static 'assets/images/mainpage_img3.png' %}"
-    class="mainpage-img3">
     <img src="{% static 'assets/images/mainpage_bee_img2.png' %}"
     class="flower-img">
+    <div class="calendar-container">
+        <div class="calendar-header">
+            <button id="prevBtn">이전</button>
+            <div id="currentMonth" class="current-month"></div>
+            <button id="nextBtn">다음</button>
+        </div>
+        <div class="calendar-days">
+            <div class="day" style="color: red;">일</div>
+            <div class="day">월</div>
+            <div class="day">화</div>
+            <div class="day">수</div>
+            <div class="day">목</div>
+            <div class="day">금</div>
+            <div class="day" style="color: blue;">토</div>
+        </div>
+        <div class="calendar-dates" id="calendarDates"></div>
+    </div>
+
+    <script src="{% static 'js/main/mainpage.js' %}"></script>
 </body>
 
 {% endblock %}
