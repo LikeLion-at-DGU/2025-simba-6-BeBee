@@ -14,7 +14,7 @@
 
 <body>
     <!-- 꿀 이미지: 기존 설정 유지 -->
-    <img src="{% static 'assets/planner/honey.png' %}" alt="honey" class="background-honey" />
+    <!-- <img src="{% static 'assets/planner/honey.png' %}" alt="honey" class="background-honey" /> -->
 
     <!-- 전체 3분할 콘텐츠 -->
     <div class="wrapper">
@@ -22,7 +22,7 @@
         <!-- ✅ 상단 네비게이션 -->
         <div class="top-nav">
             <a href="/" class="nav-link">Calendar</a>
-            <a href="/buddy" class="nav-link">Buddy page</a>
+            <a href="/accounts/buddypage" class="nav-link">Buddy page</a>
             <a href="/mypage" class="nav-link">My page</a>
         </div>
 
@@ -40,7 +40,7 @@
                     <!-- <img src="{% static 'assets/planner/buzzlist-logo.png' %}" alt="logo" class="buzzlist-logo" /> -->
                     <img src="{% static 'assets/planner/honey-icon.png' %}" alt="icon" class="honey-icon" />
                 </div>
-                
+
                 <div class="box1-right">
                     <p class="goal-text">오늘 모을 꿀을 정해 볼까요? 🐝</p>
                 </div>
@@ -53,20 +53,46 @@
             </div>
 
             <!-- ✅ box3 -->
+
             <div class="box3">
+                {% if todos %}
+                <ul class="todo-list" id="todo-list">
+                    {% for todo in todos %}
+                    <li class="todo-item">
+                        <form method="POST" action="{% url 'planner:todo_delete' todo.id %}">
+                            {% csrf_token %}
+                            <label>
+                                {% if todo.status == 'completed' %}
+                                <input type="checkbox" checked  />
+                                {% else %}
+                                <input type="checkbox" />
+                                {% endif %}
+
+                                <span class="todo-content">{{ todo.content }}</span>
+                                <span class="todo-meta">({{ todo.category }})</span>
+                                <span class="todo-meta">{{ todo.deadline|date:"Y-m-d" }}</span>
+                            </label>
+                            <button type="submit">삭제</button>
+                        </form>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
                 <p class="todo-placeholder-text" id="placeholder">할일을 입력해주세요</p>
-                <ul id="todo-list" class="todo-list"></ul>
+                {% endif %}
             </div>
+
+
 
             <!-- ✅ box4 -->
             <div class="box4">
-                <form id="todo-form"  method="POST">
+                <form id="todo-form" method="POST" action="{% url 'planner:todo_create' %}">
                     {% csrf_token %}
                     <!-- 할일 내용 -->
                     <input type="text" id="todo-input" name="content" class="goal-input" placeholder="할일 입력" required />
 
                     <!-- 카테고리 선택 -->
-                    <select id="todo-category" action ="{% url planner:subpage %}" name="category" class="goal-input" required>
+                    <select id="todo-category" name="category" class="goal-input" required>
                         <option value="">카테고리 선택</option>
                         <option value="대외활동">대외활동</option>
                         <option value="과제">과제</option>
@@ -106,12 +132,33 @@
             </div>
 
             <!-- ✅ right box2: 집중 타이머 -->
-            <div class="right-box2">
+            <div class="right-box2" id="timer-box">
                 <div class="timer-label">집중 타이머 <span class="bulb">💡</span></div>
-                <div class="counter">00 : 00 : 00</div>
-                <button class="start-btn">START</button>
+                <div class="counter" id="timer-display">00 : 00 : 00</div>
+                <button class="start-btn" data-todo-id="{{ todo.id }}" id="timer-button">START</button>
             </div>
+
+            <!-- ✅ 버디 메시지 박스 (초기에는 숨김 처리) -->
+            <div class="buddy-box" id="buddy-box" style="display: none;">
+                <div class="timer-label">Buddies say 🐝</div>
+                <ul class="buddy-messages">
+                    <li>완전 갓생러네!!! 덕분에 나도 힘 얻고 가~</li>
+                    <li>와 꿀 많이 모았네?</li>
+                    <li>5일 연속 출근 대박~</li>
+                </ul>
+                <input type="text" placeholder="응원 메시지 입력" class="goal-input" />
+            </div>
+
+
+
         </aside>
+
+        <!-- 오른쪽 하단에 띄우는 아이콘 -->
+        <div class="floating-icons">
+            <img src="{% static 'assets/planner/bulb.png' %}" id="show-timer-btn" alt="타이머" />
+            <img src="{% static 'assets/planner/wing.png' %}" id="show-buddy-btn" alt="버디 메시지" />
+        </div>
+
 
     </div>
     <script src="{% static 'js/planner/subpage.js' %}"></script>
