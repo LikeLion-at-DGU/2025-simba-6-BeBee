@@ -10,3 +10,4 @@ urlpatterns = [
     path('buddypage/', buddypage, name='buddypage'), 
 ]
 
+
