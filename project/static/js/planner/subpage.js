@@ -31,15 +31,6 @@ function addTaskToDOM(taskText, taskId) {
 
 document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("todo-form");  // ✅ 이 줄 꼭 필요
-    const taskInput = document.getElementById("todo-input");
-
-    form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        const task = taskInput.value.trim();
-        if (!task) return;
-
-        addTaskToDOM(task, 0);  // DB 없이 테스트용
-        taskInput.value = "";
-    });
+    
 });
 
