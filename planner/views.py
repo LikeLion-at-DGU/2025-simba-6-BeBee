@@ -73,8 +73,10 @@ def todo_delete(request, todo_id):
     todo_remove.delete()
     return redirect('planner:subpage')
 
-def todo_complete(request,todo_id):
-    todo_end=get_object_or_404(Todo,id=todo_id,user=request.user)
-    todo_end.status='completed'
-    todo.save()
+def todo_complete(request, todo_id):
+    todo_end = get_object_or_404(Todo, id=todo_id, user=request.user)
+    todo_end.status = 'completed'
+    todo_end.honey_count += 50
+    todo_end.completed_todo_count+=1
+    todo_end.save()  
     return redirect('planner:subpage')
