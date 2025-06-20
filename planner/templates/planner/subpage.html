@@ -63,7 +63,7 @@
                             {% csrf_token %}
                             <label>
                                 {% if todo.status == 'completed' %}
-                                <input type="checkbox" checked  />
+                                <input type="checkbox" checked />
                                 {% else %}
                                 <input type="checkbox" />
                                 {% endif %}
@@ -86,7 +86,7 @@
 
             <!-- ✅ box4 -->
             <div class="box4">
-                <form id="todo-form" method="POST" action="{% url 'planner:todo_create' %}">
+                <form id="todo-form" method="POST" action="{% url 'planner:todo_create' selected_date %}">
                     {% csrf_token %}
                     <!-- 할일 내용 -->
                     <input type="text" id="todo-input" name="content" class="goal-input" placeholder="할일 입력" required />
