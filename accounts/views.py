@@ -33,41 +33,37 @@ def signup(request):
         univ = request.POST['univ']
         password = request.POST['password']
         confirm = request.POST['confirm']
+        image = request.FILES.get('profile_image')  # ✅ 이미지 받기
 
-        # 닉네임 공백 검사
         if not nickname.strip():
             return render(request, 'accounts/signup.html', {
                 'error': '닉네임을 입력해주세요.'
             })
 
-        # 중복 닉네임 검사
         if User.objects.filter(username=nickname).exists():
             return render(request, 'accounts/signup.html', {
                 'error': '이미 존재하는 닉네임입니다.'
             })
 
-        # 비밀번호 일치 검사
         if password != confirm:
             return render(request, 'accounts/signup.html', {
                 'error': '비밀번호가 일치하지 않습니다.'
             })
 
-        # 유저 생성
         user = User.objects.create_user(
             username=nickname,
             password=password
         )
 
-        # Profile도 생성
-        profile = Profile(user=user, univ=univ)
+        # 프로필 이미지까지 같이 저장 (없으면 default 자동 사용됨)
+        profile = Profile(user=user, univ=univ, profile_image=image)
         profile.save()
 
-
-        # 로그인 처리 후 메인으로 리다이렉트
         auth.login(request, user)
         return redirect('main:mainpage')
 
     return render(request, 'accounts/signup.html')
+
 
 # 닉네임 중복 확인
 def check_nickname(request):

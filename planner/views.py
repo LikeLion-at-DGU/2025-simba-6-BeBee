@@ -72,3 +72,9 @@ def todo_delete(request, todo_id):
     todo_remove=get_object_or_404(Todo,id=todo_id,user=request.user)
     todo_remove.delete()
     return redirect('planner:subpage')
+
+def todo_complete(request,todo_id):
+    todo_end=get_object_or_404(Todo,id=todo_id,user=request.user)
+    todo_end.status='completed'
+    todo.save()
+    return redirect('planner:subpage')
