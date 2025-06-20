@@ -35,7 +35,12 @@
 
             <!-- ✅ box1 -->
             <div class="box1">
-                <img src="{% static 'assets/planner/honey-icon.png' %}" alt="icon" class="honey-icon" />
+
+                <div class="box1-left">
+                    <!-- <img src="{% static 'assets/planner/buzzlist-logo.png' %}" alt="logo" class="buzzlist-logo" /> -->
+                    <img src="{% static 'assets/planner/honey-icon.png' %}" alt="icon" class="honey-icon" />
+                </div>
+                
                 <div class="box1-right">
                     <p class="goal-text">오늘 모을 꿀을 정해 볼까요? 🐝</p>
                 </div>
@@ -55,9 +60,27 @@
 
             <!-- ✅ box4 -->
             <div class="box4">
-                <form id="todo-form" method="POST">
+                <form id="todo-form"  method="POST">
                     {% csrf_token %}
-                    <input type="text" id="todo-input" class="goal-input" placeholder="할일 입력" />
+                    <!-- 할일 내용 -->
+                    <input type="text" id="todo-input" name="content" class="goal-input" placeholder="할일 입력" required />
+
+                    <!-- 카테고리 선택 -->
+                    <select id="todo-category" action ="{% url planner:subpage %}" name="category" class="goal-input" required>
+                        <option value="">카테고리 선택</option>
+                        <option value="대외활동">대외활동</option>
+                        <option value="과제">과제</option>
+                        <option value="시험공부">시험공부</option>
+                        <option value="자격증">자격증</option>
+                        <option value="알바">알바</option>
+                        <option value="동아리">동아리</option>
+                        <option value="취미활동">취미활동</option>
+                        <option value="기타">기타</option>
+                    </select>
+
+                    <!-- 마감기한 선택 -->
+                    <input type="date" id="todo-deadline" name="deadline" class="goal-input" required />
+
                     <button id="add-task" type="submit" class="goal-submit-btn">입력</button>
                 </form>
             </div>

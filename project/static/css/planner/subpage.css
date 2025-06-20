@@ -11,7 +11,7 @@ body {
 .background-honey {
     position: absolute;
     top: 0;
-    left: 0;
+    left: -10px;
     height: 60%;
     transform: rotate(-90deg) translateY(-45%);
     z-index: 1;
@@ -31,15 +31,18 @@ body {
 }
 
 .sidebar {
-    display: none;
+  display: block;            /* ✅ 보이게 설정 */
+  width: 80px;               /* ✅ 원하는 여백 크기 */
+  min-width: 80px;           /* ✅ flex 수축 방지 */
+
 }
 
 .main-content {
-    flex: 1.2;
+    flex: 1.0;
     padding: 40px;
     display: flex;
     flex-direction: column;
-    gap: 30px;
+    gap: 20px;
     min-width: 0;
 }
 
@@ -55,6 +58,16 @@ body {
     display: flex;
     gap: 20px;
     align-items: center;
+    height: 50px;
+    margin-bottom: 10px;
+}
+
+.box1-left {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+
 }
 
 .box1-right {
@@ -64,8 +77,8 @@ body {
 }
 
 .honey-icon {
-    width: 196px;
-    height: 196px;
+    width: 100%;
+    height: 100%;
     aspect-ratio: 1 / 1;
 }
 
@@ -89,6 +102,7 @@ body {
     display: flex;
     align-items: center;
     gap: 20px;
+    height: 30px;
 }
 
 .goal-label {
@@ -109,8 +123,8 @@ body {
     padding: 40px;
     border-radius: 20px;
     box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.05);
-    width: 300px;
-    height: 200px;
+    width: 80%;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -129,6 +143,12 @@ body {
 .box4 {
     display: flex;
     gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.goal-input {
+    min-width: 200px;
 }
 
 .todo-list {
@@ -165,7 +185,7 @@ body {
 }
 
 .right-panel {
-    flex: 0.8;
+    flex: 1.0;
     padding: 40px 40px 40px 0;
     display: flex;
     flex-direction: column;
@@ -271,7 +291,7 @@ body {
 
 .top-nav {
     position: absolute;
-    top: 20px;
+    top: 10px;
     right: 60px;
     display: flex;
     gap: 16px;
