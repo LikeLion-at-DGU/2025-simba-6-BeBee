@@ -58,12 +58,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // 타이머 기능
 
-document.addEventListener("DOMContentLoaded", () => {
-    const display = document.getElementById("timer-display");
-    const button = document.getElementById("timer-button");
-    let timer = null;
-    let seconds = 0;
+document.addEventListener("DOMContentLoaded", function () {
+    const timers = {};  // 각 todoId별 setInterval ID 저장
+    const secondsElapsed = {};  // 각 todoId별 경과 시간 저장
 
+    // 시간 형식 변환 함수
     function formatTime(s) {
         const hrs = String(Math.floor(s / 3600)).padStart(2, "0");
         const mins = String(Math.floor((s % 3600) / 60)).padStart(2, "0");
@@ -71,28 +70,44 @@ document.addEventListener("DOMContentLoaded", () => {
         return `${hrs} : ${mins} : ${secs}`;
     }
 
-    button.addEventListener("click", () => {
+    // 모든 타이머 버튼에 대해 이벤트 바인딩
+    document.querySelectorAll(".start-btn").forEach(function (button) {
         const todoId = button.dataset.todoId;
+        const display = document.getElementById(`timer-display-${todoId}`);
+        let seconds = 0;
 
-        if (button.textContent === "START") {
-            // 서버에 시작 요청
-            fetch(`/start-timer/${todoId}/`)
-                .then(() => {
-                    button.textContent = "STOP";
-                    timer = setInterval(() => {
-                        seconds++;
-                        display.textContent = formatTime(seconds);
-                    }, 1000);
-                });
-        } else {
-            // 서버에 종료 요청
-            fetch(`/stop-timer/${todoId}/`)
-                .then(() => {
-                    clearInterval(timer);
-                    button.textContent = "START";
-                    seconds = 0;
-                    display.textContent = "00 : 00 : 00";
-                });
+        // 서버에서 started 상태라면 초기부터 타이머 동작
+        if (button.dataset.started === "true") {
+            button.textContent = "STOP";
+            timers[todoId] = setInterval(() => {
+                seconds++;
+                display.textContent = formatTime(seconds);
+            }, 1000);
         }
+
+        // 버튼 클릭 시 START/STOP 동작
+        button.addEventListener("click", function () {
+            if (button.textContent === "START") {
+                fetch(`/start-timer/${todoId}/`)
+                    .then(() => {
+                        button.textContent = "STOP";
+                        seconds = 0;
+                        timers[todoId] = setInterval(() => {
+                            seconds++;
+                            display.textContent = formatTime(seconds);
+                        }, 1000);
+                    })
+                    .catch(error => console.error("Start Timer Error:", error));
+            } else {
+                fetch(`/stop-timer/${todoId}/`)
+                    .then(() => {
+                        clearInterval(timers[todoId]);
+                        button.textContent = "START";
+                        display.textContent = "00 : 00 : 00";
+                        seconds = 0;
+                    })
+                    .catch(error => console.error("Stop Timer Error:", error));
+            }
+        });
     });
 });

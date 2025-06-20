@@ -131,12 +131,18 @@
                 </div>
             </div>
 
-            <!-- ✅ right box2: 집중 타이머 -->
-            <div class="right-box2" id="timer-box">
+            <!-- ✅ right box2: 집중 타이머 (반복적으로 생성) -->
+            {% for todo in todos %}
+            <div class="right-box2" id="timer-box-{{ todo.id }}">
                 <div class="timer-label">집중 타이머 <span class="bulb">💡</span></div>
-                <div class="counter" id="timer-display">00 : 00 : 00</div>
-                <button class="start-btn" data-todo-id="{{ todo.id }}" id="timer-button">START</button>
+                <div class="counter" id="timer-display-{{ todo.id }}">00 : 00 : 00</div>
+                <button class="start-btn" data-todo-id="{{ todo.id }}"
+                    data-started="{{ todo.started_at|yesno:'true,false' }}" id="timer-button-{{ todo.id }}">
+                    {% if todo.started_at %}STOP{% else %}START{% endif %}
+                </button>
             </div>
+            {% endfor %}
+
 
             <!-- ✅ 버디 메시지 박스 (초기에는 숨김 처리) -->
             <div class="buddy-box" id="buddy-box" style="display: none;">
