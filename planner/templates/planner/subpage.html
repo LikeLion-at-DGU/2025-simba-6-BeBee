@@ -10,11 +10,13 @@
     <link rel="stylesheet" href="{% static 'css/planner/subpage.css' %}" />
     <link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
 </head>
 
 <body>
     <!-- 꿀 이미지: 기존 설정 유지 -->
-    <!-- <img src="{% static 'assets/planner/honey.png' %}" alt="honey" class="background-honey" /> -->
+    <img src="{% static 'assets/planner/honey.png' %}" alt="honey" class="background-honey" />
 
     <!-- 전체 3분할 콘텐츠 -->
     <div class="wrapper">
@@ -43,6 +45,7 @@
 
                 <div class="box1-right">
                     <p class="goal-text">오늘 모을 꿀을 정해 볼까요? 🐝</p>
+                    <p class="honey-gage"></p>
                 </div>
             </div>
 
@@ -71,11 +74,20 @@
                                 <span class="todo-content">{{ todo.content }}</span>
                                 <span class="todo-meta">({{ todo.category }})</span>
                                 <span class="todo-meta">{{ todo.deadline|date:"Y-m-d" }}</span>
+
+                                {# ✅ total_elapsed_time이 있으면 표시 #}
+                                {% if todo.total_elapsed_time %}
+                                <span class="todo-meta"><strong>⏱ {{ todo.total_elapsed_time|time:"H:i:s"
+                                        }}</strong></span>
+
+                                {% endif %}
                             </label>
-                            <button type="submit">삭제</button>
+                            <button type="submit" class="delete-btn">삭제</button>
+                            <button type="button" class="show-timer-btn" data-todo-id="{{ todo.id }}">타이머</button>
                         </form>
                     </li>
                     {% endfor %}
+
                 </ul>
                 {% else %}
                 <p class="todo-placeholder-text" id="placeholder">할일을 입력해주세요</p>
@@ -83,17 +95,15 @@
             </div>
 
 
-
             <!-- ✅ box4 -->
             <div class="box4">
-                <form id="todo-form" method="POST" action="{% url 'planner:todo_create' selected_date %}">
+                <form id="todo-form" method="POST" action="{% url 'planner:todo_create' selected_date %}"
+                    class="todo-form-inline">
                     {% csrf_token %}
-                    <!-- 할일 내용 -->
-                    <input type="text" id="todo-input" name="content" class="goal-input" placeholder="할일 입력" required />
 
                     <!-- 카테고리 선택 -->
-                    <select id="todo-category" name="category" class="goal-input" required>
-                        <option value="">카테고리 선택</option>
+                    <select id="todo-category" name="category" class="todo-select" required>
+                        <option value="">카테고리</option>
                         <option value="대외활동">대외활동</option>
                         <option value="과제">과제</option>
                         <option value="시험공부">시험공부</option>
@@ -104,12 +114,19 @@
                         <option value="기타">기타</option>
                     </select>
 
-                    <!-- 마감기한 선택 -->
-                    <input type="date" id="todo-deadline" name="deadline" class="goal-input" required />
+                    <!-- 마감일 -->
+                    <input type="date" id="todo-deadline" name="deadline" class="todo-date" required />
+                    <!-- 할일 입력칸 -->
+                    <input type="text" id="todo-input" name="content" class="todo-input-inline" placeholder="할일 입력"
+                        required />
 
-                    <button id="add-task" type="submit" class="goal-submit-btn">입력</button>
+                    <!-- 제출 버튼 -->
+                    <button id="add-task" type="submit" class="submit-button">
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
                 </form>
             </div>
+
         </main>
 
         <!-- 오른쪽 패널 -->
@@ -117,17 +134,20 @@
             <!-- ✅ right box1: 요일 선택 -->
             <div class="right-box1">
                 <div class="weekday-grid">
-                    <div class="weekday-row top-row">
-                        <button class="hexagon active">MON</button>
-                        <button class="hexagon active">WED</button>
-                        <button class="hexagon active">FRI</button>
-                        <button class="hexagon active">SUN</button>
+                    <div class="honeycomb-weekdays">
+                        <div class="weekday-row top-row">
+                            <div class="hexagon-wrapper"><button class="hexagon-inner">MON</button></div>
+                            <div class="hexagon-wrapper"><button class="hexagon-inner">WED</button></div>
+                            <div class="hexagon-wrapper"><button class="hexagon-inner">FRI</button></div>
+                            <div class="hexagon-wrapper"><button class="hexagon-inner">SUN</button></div>
+                        </div>
+                        <div class="weekday-row bottom-row">
+                            <div class="hexagon-wrapper"><button class="hexagon-inner">TUE</button></div>
+                            <div class="hexagon-wrapper"><button class="hexagon-inner">THU</button></div>
+                            <div class="hexagon-wrapper"><button class="hexagon-inner">SAT</button></div>
+                        </div>
                     </div>
-                    <div class="weekday-row bottom-row">
-                        <button class="hexagon active">TUE</button>
-                        <button class="hexagon active">THU</button>
-                        <button class="hexagon active">SAT</button>
-                    </div>
+
                 </div>
             </div>
 
@@ -145,7 +165,7 @@
 
 
             <!-- ✅ 버디 메시지 박스 (초기에는 숨김 처리) -->
-            <div class="buddy-box" id="buddy-box" style="display: none;">
+            <div class="buddy-box" id="buddy-box" style="display: flex;">
                 <div class="timer-label">Buddies say 🐝</div>
                 <ul class="buddy-messages">
                     <li>완전 갓생러네!!! 덕분에 나도 힘 얻고 가~</li>

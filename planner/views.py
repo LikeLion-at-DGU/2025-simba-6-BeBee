@@ -23,14 +23,31 @@ def start_timer(request, todo_id):
         todo.save()
     return redirect('planner:subpage', selected_date=todo.date.strftime('%Y-%m-%d'))
 
+# def stop_timer(request, todo_id):
+#     todo = get_object_or_404(Todo, id=todo_id, user=request.user)
+#     if todo.started_at:
+#         elapsed_time = timezone.now() - todo.started_at
+#         todo.total_elapsed_time = (todo.total_elapsed_time or timedelta()) + elapsed_time
+#         todo.started_at = None
+#         todo.save()
+#     return redirect('planner:subpage', selected_date=todo.date.strftime('%Y-%m-%d'))
+
+
 def stop_timer(request, todo_id):
+    print("✅ stop_timer 호출됨")  # ← 추가
+
     todo = get_object_or_404(Todo, id=todo_id, user=request.user)
     if todo.started_at:
-        elapsed_time = timezone.now() - todo.started_at
+        now = timezone.now()
+        print(f"✅ 종료 시간 기록 시도: {now}")  # ← 추가
+
+        elapsed_time = now - timezone.make_aware(datetime.combine(todo.date, todo.started_at))
+        todo.ended_at = now
         todo.total_elapsed_time = (todo.total_elapsed_time or timedelta()) + elapsed_time
         todo.started_at = None
         todo.save()
     return redirect('planner:subpage', selected_date=todo.date.strftime('%Y-%m-%d'))
+
 
 def todo_create(request, selected_date):
     if request.method == 'POST':
