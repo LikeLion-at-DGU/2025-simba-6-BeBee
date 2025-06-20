@@ -4,11 +4,16 @@ from . models import *
 from datetime import datetime, date
 # Create your views here.
 
-def subpage(request):
+# planner/views.py
+from django.shortcuts import render, redirect
+from .models import Todo
+
+def subpage(request, selected_date):
     if not request.user.is_authenticated:
         return redirect('accounts:login')
-    todos=Todo.objects.filter(user=request.user)
-    return render(request, 'planner/subpage.html', {'todos': todos})
+    # 해당 날짜의 할 일만 필터링
+    todos = Todo.objects.filter(user=request.user, date=selected_date)
+    return render(request, 'planner/subpage.html', {'todos': todos, 'selected_date': selected_date})
 
 def start_timer(request, todo_id):
     todo = get_object_or_404(Todo, id=todo_id, user=request.user)
@@ -19,17 +24,34 @@ def start_timer(request, todo_id):
     todo.save()
     return redirect('planner:todo_create') 
 
+from datetime import timedelta
+
 def stop_timer(request, todo_id):
     todo = get_object_or_404(Todo, id=todo_id, user=request.user)
     if not todo.started_at:
         return redirect('planner:subpage')
+
     now = datetime.now().time()
     todo.ended_at = now
-    start_dt=datetime.combine(date.today(),todo.started_at)
-    end_dt=datetime.combine(date.today(),todo.ended_at)
-    todo.elapsed_time = end_dt-start_dt
+
+    start_dt = datetime.combine(date.today(), todo.started_at)
+    end_dt = datetime.combine(date.today(), now)
+    elapsed = end_dt - start_dt
+
+    # 누적
+    if todo.total_elapsed_time:
+        todo.total_elapsed_time += elapsed
+    else:
+        todo.total_elapsed_time = elapsed
+
+    # 초기화
+    todo.started_at = None
+    todo.ended_at = None
+    todo.elapsed_time = None
+
     todo.save()
     return redirect('planner:subpage')
+
 
 
 def todo_create(request):
