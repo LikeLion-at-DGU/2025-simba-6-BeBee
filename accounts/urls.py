@@ -6,5 +6,8 @@ urlpatterns = [
     path('login/', login, name='login'),
     path('logout/', logout, name="logout"),
     path('signup/', signup, name='signup'),
-    path('check-nickname/', check_nickname, name='check-nickname'), 
+    path('check-nickname/', check_nickname, name='check-nickname'),
+    path('buddypage/', buddypage, name='buddypage'), 
 ]
+
+
