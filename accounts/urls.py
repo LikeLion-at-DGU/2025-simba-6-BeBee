@@ -8,5 +8,6 @@ urlpatterns = [
     path('signup/', signup, name='signup'),
     path('check-nickname/', check_nickname, name='check-nickname'),
     path('buddypage/', buddypage, name='buddypage'), 
+    path('follow/<int:id>/',follow, name='follow')
 ]
 
