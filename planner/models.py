@@ -19,7 +19,6 @@ class Todo(models.Model):
         ('동아리', '동아리'),
         ('취미활동', '취미활동'),
         ('기타', '기타'),
-        ('카테고리', '카테고리'),
     ]
     STATUS_CHOICES = [
         ('not_completed', '미완료'),

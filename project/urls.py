@@ -23,5 +23,4 @@ urlpatterns = [
     path('', mainpage), # default 로 mainpage 연결!,
     path('accounts/', include(('accounts.urls', 'accounts'), namespace='accounts')),
     path('planner/', include('planner.urls')),
-
 ]
