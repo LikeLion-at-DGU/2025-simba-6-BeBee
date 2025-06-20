@@ -1,78 +1,100 @@
-from django.shortcuts import render, redirect
-from django.contrib import auth
-from django.contrib.auth.models import User
-from .models import Profile
-from django.http import JsonResponse
+from django.shortcuts import render, redirect, get_object_or_404
+from django.utils import timezone
+from .models import Todo
+from datetime import datetime, date, timedelta
 
-# 로그인
-def login(request):
+def subpage(request, selected_date):
+    if not request.user.is_authenticated:
+        return redirect('accounts:login')
+    todos = Todo.objects.filter(user=request.user, date=selected_date)
+    return render(request, 'planner/subpage.html', {'todos': todos, 'selected_date': selected_date})
+
+def start_timer(request, todo_id):
+    todo = get_object_or_404(Todo, id=todo_id, user=request.user)
+    now = datetime.now().time()
+    todo.started_at = now
+    todo.ended_at = None
+    todo.elapsed_time = None
+    todo.save()
+    return redirect('planner:subpage', selected_date=todo.date)
+
+def stop_timer(request, todo_id):
+    todo = get_object_or_404(Todo, id=todo_id, user=request.user)
+    if not todo.started_at:
+        return redirect('planner:subpage', selected_date=todo.date)
+
+    now = datetime.now().time()
+    todo.ended_at = now
+
+    start_dt = datetime.combine(date.today(), todo.started_at)
+    end_dt = datetime.combine(date.today(), now)
+    elapsed = end_dt - start_dt
+
+    todo.total_elapsed_time = (todo.total_elapsed_time or timedelta()) + elapsed
+
+    # 초기화
+    todo.started_at = None
+    todo.ended_at = None
+    todo.elapsed_time = None
+
+    todo.save()
+    return redirect('planner:subpage', selected_date=todo.date)
+
+def todo_create(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
+        if request.user.is_authenticated:
+            new_todo = Todo()
+            new_todo.user = request.user
+            new_todo.content = request.POST['content']
+            new_todo.status = request.POST.get('status', 'not_completed')
+            new_todo.category = request.POST['category']
+            raw_deadline = request.POST.get('deadline')
+            new_todo.deadline = raw_deadline if raw_deadline else None
+            new_todo.date = request.POST.get('date')  # 꼭 필요함 (기본 필터 키니까)
+            new_todo.save()
+            return redirect('planner:subpage', selected_date=new_todo.date)
+        else:
+            return redirect('accounts:login')
+    return redirect('planner:subpage', selected_date=date.today())
 
-        user = auth.authenticate(request, username=username, password=password)
-    
-        if user is not None:
-            auth.login(request, user)
-            return redirect('main:mainpage')
-        else: 
-            return render(request, 'accounts/login.html', {
-                'error': '아이디 또는 비밀번호가 틀렸습니다.'
-            })
-
-    return render(request, 'accounts/login.html')
-
-# 로그아웃
-def logout(request):
-    auth.logout(request)
-    return redirect('accounts:login')
-
-# 회원가입
-def signup(request):
+def todo_update(request, todo_id):
+    todo = get_object_or_404(Todo, id=todo_id, user=request.user)
     if request.method == 'POST':
-        nickname = request.POST['nickname']
-        univ = request.POST['univ']
-        password = request.POST['password']
-        confirm = request.POST['confirm']
-        image = request.FILES.get('profile_image')  # ✅ 이미지 받기
+        todo.content = request.POST['content']
+        todo.category = request.POST['category']
+        raw_deadline = request.POST.get('deadline')
+        todo.deadline = raw_deadline if raw_deadline else None
+        todo.save()
+    return redirect('planner:subpage', selected_date=todo.date)
 
-        if not nickname.strip():
-            return render(request, 'accounts/signup.html', {
-                'error': '닉네임을 입력해주세요.'
-            })
+def todo_delete(request, todo_id):
+    todo = get_object_or_404(Todo, id=todo_id, user=request.user)
+    selected_date = todo.date
+    todo.delete()
+    return redirect('planner:subpage', selected_date=selected_date)
 
-        if User.objects.filter(username=nickname).exists():
-            return render(request, 'accounts/signup.html', {
-                'error': '이미 존재하는 닉네임입니다.'
-            })
+def todo_complete(request, todo_id):
+    todo = get_object_or_404(Todo, id=todo_id, user=request.user)
+    if todo.status == 'completed':
+        return redirect('planner:subpage', selected_date=todo.date)
 
-        if password != confirm:
-            return render(request, 'accounts/signup.html', {
-                'error': '비밀번호가 일치하지 않습니다.'
-            })
+    todo.status = 'completed'
+    todo.save()
 
-        user = User.objects.create_user(
-            username=nickname,
-            password=password
-        )
+    profile = request.user.profile
+    profile.completed_todo_count += 1
 
-        # 프로필 이미지까지 같이 저장 (없으면 default 자동 사용됨)
-        profile = Profile(user=user, univ=univ, profile_image=image)
-        profile.save()
+    today = timezone.now().date()
+    HONEY_PER_TODO = 10
+    DAILY_HONEY_CAP = 50
 
-        auth.login(request, user)
-        return redirect('main:mainpage')
+    if profile.last_honey_earned_date != today:
+        profile.daily_honey_earned = 0
+        profile.last_honey_earned_date = today
 
-    return render(request, 'accounts/signup.html')
+    if profile.daily_honey_earned < DAILY_HONEY_CAP:
+        profile.honey_count += HONEY_PER_TODO
+        profile.daily_honey_earned += HONEY_PER_TODO
 
-
-# 닉네임 중복 확인
-def check_nickname(request):
-    nickname = request.GET.get('nickname', '')
-    exists = User.objects.filter(username=nickname).exists()
-    return JsonResponse({'exists': exists})
-
-def buddypage(request):
-    return render(request, 'accounts/buddypage.html')
-
-
+    profile.save()
+    return redirect('planner:subpage', selected_date=todo.date)
