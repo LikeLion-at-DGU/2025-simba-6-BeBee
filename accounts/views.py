@@ -73,3 +73,10 @@ def check_nickname(request):
     nickname = request.GET.get('nickname', '')
     exists = User.objects.filter(username=nickname).exists()
     return JsonResponse({'exists': exists})
+        
+
+
+def buddypage(request):
+    return render(request, 'accounts/buddypage.html')
+
+

@@ -1,0 +1,136 @@
+body {
+    background-image: linear-gradient(#fffacd, #f4cd69);
+    width: 1920px;
+    height: 1080px;
+}
+
+.honey-head {
+    display: flex;
+    flex-direction: row;
+}
+
+.honey-drip-img {
+    max-width: 100%;
+    width: 960px;
+}
+
+.buddypage-logo {
+    margin-top: 55px;
+    margin-left: 100px;
+    width: 500px;
+}
+
+.amount-of-honey {
+    flex-direction: column;
+}
+
+.amount-of-honey-text {
+    color: #000;
+    font-family: locus_sangsang;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 160%; /* 19.2px */
+    margin-top: 10px;
+}
+
+.amount-of-honey-num {
+    color: #FFD640;
+    font-family: "Bagel Fat One";
+    font-size: 36px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-shadow:
+    2px 2px 4px rgba(0, 0, 0, 0.3), 
+    -1px -1px 1px rgba(255, 255, 255, 0.6); 
+}
+
+.buddypage-header {
+    display: flex;
+    flex-direction: row;
+}
+
+.calender-button {
+    all: unset; /* 모든 기본 스타일 제거 */
+    cursor: pointer; /* 마우스 커서 변경 */
+    color: #FFD640; /* 원하는 색상 지정 */
+    font-size: 32px;
+    font-family: "Bagel Fat One";
+    margin-left: 100px;
+    height: 35px;
+    margin-top: 10px;
+    text-shadow:
+    2px 2px 4px rgba(0, 0, 0, 0.3), 
+    -1px -1px 1px rgba(255, 255, 255, 0.6); 
+}
+
+.buzzlist-button {
+    all: unset; /* 모든 기본 스타일 제거 */
+    cursor: pointer; /* 마우스 커서 변경 */
+    color: #FFD640; /* 원하는 색상 지정 */
+    font-size: 32px;
+    font-family: "Bagel Fat One";
+    height: 35px;
+    margin-left: 15px;
+    margin-top: 10px;
+    text-shadow:
+    2px 2px 4px rgba(0, 0, 0, 0.3), 
+    -1px -1px 1px rgba(255, 255, 255, 0.6); 
+}
+
+.mypage-button {
+    all: unset; /* 모든 기본 스타일 제거 */
+    cursor: pointer; /* 마우스 커서 변경 */
+    color: #FFD640; /* 원하는 색상 지정 */
+    font-size: 32px;
+    font-family: "Bagel Fat One";
+    height: 35px;
+    margin-left: 15px;
+    margin-top: 10px;
+    text-shadow:
+    2px 2px 4px rgba(0, 0, 0, 0.3), 
+    -1px -1px 1px rgba(255, 255, 255, 0.6); 
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    background-color: #f4f4f4;
+    border-radius: 50px;
+    padding: 10px 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 500px;
+    height: 40px;
+    margin-top: 85px;
+    margin-left: 30px;
+}
+
+.search-box input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 16px;
+    color: #333;
+}
+
+.search-box input::placeholder {
+    color: #888;
+    font-family: locus_sangsang;
+    font-size: larger;
+}
+
+.search-box button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+}
+
+.honeypot-img {
+    width: 80px;
+    height: 80px;
+}
