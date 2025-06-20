@@ -50,6 +50,73 @@
             <div class="amount-of-honey-num">50g</div>
         </div>
     </div>
+    <div class="column-container">
+        <div class="my-profile">
+            <div class="profile-border">
+                <div class="bee-text">🐝</div>
+            </div>
+            <div class="column-container">
+                <div class="user-id">아기사자</div>
+                <div class="fighting">오늘 하루도 화이팅!</div>
+            </div>
+            <div class="column-center">
+                <div class="follower-num">00</div>
+                <a href="{주소}" class="follower-list-text">팔로워 목록</a>
+            </div>
+            <div class="column-center">
+                <div class="following-num">00</div>
+                <a href="{주소}" class="following-list-text">팔로잉 목록</a>
+            </div>
+        </div>
+        <div class="follower-list">
+            <div class="follower-title">팔로워 목록</div>
+            <div class="follower-item" onclick="showFriendProfile('멋쟁이', 125)">
+                <div class="profile-border2">
+                    <div class="bee-text" style="font-size: 30px;">🐝</div>
+                </div>
+                <div class="follower-nickname">멋쟁이</div>
+            </div>
+            <div class="follower-item" onclick="showFriendProfile('사자처럼', 125)">
+                <div class="profile-border2">
+                    <div class="bee-text" style="font-size: 30px;">🐝</div>
+                </div>
+                <div class="follower-nickname">사자처럼</div>
+            </div>
+            <div class="follower-item" onclick="showFriendProfile('심바톤 가보자고', 125)">
+                <div class="profile-border2">
+                    <div class="bee-text" style="font-size: 30px;">🐝</div>
+                </div>
+                <div class="follower-nickname">심바톤 가보자고</div>
+            </div>
+            <div class="follower-item" onclick="showFriendProfile('동국대학교 중앙동아리', 125)">
+                <div class="profile-border2">
+                    <div class="bee-text" style="font-size: 30px;">🐝</div>
+                </div>
+                <div class="follower-nickname">동국대학교 중앙동아리</div>
+            </div>
+            <!-- 더 많은 follower-item 추가 가능 -->
+        </div>
+    </div>
+    <div class="friend-profile" id="friend-profile">
+        <div class="friend-top">
+            <div class="profile-border">
+                <div class="bee-text">🐝</div>
+            </div>
+            <div class="friend-info">
+                <div class="friend-nickname" id="friend-name">친구 닉네임</div>
+                <div class="cheer-msg">오늘 하루도 화이팅!</div>
+            </div>
+            <button class="follow-button">팔로우</button>
+        </div>
+        <div class="friend-honey">
+            <img src="{% static 'assets/images/mainpage_honeypot_img.png' %}" class="honeypot-icon">
+            <div class="honey-amount">
+                <div style="font-size: 25px;">현재 버디의 꿀</div>
+                <div class="honey-value" id="honey-value">125g</div>
+            </div>
+        </div>
+        <button class="calendar-button">Buddy's Calendar</button>
+    </div>
 </body>
 
 {% endblock %}
