@@ -1,8 +1,24 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import auth
 from django.contrib.auth.models import User
 from .models import Profile
+<<<<<<< HEAD
+=======
 from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> 60b1e50 (feat: #24-팔로우구현)
+=======
+>>>>>>> 60b1e50 (feat: #24-팔로우구현)
+=======
+>>>>>>> 60b1e50 (feat: #24-팔로우구현)
+=======
+>>>>>>> 60b1e50 (feat: #24-팔로우구현)
+=======
+>>>>>>> 60b1e50 (feat: #24-팔로우구현)
 
 # 로그인
 def login(request):
@@ -56,9 +72,34 @@ def signup(request):
             password=password
         )
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
         # 프로필 이미지까지 같이 저장 (없으면 default 자동 사용됨)
         profile = Profile(user=user, univ=univ, profile_image=image)
         profile.save()
+=======
+        user.profile.univ = univ
+        user.profile.save()
+>>>>>>> 60b1e50 (feat: #24-팔로우구현)
+=======
+        user.profile.univ = univ
+        user.profile.save()
+>>>>>>> 60b1e50 (feat: #24-팔로우구현)
+=======
+        user.profile.univ = univ
+        user.profile.save()
+>>>>>>> 60b1e50 (feat: #24-팔로우구현)
+=======
+        user.profile.univ = univ
+        user.profile.save()
+>>>>>>> 60b1e50 (feat: #24-팔로우구현)
+=======
+        user.profile.univ = univ
+        user.profile.save()
+>>>>>>> 60b1e50 (feat: #24-팔로우구현)
 
         auth.login(request, user)
         return redirect('main:mainpage')
@@ -72,7 +113,60 @@ def check_nickname(request):
     exists = User.objects.filter(username=nickname).exists()
     return JsonResponse({'exists': exists})
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 def buddypage(request):
     return render(request, 'accounts/buddypage.html')
+=======
+=======
+>>>>>>> 60b1e50 (feat: #24-팔로우구현)
+=======
+>>>>>>> 60b1e50 (feat: #24-팔로우구현)
+=======
+>>>>>>> 60b1e50 (feat: #24-팔로우구현)
+=======
+>>>>>>> 60b1e50 (feat: #24-팔로우구현)
+@login_required
+def buddypage(request):
+    query = request.GET.get('q', '')
+    following_ids = request.user.profile.followings.values_list('id', flat=True)  
+    
+    if query:
+        users = User.objects.filter(profile__isnull = False, username__icontains=query).exclude(id=request.user.id)
+    
+    else:
+        users = [request.user]
+        
+    return render(request, 'accounts/buddypage.html', {
+        'users': users,
+        'following_ids': following_ids
+    })
 
+
+def follow(request, id):
+    user = request.user
+    followed_user = get_object_or_404(User, pk =id)
+    is_following = followed_user.profile in user.profile.followings.all()
+    if is_following:
+        user.profile.followings.remove(followed_user.profile)
+    else:
+        user.profile.followings.add(followed_user.profile)
+    return redirect(request.META.get('HTTP_REFERER', 'accounts:buddypage'))
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> 60b1e50 (feat: #24-팔로우구현)
+
+=======
+>>>>>>> 60b1e50 (feat: #24-팔로우구현)
+=======
+>>>>>>> 60b1e50 (feat: #24-팔로우구현)
+=======
+>>>>>>> 60b1e50 (feat: #24-팔로우구현)
+=======
+>>>>>>> 60b1e50 (feat: #24-팔로우구현)
 
