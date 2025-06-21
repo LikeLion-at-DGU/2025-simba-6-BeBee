@@ -1,5 +1,6 @@
 body {
     background-image: linear-gradient(#fffacd, #f4cd69);
+    min-height: 100vh;
     /* width: 1920px;
     height: 1080px; */
     width: 100vw;
@@ -15,7 +16,8 @@ body {
 .wrapper {
     max-width: 1800px;
     margin: 0 auto;
-    padding: 20px;
+    padding: 50px;
+    gap: 50px;
     width: 100%;
     height: auto;
     position: relative;
@@ -84,10 +86,18 @@ body {
 
 .mypage-title {
     font-size: 70px;
-    color: #d69e00;
+    color: #000000;
     font-weight: bold;
     margin: 0;
     font-family: 'Bagel Fat One', cursive;
+    text-shadow:
+        0 1px 0 #f6b700,
+        0 2px 0 #e9a700,
+        0 3px 0 #ce9103,
+        0 4px 0 #be7f01,
+        0 5px 0 #bf7f07,
+        0 6px 1px rgba(0, 0, 0, 0.2);
+    
 
 }
 
@@ -96,13 +106,20 @@ body {
     gap: 20px;
     align-items: top;
     font-family: 'Bagel Fat One', cursive;
-    
+
 }
 
 .nav {
     font-size: 35px;
-    color: #d69e00;
-    text-decoration: none; 
+    color: #000000;
+    text-decoration: none;
+    text-shadow:
+        0 1px 0 #f6b700,
+        0 2px 0 #e9a700,
+        0 3px 0 #ce9103,
+        0 4px 0 #be7f01,
+        0 5px 0 #bf7f07,
+        0 6px 1px rgba(0, 0, 0, 0.2);
 }
 
 /* ✅ 3. 상단 메뉴 */
@@ -126,8 +143,8 @@ body {
 .content-wrapper {
     display: flex;
     justify-content: space-between;
-    gap: 40px;
-    margin-top: 40px;
+    gap: 90px;
+    margin-top: 30px;
     width: 100%;
 }
 
@@ -142,22 +159,47 @@ body {
 /* ✅ 4-2. 오른쪽: 상점 */
 .right-panel {
     flex: 1;
+    border-radius: 30px;
+    background: #FFFEEC;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25), 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+}
+
+.profile-box {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.profile-header {
+    padding:0;
+    margin: 0;
 }
 
 /* ✅ 프로필 카드 */
-.profile-box {
+.profile-info {
     background: #fffbe1;
-    padding: 20px;
+    padding: 10px;
     border-radius: 16px;
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.05);
     display: flex;
+    width:50%;
     justify-content: space-between;
     align-items: center;
+    gap: 0px;
 }
 
-.profile-info {
-    display: flex;
-    align-items: center;
+.profile-tilte {
+    font-family: 'Jua', sans-serif;
+    font-size: 18px;
+    padding-left: 20px;
+    margin: 0;
+}
+
+.profile-text {
+    display:flex;
+    flex-direction:column;
+    margin-left: 5px;
 }
 
 .profile-img {
@@ -165,9 +207,8 @@ body {
     height: 60px;
     border-radius: 50%;
     object-fit: cover;
-    margin-right: 12px;
+    margin-right: 0px;
 }
-
 .nickname {
     font-size: 18px;
     font-weight: bold;
@@ -187,10 +228,18 @@ body {
 
 /* ✅ 요약 통계 */
 .summary-box {
-    background: #ffffff;
-    border-radius: 16px;
     padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    /* box-shadow: 0 0 15px rgba(0, 0, 0, 0.05); */
+    border-radius: 30px;
+    background: #FFFEEC;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25), 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+    width: 100%;
+    height: 800x;;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
 }
 
 .summary-title {

@@ -2,6 +2,7 @@ from django.urls import path
 from .views import *
 
 app_name = "planner"
+
 urlpatterns = [
     path('subpage/<str:selected_date>/',subpage, name='subpage'),
     path('start/<int:todo_id>/', start_timer, name='start_timer'),
@@ -18,3 +19,5 @@ urlpatterns = [
     path('comment/<str:selected_date>/', view_comment, name='comment'),
     path('comment/delete/<int:comment_id>/', comment_delete , name='comment_delete'),
 ]
+
+    

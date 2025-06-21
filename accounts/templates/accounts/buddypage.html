@@ -26,6 +26,7 @@
             class="buddypage-logo">
         <!--입력창 추가-->
 
+
         <form method="get" action="{% url 'accounts:buddypage' %}" class="search-box">
             <input type="text" name="q" placeholder="친구의 닉네임을 입력해주세요" value="{{ request.GET.q }}" />
 
@@ -41,7 +42,10 @@
                 </svg>
             </button>
 
+
         </form>
+
+
 
         <button type="button" class="calender-button" onclick="location.href='/'">Calender</button>
         <button type="button" class="buzzlist-button" onclick="location.href='/planner/subpage/'">BuzzList</button>
@@ -121,6 +125,7 @@
         </div>
         <button class="calendar-button">Buddy's Calendar</button>
     </div>
+    <script src="{% static 'js/accounts/buddypage.js' %}"></script>
 </body>
 
 {% endblock %}
