@@ -1,3 +1,5 @@
+buddypage.js
+
 document.addEventListener("DOMContentLoaded", function () {
     const searchBox = document.querySelector(".search-box");
     const input = searchBox.querySelector("input");
@@ -101,4 +103,3 @@ document.addEventListener("DOMContentLoaded", function () {
         return '';
     }
 });
-
