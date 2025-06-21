@@ -198,4 +198,4 @@ def view_comment(request, id):
         comments =Comment.objects.filter(todo=todo)
         return render(request, 'planner/subpage.html', {'todo': todo,'comments': comments,'selected_date': todo.date.strftime('%Y-%m-%d')})
 
->>>>>>> Stashed changes
+
