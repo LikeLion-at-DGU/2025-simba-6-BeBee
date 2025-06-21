@@ -7,6 +7,8 @@ const today = new Date();
 let currentMonth = today.getMonth();
 let currentYear = today.getFullYear();
 
+const userId = document.body.dataset.userid;
+
 function renderCalendar() {
   const firstDayOfMonth = new Date(currentYear, currentMonth, 1);
   const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
@@ -29,11 +31,13 @@ function renderCalendar() {
     dateElement.textContent = i;
 
     // 👉 클릭 시 해당 날짜로 이동
+    const userId = document.body.dataset.userid;
+
     dateElement.addEventListener("click", () => {
       const monthStr = String(currentMonth + 1).padStart(2, '0');
       const dayStr = String(i).padStart(2, '0');
       const dateStr = `${currentYear}-${monthStr}-${dayStr}`;
-      window.location.href = `/planner/subpage/${dateStr}/`;
+      window.location.href = `/planner/subpage/${userId}/${dateStr}/`;
     });
 
     calendarDates.appendChild(dateElement);
@@ -59,3 +63,4 @@ nextBtn.addEventListener("click", () => {
   }
   renderCalendar();
 });
+

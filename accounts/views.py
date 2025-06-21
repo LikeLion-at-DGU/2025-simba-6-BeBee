@@ -19,7 +19,7 @@ def login(request):
 
         if user is not None:
             auth.login(request, user)
-            return redirect('main:mainpage')
+            return redirect('main:mainpage',user_id=user.id)
         else:
             return render(request, 'accounts/login.html', {
                 'error': '아이디 또는 비밀번호가 틀렸습니다.'
@@ -72,7 +72,7 @@ def signup(request):
 
 
         auth.login(request, user)
-        return redirect('main:mainpage')
+        return redirect('main:mainpage',user_id=user.id)
 
     return render(request, 'accounts/signup.html')
 

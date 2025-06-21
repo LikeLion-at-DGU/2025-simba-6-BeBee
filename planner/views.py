@@ -192,15 +192,7 @@ def delete_goal(request, user_id, selected_date):
 def view_comment(request, selected_date):
     date_obj = datetime.strptime(selected_date, '%Y-%m-%d').date()
 
-    # if request.method == 'POST':
-    #     new_comment =  Comment()
 
-    #     new_comment.writer = request.user
-    #     new_comment.content = request.POST['content']
-    #     new_comment.date = date_obj
-    #     new_comment.created_at =timezone.now()
-    #     new_comment.save()
-    #     return redirect('planner:subpage', user_id=request.user.id, selected_date=selected_date)
     if request.method == 'POST':
         target_user_id = request.POST.get('user_id')  # ✅ 폼에서 숨겨서 전달받기
         target_user = get_object_or_404(User, id=target_user_id)
