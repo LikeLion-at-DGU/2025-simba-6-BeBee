@@ -1,12 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
-<<<<<<< Updated upstream
+
 from .models import Todo
 from django.http import JsonResponse
 from .models import *
-=======
+
 from .models import Todo, Comment
->>>>>>> Stashed changes
+
 from accounts.models import Profile
 from datetime import datetime, date, timedelta
 
@@ -140,7 +140,7 @@ def todo_complete(request, todo_id):
             
     return redirect('planner:subpage', selected_date=todo.date.strftime('%Y-%m-%d'))
 
-<<<<<<< Updated upstream
+
 def write_goal(request, selected_date):
     if not request.user.is_authenticated:
         return redirect('accounts:login')
@@ -181,7 +181,7 @@ def delete_goal(request, selected_date):
     goal_obj.delete()
 
     return redirect('planner:subpage', selected_date=selected_date)
-=======
+
 def view_comment(request, id):
     todo = get_object_or_404(Todo, pk=id)
 
