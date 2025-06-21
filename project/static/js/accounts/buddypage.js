@@ -55,7 +55,9 @@ document.addEventListener("DOMContentLoaded", function () {
         profileBox.innerHTML = `
         <div class="friend-top">
             <div class="profile-border">
-                ${data.profile_image_url ? `<img src="${data.profile_image_url}" class="profile-img">` : '<div class="bee-text">🐝</div>'}
+                ${data.profile_image_url
+                    ? `<img src="${data.profile_image_url}" class="profile-img">`
+                    : '<div class="bee-text">🐝</div>'}
             </div>
             <div class="friend-info">
                 <div class="friend-nickname">${data.username}</div>
@@ -83,9 +85,32 @@ document.addEventListener("DOMContentLoaded", function () {
                     'X-CSRFToken': getCSRFToken(),
                 },
             })
-            .then(res => {
-                if (res.ok) {
-                    handleSearch(); // 프로필 갱신
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    // 1. 버튼 텍스트 변경
+                    followBtn.textContent = data.following ? '언팔로우' : '팔로우';
+
+                    // 2. 나의 팔로잉 수만 갱신
+                    const followingNum = document.querySelector(".following-num");
+                    if (followingNum) {
+                        followingNum.textContent = data.following_count;
+                    }
+
+                    // 3. 목록 갱신 (팔로워/팔로잉 모두)
+                    fetch('/accounts/buddypage/partial_follow_lists/')
+                        .then(res => res.text())
+                        .then(html => {
+                            const tempDiv = document.createElement("div");
+                            tempDiv.innerHTML = html;
+
+                            const newLists = tempDiv.querySelectorAll(".follower-list");
+                            const currentLists = document.querySelectorAll(".follower-list");
+
+                            currentLists.forEach((list, i) => {
+                                list.innerHTML = newLists[i].innerHTML;
+                            });
+                        });
                 }
             });
         });
