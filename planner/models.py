@@ -31,7 +31,7 @@ class Todo(models.Model):
     category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
     deadline = models.DateField(null=True, blank=True)
     started_at = models.TimeField(null=True, blank=True)
-    ended_at = models.TimeField(null=True, blank=True)
+    ended_at = models.DateTimeField(null=True, blank=True)
     elapsed_time = models.DurationField(null=True, blank=True)
     total_elapsed_time = models.DurationField(default=timedelta())
     date = models.DateField(null=True, blank=True)

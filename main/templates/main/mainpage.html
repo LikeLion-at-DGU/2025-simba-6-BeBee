@@ -1,3 +1,4 @@
+
 {% block content %} 
 {% load static %}
 <link
@@ -22,10 +23,14 @@
         <div class="month-header-text">5일 연속 출근 완료!<br>오늘 수집할 일들을 확인해보세요! 🍯</div>
         <img src="{% static 'assets/images/mainpage_img5.png' %}"
         class="three-honeys">
-        <img src="{% static 'assets/images/mainpage_buzzlist_img.png' %}"
-        class="buzzlist-img">
-        <img src="{% static 'assets/images/mainpage_buddypage_img.png' %}"
-        class="buddypage-img">
+        <a href="/planner/subpage/2025-06-20/">
+            <img src="{% static 'assets/images/mainpage_buzzlist_img.png' %}"
+            class="buzzlist-img">
+        </a>
+        <a href="/accounts/buddypage/">
+            <img src="{% static 'assets/images/mainpage_buddypage_img.png' %}"
+            class="buddypage-img">
+        </a>
         <img src="{% static 'assets/images/mainpage_mypage_img.png' %}"
         class="mypage-img">
         <img src="{% static 'assets/images/mainpage_honeypot_img.png' %}"
