@@ -21,7 +21,8 @@ def subpage(request, selected_date):
 
     todos = Todo.objects.filter(user=request.user, date=date_obj)
     daily_goal = DailyGoal.objects.filter(user=request.user, date=date_obj).first()
-    return render(request, 'planner/subpage.html', {'todos': todos, 'selected_date': selected_date, 'daily_goal':daily_goal})
+    comments = Comment.objects.filter(date=date_obj).select_related('writer__profile').order_by('created_at')
+    return render(request, 'planner/subpage.html', {'todos': todos, 'selected_date': selected_date, 'daily_goal':daily_goal, 'comments': comments,})
 
 # def start_timer(request, todo_id):
 #     todo = get_object_or_404(Todo, id=todo_id, user=request.user)
@@ -182,20 +183,31 @@ def delete_goal(request, selected_date):
 
     return redirect('planner:subpage', selected_date=selected_date)
 
-def view_comment(request, id):
-    todo = get_object_or_404(Todo, pk=id)
+def view_comment(request, selected_date):
+    date_obj = datetime.strptime(selected_date, '%Y-%m-%d').date()
 
     if request.method == 'POST':
         new_comment =  Comment()
-        new_comment.todo = todo
+
         new_comment.writer = request.user
         new_comment.content = request.POST['content']
-        new_comment.pub_date =timezone.now()
+        new_comment.date = date_obj
+        new_comment.created_at =timezone.now()
         new_comment.save()
-        return redirect('planner:subpage', selected_date=todo.date.strftime('%Y-%m-%d'))
+        return redirect('planner:subpage', selected_date=selected_date)
+
     
     elif request.method == 'GET':
-        comments =Comment.objects.filter(todo=todo)
-        return render(request, 'planner/subpage.html', {'todo': todo,'comments': comments,'selected_date': todo.date.strftime('%Y-%m-%d')})
+        comments = Comment.objects.filter(date=date_obj).order_by('-created_at')
+        return render(request, 'planner/subpage.html', {'comments': comments,
+            'selected_date': selected_date})
 
-
+def comment_delete(request, comment_id):
+    comment = get_object_or_404(Comment, id=comment_id)
+    
+    if request.user == comment.writer:
+        selected_date = comment.date.strftime('%Y-%m-%d')
+        comment.delete()
+        return redirect('planner:subpage', selected_date=selected_date)
+    
+    return redirect('planner:subpage', selected_date=timezone.now().strftime('%Y-%m-%d'))

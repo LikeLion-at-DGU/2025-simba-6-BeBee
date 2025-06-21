@@ -15,6 +15,6 @@ urlpatterns = [
     path('goal/update/<str:selected_date>/', update_goal, name='update_goal'),
     path('goal/delete/<str:selected_date>/', delete_goal, name='delete_goal'),
 
-    path('comment/<int:id>/', view_comment, name='comment'),
-
+    path('comment/<str:selected_date>/', view_comment, name='comment'),
+    path('comment/delete/<int:comment_id>/', comment_delete , name='comment_delete'),
 ]
