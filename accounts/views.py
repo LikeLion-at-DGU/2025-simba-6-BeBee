@@ -1,7 +1,13 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import auth
 from django.contrib.auth.models import User
 from .models import Profile
+<<<<<<< HEAD
+=======
+from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+
+>>>>>>> e546b543c3bc010f97895b800dc39ea2153c453d
 
 # 로그인
 def login(request):
@@ -10,21 +16,23 @@ def login(request):
         password = request.POST['password']
 
         user = auth.authenticate(request, username=username, password=password)
-    
+
         if user is not None:
             auth.login(request, user)
             return redirect('main:mainpage')
-        else: 
+        else:
             return render(request, 'accounts/login.html', {
                 'error': '아이디 또는 비밀번호가 틀렸습니다.'
             })
 
     return render(request, 'accounts/login.html')
 
+
 # 로그아웃
 def logout(request):
     auth.logout(request)
     return redirect('accounts:login')
+
 
 # 회원가입
 def signup(request):
@@ -33,7 +41,7 @@ def signup(request):
         univ = request.POST['univ']
         password = request.POST['password']
         confirm = request.POST['confirm']
-        image = request.FILES.get('profile_image')  # ✅ 이미지 받기
+        image = request.FILES.get('profile_image')
 
         if not nickname.strip():
             return render(request, 'accounts/signup.html', {
@@ -55,9 +63,13 @@ def signup(request):
             password=password
         )
 
-        # 프로필 이미지까지 같이 저장 (없으면 default 자동 사용됨)
-        profile = Profile(user=user, univ=univ, profile_image=image)
+        # 시그널로 생성된 Profile 수정
+        profile = user.profile
+        profile.univ = univ
+        if image:
+            profile.profile_image = image
         profile.save()
+
 
         auth.login(request, user)
         return redirect('main:mainpage')
@@ -71,7 +83,36 @@ def check_nickname(request):
     exists = User.objects.filter(username=nickname).exists()
     return JsonResponse({'exists': exists})
 
+
+# 버디페이지
+@login_required
 def buddypage(request):
-    return render(request, 'accounts/buddypage.html')
+    query = request.GET.get('q', '')
+    following_ids = request.user.profile.followings.values_list('id', flat=True)
+
+    if query:
+        users = User.objects.filter(profile__isnull=False, username__icontains=query).exclude(id=request.user.id)
+    else:
+        users = [request.user]
+
+    return render(request, 'accounts/buddypage.html', {
+        'users': users,
+        'following_ids': following_ids
+    })
+
+
+# 팔로우/언팔로우 기능
+@login_required
+def follow(request, id):
+    user = request.user
+    followed_user = get_object_or_404(User, pk=id)
+    is_following = followed_user.profile in user.profile.followings.all()
+
+    if is_following:
+        user.profile.followings.remove(followed_user.profile)
+    else:
+        user.profile.followings.add(followed_user.profile)
+
+    return redirect(request.META.get('HTTP_REFERER', 'accounts:buddypage'))
 
 

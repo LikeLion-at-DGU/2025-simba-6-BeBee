@@ -22,6 +22,7 @@
                 <h1 class="site-title">Beebe</h1>
                 <p class="site-description">당신의 일상을 기록하는 공간</p>
 
+                
                 <form method="POST" action="{% url 'accounts:login' %}" class="login-form">
                     {% csrf_token %}
 
@@ -31,16 +32,18 @@
                     <label for="password">비밀번호</label>
                     <input type="password" id="password" name="password" placeholder="비밀번호를 입력하세요" required />
 
-                <button type="submit" id="login-btn" disabled>로그인</button>
 
+                <button type="submit" id="login-btn" disabled>로그인</button>
+                
                     <div class="signup-link">
                         <a href="{% url 'accounts:signup' %}">회원가입</a>
                     </div>
                 </form>
             </div>
         </div>
-        </div>
+
         <script src="{% static 'js/accounts/login.js' %}"></script>
 
     </body>
 </html>
+
