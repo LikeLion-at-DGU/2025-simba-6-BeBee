@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
+from .models import Todo
+from django.http import JsonResponse
 from .models import *
 from accounts.models import Profile
 from datetime import datetime, date, timedelta
@@ -17,12 +19,33 @@ def subpage(request, selected_date):
     daily_goal = DailyGoal.objects.filter(user=request.user, date=date_obj).first()
     return render(request, 'planner/subpage.html', {'todos': todos, 'selected_date': selected_date, 'daily_goal':daily_goal})
 
+# def start_timer(request, todo_id):
+#     todo = get_object_or_404(Todo, id=todo_id, user=request.user)
+#     if not todo.started_at:
+#         todo.started_at = timezone.now()
+#         todo.save()
+#     return redirect('planner:subpage', selected_date=todo.date.strftime('%Y-%m-%d'))
+
 def start_timer(request, todo_id):
     todo = get_object_or_404(Todo, id=todo_id, user=request.user)
     if not todo.started_at:
         todo.started_at = timezone.now()
         todo.save()
-    return redirect('planner:subpage', selected_date=todo.date.strftime('%Y-%m-%d'))
+        print(f"[START] 저장됨: {todo.started_at}")
+    else:
+        print(f"[START] 이미 존재: {todo.started_at}")
+    return JsonResponse({'status': 'started', 'started_at': str(todo.started_at)})
+
+
+# def stop_timer(request, todo_id):
+#     todo = get_object_or_404(Todo, id=todo_id, user=request.user)
+#     if todo.started_at:
+#         elapsed_time = timezone.now() - todo.started_at
+#         todo.total_elapsed_time = (todo.total_elapsed_time or timedelta()) + elapsed_time
+#         todo.started_at = None
+#         todo.save()
+#     return redirect('planner:subpage', selected_date=todo.date.strftime('%Y-%m-%d'))
+
 
 # def stop_timer(request, todo_id):
 #     todo = get_object_or_404(Todo, id=todo_id, user=request.user)
