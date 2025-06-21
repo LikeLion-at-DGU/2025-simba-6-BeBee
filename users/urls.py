@@ -3,5 +3,7 @@ from .views import *
 
 app_name="users"
 urlpatterns = [
-    path('',mypage,name="mypage"),
+    path('mypage/<int:id>/<str:selected_date>/',mypage, name='mypage'),
+
+
 ]
