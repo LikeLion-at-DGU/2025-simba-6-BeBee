@@ -55,44 +55,62 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
+const timers = {};           // ← 전역에서 사용할 수 있게 선언
+const secondsElapsed = {};  // (추가로 쓰고 싶을 경우에 대비)
 
 // 타이머 기능
 
-document.addEventListener("DOMContentLoaded", () => {
-    const display = document.getElementById("timer-display");
-    const button = document.getElementById("timer-button");
-    let timer = null;
+document.querySelectorAll(".show-timer-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+        const todoId = btn.dataset.todoId;
+
+        // 모든 타이머 박스를 숨김
+        document.querySelectorAll(".right-box2").forEach(box => box.style.display = "none");
+
+        // 해당 타이머만 표시
+        const targetBox = document.getElementById(`timer-box-${todoId}`);
+        if (targetBox) {
+            targetBox.style.display = "block";
+            document.getElementById("buddy-box").style.display = "none";
+        }
+    });
+});
+
+
+document.querySelectorAll(".start-btn").forEach(function (button) {
+    const todoId = button.dataset.todoId;
+    const display = document.getElementById(`timer-display-${todoId}`);
     let seconds = 0;
 
-    function formatTime(s) {
-        const hrs = String(Math.floor(s / 3600)).padStart(2, "0");
-        const mins = String(Math.floor((s % 3600) / 60)).padStart(2, "0");
-        const secs = String(s % 60).padStart(2, "0");
-        return `${hrs} : ${mins} : ${secs}`;
-    }
+    button.addEventListener("click", function () {
+        const isStart = button.textContent.trim() === "START";
 
-    button.addEventListener("click", () => {
-        const todoId = button.dataset.todoId;
+        if (isStart) {
+            console.log("⏱ START fetch 시작");
 
-        if (button.textContent === "START") {
-            // 서버에 시작 요청
-            fetch(`/start-timer/${todoId}/`)
+            fetch(`/planner/start/${todoId}/`)
                 .then(() => {
+                    console.log("⏱ 타이머 시작!");
                     button.textContent = "STOP";
-                    timer = setInterval(() => {
+                    seconds = 0;
+                    timers[todoId] = setInterval(() => {
                         seconds++;
                         display.textContent = formatTime(seconds);
                     }, 1000);
-                });
+                })
+                .catch(err => console.error("START 오류:", err));
         } else {
-            // 서버에 종료 요청
-            fetch(`/stop-timer/${todoId}/`)
+            console.log("🛑 STOP fetch 시작");
+
+            fetch(`/planner/stop/${todoId}/`)
                 .then(() => {
-                    clearInterval(timer);
+                    console.log("🛑 타이머 종료!");
+                    clearInterval(timers[todoId]);
                     button.textContent = "START";
-                    seconds = 0;
                     display.textContent = "00 : 00 : 00";
-                });
+                    seconds = 0;
+                })
+                .catch(err => console.error("STOP 오류:", err));
         }
     });
 });

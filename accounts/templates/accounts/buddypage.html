@@ -50,76 +50,73 @@
             <div class="amount-of-honey-num">50g</div>
         </div>
     </div>
-
-    <div class="buddy-list">
-    {% for user in users %}
-        <div class="buddy-item">
-            <p>{{ user.username }} ({{ user.profile.univ }})</p>
-
-            {% if user == request.user %}
-                <p>
-                    <span onclick="toggleList('followers-list')" style="cursor:pointer; text-decoration:underline;">
-                        팔로워<br>{{ user.profile.followers.count }}명
-                    </span>
-                </p>
-                <p>
-                    <span onclick="toggleList('followings-list')" style="cursor:pointer; text-decoration:underline;">
-                        팔로잉<br>{{ user.profile.followings.count }}명
-                    </span>
-                </p>
-
-                <!-- 팔로워 목록 -->
-                <div id="followers-list" style="display:none; margin-top:10px;">
-                    {% for follower in user.profile.followers.all %}
-                        <div class="buddy-subitem">
-                            {{ follower.user.username }} ({{ follower.univ }})
-                        </div>
-                    {% empty %}
-                        <div class="buddy-subitem">팔로워가 없습니다.</div>
-                    {% endfor %}
-                </div>
-
-                <!-- 팔로잉 목록 -->
-                <div id="followings-list" style="display:none; margin-top:10px;">
-                    {% for following in user.profile.followings.all %}
-                        <div class="buddy-subitem">
-                            {{ following.user.username }} ({{ following.univ }})
-                        </div>
-                    {% empty %}
-                        <div class="buddy-subitem">팔로잉한 사람이 없습니다.</div>
-                    {% endfor %}
-                </div>
-            {% else %}
-                <p>팔로워<br>{{ user.profile.followers.count }}명</p>
-                <p>팔로잉<br>{{ user.profile.followings.count }}명</p>
-
-                <form method="post" action="{% url 'accounts:follow' user.id %}">
-                    {% csrf_token %}
-                    {% if user.profile.id in following_ids %}
-                        <button type="submit">언팔로우</button>
-                    {% else %}
-                        <button type="submit">팔로우</button>
-                    {% endif %}
-                </form>
-            {% endif %}
+    <div class="column-container">
+        <div class="my-profile">
+            <div class="profile-border">
+                <div class="bee-text">🐝</div>
+            </div>
+            <div class="column-container">
+                <div class="user-id">아기사자</div>
+                <div class="fighting">오늘 하루도 화이팅!</div>
+            </div>
+            <div class="column-center">
+                <div class="follower-num">00</div>
+                <a href="{주소}" class="follower-list-text">팔로워 목록</a>
+            </div>
+            <div class="column-center">
+                <div class="following-num">00</div>
+                <a href="{주소}" class="following-list-text">팔로잉 목록</a>
+            </div>
         </div>
-    {% endfor %}
+        <div class="follower-list">
+            <div class="follower-title">팔로워 목록</div>
+            <div class="follower-item" onclick="showFriendProfile('멋쟁이', 125)">
+                <div class="profile-border2">
+                    <div class="bee-text" style="font-size: 30px;">🐝</div>
+                </div>
+                <div class="follower-nickname">멋쟁이</div>
+            </div>
+            <div class="follower-item" onclick="showFriendProfile('사자처럼', 125)">
+                <div class="profile-border2">
+                    <div class="bee-text" style="font-size: 30px;">🐝</div>
+                </div>
+                <div class="follower-nickname">사자처럼</div>
+            </div>
+            <div class="follower-item" onclick="showFriendProfile('심바톤 가보자고', 125)">
+                <div class="profile-border2">
+                    <div class="bee-text" style="font-size: 30px;">🐝</div>
+                </div>
+                <div class="follower-nickname">심바톤 가보자고</div>
+            </div>
+            <div class="follower-item" onclick="showFriendProfile('동국대학교 중앙동아리', 125)">
+                <div class="profile-border2">
+                    <div class="bee-text" style="font-size: 30px;">🐝</div>
+                </div>
+                <div class="follower-nickname">동국대학교 중앙동아리</div>
+            </div>
+            <!-- 더 많은 follower-item 추가 가능 -->
+        </div>
     </div>
-
-    <script>
-        function toggleList(id) {
-        const followerList = document.getElementById('followers-list');
-        const followingList = document.getElementById('followings-list');
-
-        
-        if (id !== 'followers-list') followerList.style.display = 'none';
-        if (id !== 'followings-list') followingList.style.display = 'none';
-
-        
-        const target = document.getElementById(id);
-        target.style.display = (target.style.display === 'block') ? 'none' : 'block';
-    }
-    </script>
+    <div class="friend-profile" id="friend-profile">
+        <div class="friend-top">
+            <div class="profile-border">
+                <div class="bee-text">🐝</div>
+            </div>
+            <div class="friend-info">
+                <div class="friend-nickname" id="friend-name">친구 닉네임</div>
+                <div class="cheer-msg">오늘 하루도 화이팅!</div>
+            </div>
+            <button class="follow-button">팔로우</button>
+        </div>
+        <div class="friend-honey">
+            <img src="{% static 'assets/images/mainpage_honeypot_img.png' %}" class="honeypot-icon">
+            <div class="honey-amount">
+                <div style="font-size: 25px;">현재 버디의 꿀</div>
+                <div class="honey-value" id="honey-value">125g</div>
+            </div>
+        </div>
+        <button class="calendar-button">Buddy's Calendar</button>
+    </div>
 </body>
 
 {% endblock %}
