@@ -71,11 +71,12 @@
                         <form method="POST" action="{% url 'planner:todo_delete' request.user.id todo.id %}">
                             {% csrf_token %}
                             <label>
-                                {% if todo.status == 'completed' %}
-                                <input type="checkbox" checked />
-                                {% else %}
-                                <input type="checkbox" />
-                                {% endif %}
+                                <input type="checkbox" 
+                                        class="todo-status-toggle" 
+                                        data-user-id="{{ request.user.id }}" 
+                                        data-todo-id="{{ todo.id }}"
+                                        {% if todo.status == 'completed' %}checked{% endif %}>
+
 
                                 <span class="todo-content">{{ todo.content }}</span>
                                 <span class="todo-meta">({{ todo.category }})</span>
@@ -88,8 +89,11 @@
 
                                 {% endif %}
                             </label>
+
+                            {% if login_user.id == target_user.id %}
                             <button type="submit" class="delete-btn">삭제</button>
                             <button type="button" class="show-timer-btn" data-todo-id="{{ todo.id }}">타이머</button>
+                            {% endif %}
                         </form>
                     </li>
                     {% endfor %}
@@ -102,6 +106,7 @@
 
 
             <!-- ✅ box4 -->
+            {% if login_user.id == target_user.id %}
             <div class="box4">
                 <form method="POST" action="{% url 'planner:todo_create' request.user.id selected_date %}">
                     class="todo-form-inline">
@@ -132,6 +137,7 @@
                     </button>
                 </form>
             </div>
+            {% endif %}
 
         </main>
 

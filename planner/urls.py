@@ -16,6 +16,8 @@ urlpatterns = [
     path('goal/delete/<int:user_id>/<str:selected_date>/', delete_goal, name='delete_goal'),
     path('comment/<str:selected_date>/', view_comment, name='comment'),
     path('comment/delete/<int:comment_id>/', comment_delete , name='comment_delete'),
+    path('toggle/<int:user_id>/<int:todo_id>/', todo_complete, name='todo_toggle'),
+
 ]
 
 
