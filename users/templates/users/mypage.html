@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>마이 페이지</title>
     <link rel="stylesheet" href="{% static 'css/users/mypage.css'%}" />
+    <link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&display=swap" rel="stylesheet">
 </head>
 
 
@@ -38,18 +39,33 @@
             <!-- ✅ 왼쪽 프로필/통계 영역 -->
             <section class="left-panel">
                 <div class="profile-box">
+                    <div class="profile-header">
+                        <h2 class="profile-title">나의 프로필</h2>
+                    </div>
+                        
                     <div class="profile-info">
-                        <img src="{% static 'assets/bee_profile.png' %}" alt="profile" class="profile-img" />
+                        <img src="{{ profile.profile_image.url}}" alt="프로필 이미지" class="profile-img" />
+                        
+
                         <div class="profile-text">
-                            <strong class="nickname">아기사자</strong>
-                            <span class="status">오늘 하루도 화이팅!</span>
+
+                            <div class="profile-top">
+                                <strong class="nickname">{{ user.username }}님</strong>
+                                <button class="logout-button">로그아웃</button>
+                                <button class="edit-button">✏️</button>
+                            </div>
+
+                            <div class="profile-bottom">
+                                <span class="status">오늘 하루도 화이팅!</span>
+                            </div>
+                            
                         </div>
                     </div>
-                    <button class="edit-button">✏️</button>
+                    
                 </div>
 
                 <div class="summary-box">
-                    <h2 class="summary-title">아기사자의 6월 요약</h2>
+                    <h2 class="summary-title">{{ user.username }}님의 6월 요약</h2>
                     <div class="summary-stats">
                         <div class="stat hex">누적 할 일 개수<br><strong>00개</strong></div>
                         <div class="stat hex">총 공부 시간<br><strong>00 hrs 00 mins</strong></div>
