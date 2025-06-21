@@ -38,28 +38,48 @@ function formatTime(seconds) {
 }
 
 
-// 아이콘 클릭 시 타이머 박스 또는 버디 박스를 표시하는 기능
+// // 아이콘 클릭 시 타이머 박스 또는 버디 박스를 표시하는 기능
+// document.addEventListener("DOMContentLoaded", () => {
+//     const form = document.getElementById("todo-form");
+//     const timerBox = document.getElementById("timer-box");
+//     const buddyBox = document.getElementById("buddy-box");
+//     const timerBtn = document.getElementById("show-timer-btn");
+//     const buddyBtn = document.getElementById("show-buddy-btn");
+
+//     if (timerBtn && buddyBtn && timerBox && buddyBox) {
+//         timerBtn.addEventListener("click", () => {
+//             timerBox.style.display = "block";
+//             buddyBox.style.display = "none";
+//         });
+
+//         buddyBtn.addEventListener("click", () => {
+//             timerBox.style.display = "none";
+//             buddyBox.style.display = "block";
+//         });
+//     } else {
+//         console.warn("아이콘 또는 박스 요소를 찾을 수 없습니다.");
+//     }
+// });
+
 document.addEventListener("DOMContentLoaded", () => {
-    const form = document.getElementById("todo-form");
-    const timerBox = document.getElementById("timer-box");
-    const buddyBox = document.getElementById("buddy-box");
     const timerBtn = document.getElementById("show-timer-btn");
     const buddyBtn = document.getElementById("show-buddy-btn");
 
-    if (timerBtn && buddyBtn && timerBox && buddyBox) {
+    if (timerBtn && buddyBtn) {
         timerBtn.addEventListener("click", () => {
-            timerBox.style.display = "block";
-            buddyBox.style.display = "none";
+            // 모든 타이머 박스 보이기
+            document.querySelectorAll(".right-box2").forEach(box => box.style.display = "block");
+            document.getElementById("buddy-box").style.display = "none";
         });
 
         buddyBtn.addEventListener("click", () => {
-            timerBox.style.display = "none";
-            buddyBox.style.display = "block";
+            // 모든 타이머 박스 숨기기
+            document.querySelectorAll(".right-box2").forEach(box => box.style.display = "none");
+            document.getElementById("buddy-box").style.display = "flex";
         });
-    } else {
-        console.warn("아이콘 또는 박스 요소를 찾을 수 없습니다.");
     }
 });
+
 
 const timers = {};           // ← 전역에서 사용할 수 있게 선언
 const secondsElapsed = {};  // (추가로 쓰고 싶을 경우에 대비)
@@ -124,6 +144,37 @@ document.querySelectorAll(".start-btn").forEach(function (button) {
                     seconds = 0;
                 })
                 .catch(err => console.error("STOP 오류:", err));
+        }
+    });
+});
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    const form = document.getElementById("buddy-form");
+    const input = document.querySelector(".goal-input");
+    const messageList = document.querySelector(".buddy-messages");
+
+    form.addEventListener("submit", (event) => {
+        event.preventDefault();  // ✅ form의 기본 제출 동작 막기
+
+        const text = input.value.trim();
+        if (text) {
+            const li = document.createElement("li");
+            li.classList.add("buddy-message-item");
+
+            const span = document.createElement("span");
+            span.textContent = text;
+
+            const deleteBtn = document.createElement("button");
+            deleteBtn.innerHTML = '<i class="fas fa-trash"></i>';
+            deleteBtn.classList.add("buddy-delete-btn");
+            deleteBtn.addEventListener("click", () => li.remove());
+
+            li.appendChild(span);
+            li.appendChild(deleteBtn);
+            messageList.appendChild(li);
+
+            input.value = "";
         }
     });
 });
