@@ -26,7 +26,13 @@
             <a href="/" class="nav-link">Calendar</a>
             <a href="/accounts/buddypage" class="nav-link">Buddy page</a>
             <a href="/mypage" class="nav-link">My page</a>
+            <!-- 로그인 사용자 정보 표시 -->
+            <div class="login-user-info">
+                <p>현재 로그인: <strong>{{ login_user.username }}</strong> (ID: {{ login_user.id }})</p>
+            </div>
+
         </div>
+
 
         <!-- 왼쪽 여백용 사이드바 -->
         <div class="sidebar"></div>
@@ -151,49 +157,51 @@
                 </div>
             </div>
 
-    {% for todo in todos %}
-        <!-- ✅ right box2: 집중 타이머 -->
-        <div class="right-box2" id="timer-box-{{ todo.id }}">
-            <div class="timer-label">집중 타이머 <span class="bulb">💡</span></div>
-            <div class="counter" id="timer-display-{{ todo.id }}">00 : 00 : 00</div>
-            <button class="start-btn" data-todo-id="{{ todo.id }}"
-                data-started="{{ todo.started_at|yesno:'true,false' }}" id="timer-button-{{ todo.id }}">
-                {% if todo.started_at %}STOP{% else %}START{% endif %}
-            </button>
-        </div>
-        {% endfor %}
-
-                <!-- ✅ 버디 메시지 박스 (한 번만) -->
-        <div class="buddy-box" id="buddy-box" style="display: flex;">
-            <div class="timer-label">Buddies say 🐝</div>
-            <ul class="buddy-messages" id="buddy-message-list">
-    {% for comment in comments %}
-        <li class="buddy-message-item">
-            <div>
-                <strong>{{ comment.writer.username }}</strong>  <!-- ✅ 닉네임 출력 -->
-                <span>{{ comment.content }}</span>
+            {% for todo in todos %}
+            <!-- ✅ right box2: 집중 타이머 -->
+            <div class="right-box2" id="timer-box-{{ todo.id }}">
+                <div class="timer-label">집중 타이머 <span class="bulb">💡</span></div>
+                <div class="counter" id="timer-display-{{ todo.id }}">00 : 00 : 00</div>
+                <button class="start-btn" data-todo-id="{{ todo.id }}"
+                    data-started="{{ todo.started_at|yesno:'true,false' }}" id="timer-button-{{ todo.id }}">
+                    {% if todo.started_at %}STOP{% else %}START{% endif %}
+                </button>
             </div>
+            {% endfor %}
 
-            {% if comment.writer == request.user %}
-                <form method="POST" action="{% url 'planner:comment_delete' comment.id %}" style="display:inline;">
+            <!-- ✅ 버디 메시지 박스 (한 번만) -->
+            <div class="buddy-box" id="buddy-box" style="display: flex;">
+                <div class="timer-label">Buddies say 🐝</div>
+                <ul class="buddy-messages" id="buddy-message-list">
+                    {% for comment in comments %}
+                    <li class="buddy-message-item">
+                        <div>
+                            <strong>{{ comment.writer.username }}</strong> <!-- ✅ 닉네임 출력 -->
+                            <span>{{ comment.content }}</span>
+                        </div>
+
+                        {% if comment.writer == request.user %}
+                        <form method="POST" action="{% url 'planner:comment_delete' comment.id %}"
+                            style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="buddy-delete-btn" style="background: none; border: none;">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </form>
+                        {% endif %}
+                    </li>
+                    {% endfor %}
+                </ul>
+
+                <form method="POST" action="{% url 'planner:comment' selected_date %}" class="buddy-form">
                     {% csrf_token %}
-                    <button type="submit" class="buddy-delete-btn" style="background: none; border: none;">
-                        <i class="fas fa-trash"></i>
+                    <input type="hidden" name="user_id" value="{{ target_user.id }}">
+                    <input type="text" name="content" placeholder="응원 메시지 입력" class="goal-input" required />
+                    <button type="submit" class="submit-button">
+                        <i class="fas fa-arrow-right"></i>
                     </button>
                 </form>
-            {% endif %}
-        </li>
-        {% endfor %}
-    </ul>
-
-            <form method="POST" action="{% url 'planner:comment' selected_date %}" class="buddy-form">
-                {% csrf_token %}
-                <input type="text" name="content" placeholder="응원 메시지 입력" class="goal-input" required />
-                <button type="submit" class="submit-button">
-                    <i class="fas fa-arrow-right"></i>
-                </button>
-            </form>
-        </div>
+            </div>
 
 
 

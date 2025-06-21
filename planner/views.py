@@ -18,10 +18,16 @@ def subpage(request, user_id, selected_date):
     except ValueError:
         return redirect('planner:subpage', user_id=user_id, selected_date=timezone.now().strftime('%Y-%m-%d'))
 
-    todos = Todo.objects.filter(user=request.user, date=date_obj)
-    daily_goal = DailyGoal.objects.filter(user=request.user, date=date_obj).first()
-    comments = Comment.objects.filter(date=date_obj).select_related('writer__profile').order_by('created_at')
-    return render(request, 'planner/subpage.html', {'todos': todos, 'selected_date': selected_date, 'daily_goal':daily_goal, 'comments': comments,})
+    todos = Todo.objects.filter(user=target_user, date=date_obj)
+    daily_goal = DailyGoal.objects.filter(user=target_user, date=date_obj).first()
+
+    comments = Comment.objects.filter(
+    user_id=target_user.id,  # ❗ 댓글이 속한 사용자
+    date=date_obj).select_related('writer__profile').order_by('created_at')
+
+    return render(request, 'planner/subpage.html', {'todos': todos, 'selected_date': selected_date, 'daily_goal':daily_goal, 'comments': comments, 'target_user': target_user,
+    'login_user': request.user,
+    })
 
 def start_timer(request, user_id, todo_id, selected_date):
     if not request.user.is_authenticated:
@@ -186,16 +192,27 @@ def delete_goal(request, user_id, selected_date):
 def view_comment(request, selected_date):
     date_obj = datetime.strptime(selected_date, '%Y-%m-%d').date()
 
+    # if request.method == 'POST':
+    #     new_comment =  Comment()
+
+    #     new_comment.writer = request.user
+    #     new_comment.content = request.POST['content']
+    #     new_comment.date = date_obj
+    #     new_comment.created_at =timezone.now()
+    #     new_comment.save()
+    #     return redirect('planner:subpage', user_id=request.user.id, selected_date=selected_date)
     if request.method == 'POST':
-        new_comment =  Comment()
+        target_user_id = request.POST.get('user_id')  # ✅ 폼에서 숨겨서 전달받기
+        target_user = get_object_or_404(User, id=target_user_id)
 
-        new_comment.writer = request.user
-        new_comment.content = request.POST['content']
-        new_comment.date = date_obj
-        new_comment.created_at =timezone.now()
-        new_comment.save()
-        return redirect('planner:subpage', user_id=request.user.id, selected_date=selected_date)
-
+        Comment.objects.create(
+            writer=request.user,
+            user=target_user,  # ⭐ target_user 기준으로 저장
+            content=request.POST['content'],
+            date=date_obj,
+            created_at=timezone.now()
+        )
+        return redirect('planner:subpage', user_id=target_user.id, selected_date=selected_date)
     
     elif request.method == 'GET':
         comments = Comment.objects.filter(date=date_obj).order_by('-created_at')

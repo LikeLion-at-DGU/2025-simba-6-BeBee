@@ -1,33 +1,39 @@
-// 할일을 DOM에 추가하는 함수
-function addTaskToDOM(taskText, taskId) {
-    console.log("할일 DOM에 추가:", taskText);
-    const taskList = document.getElementById("todo-list");
+document.addEventListener("DOMContentLoaded", () => {
+    const form = document.getElementById("todo-form");
+    const categoryInput = document.getElementById("todo-category");
+    const deadlineInput = document.getElementById("todo-deadline");
+    const contentInput = document.getElementById("todo-input");
 
-    const placeholder = document.getElementById("placeholder");
-    if (placeholder) {
-        placeholder.style.display = "none";
-    }
+    form.addEventListener("submit", function (e) {
+        e.preventDefault();
 
-    const li = document.createElement("li");
-    li.className = "todo-item";
-    li.setAttribute("data-task-id", taskId);
+        const category = categoryInput.value;
+        const deadline = deadlineInput.value;
+        const content = contentInput.value;
 
-    const checkbox = document.createElement("input");
-    checkbox.type = "checkbox";
+        const urlParts = window.location.pathname.split("/");
+        const userId = urlParts[3];
+        const selectedDate = urlParts[4];
 
-    const span = document.createElement("span");
-    span.textContent = taskText;
-
-    const deleteBtn = document.createElement("button");
-    deleteBtn.textContent = "삭제";
-    deleteBtn.addEventListener("click", () => li.remove());
-
-    li.appendChild(checkbox);
-    li.appendChild(span);
-    li.appendChild(deleteBtn);
-
-    taskList.appendChild(li);
-}
+        fetch(`/planner/create/ajax/${userId}/${selectedDate}/`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: `category=${category}&deadline=${deadline}&content=${content}`
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.id) {
+                addTaskToDOM(data.content, data.id);
+                form.reset();
+            } else {
+                alert("할일 등록 실패: " + (data.error || "Unknown error"));
+            }
+        })
+        .catch(err => console.error("에러 발생:", err));
+    });
+});
 
 // 타이머 숫자를 hh:mm:ss 형식으로 변환하는 함수
 function formatTime(seconds) {
