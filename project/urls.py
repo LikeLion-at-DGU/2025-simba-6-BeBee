@@ -18,11 +18,13 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from django.shortcuts import redirect
 
 
 urlpatterns = [
+    path('', lambda request: redirect('accounts:login')),
     path('admin/', admin.site.urls),
-    path('', include('main.urls')), # default 로 mainpage 연결!,
+    path('main/', include('main.urls')), # default 로 mainpage 연결!,
     path('accounts/', include('accounts.urls')),
     path('planner/', include('planner.urls')),
     path('users/', include('users.urls')),
