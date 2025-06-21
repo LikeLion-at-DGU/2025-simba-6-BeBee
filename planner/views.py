@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from .models import Todo
 from django.http import JsonResponse
+from .models import *
 from accounts.models import Profile
 from datetime import datetime, date, timedelta
 
@@ -15,7 +16,8 @@ def subpage(request, selected_date):
         return redirect('planner:subpage', selected_date=timezone.now().strftime('%Y-%m-%d'))
 
     todos = Todo.objects.filter(user=request.user, date=date_obj)
-    return render(request, 'planner/subpage.html', {'todos': todos, 'selected_date': selected_date})
+    daily_goal = DailyGoal.objects.filter(user=request.user, date=date_obj).first()
+    return render(request, 'planner/subpage.html', {'todos': todos, 'selected_date': selected_date, 'daily_goal':daily_goal})
 
 # def start_timer(request, todo_id):
 #     todo = get_object_or_404(Todo, id=todo_id, user=request.user)
@@ -133,3 +135,44 @@ def todo_complete(request, todo_id):
             pass
             
     return redirect('planner:subpage', selected_date=todo.date.strftime('%Y-%m-%d'))
+
+def write_goal(request, selected_date):
+    if not request.user.is_authenticated:
+        return redirect('accounts:login')
+
+    if request.method == 'POST':
+        goal_text = request.POST.get('goal', '').strip()  #값이 없으면 ''빈 문자열로 설정
+        date_obj = datetime.strptime(selected_date, '%Y-%m-%d').date() #URL에서 받은 문자열을 datetime 객체로 바꾸어줌 .date()는 그 중 날짜만 뽑는다.
+
+        if goal_text:
+            goal_obj, created = DailyGoal.objects.get_or_create(user=request.user, date=date_obj)
+            goal_obj.goal = goal_text
+            goal_obj.save()
+
+    return redirect('planner:subpage', selected_date=selected_date)
+
+def update_goal(request, selected_date):
+    if not request.user.is_authenticated:
+        return redirect('accounts:login')
+
+    if request.method == 'POST':
+        new_goal_text = request.POST.get('goal', '').strip()
+        date_obj = datetime.strptime(selected_date, '%Y-%m-%d').date()
+
+        if new_goal_text:
+            goal_obj = DailyGoal.objects.get(user=request.user, date=date_obj)
+            goal_obj.goal = new_goal_text
+            goal_obj.save()
+
+    return redirect('planner:subpage', selected_date=selected_date)
+
+def delete_goal(request, selected_date):
+    if not request.user.is_authenticated:
+        return redirect('accounts:login')
+
+    date_obj = datetime.strptime(selected_date, '%Y-%m-%d').date()
+
+    goal_obj = DailyGoal.objects.get(user=request.user, date=date_obj)
+    goal_obj.delete()
+
+    return redirect('planner:subpage', selected_date=selected_date)
