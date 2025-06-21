@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
+from .models import *
 from django.http import JsonResponse, HttpResponseForbidden
 from datetime import datetime, timedelta
-from .models import Todo, DailyGoal
 from accounts.models import Profile
 from django.contrib.auth.models import User
 
@@ -18,13 +18,15 @@ def subpage(request, user_id, selected_date):
     except ValueError:
         return redirect('planner:subpage', user_id=user_id, selected_date=timezone.now().strftime('%Y-%m-%d'))
 
-    todos = Todo.objects.filter(user=target_user, date=date_obj)
-    daily_goal = DailyGoal.objects.filter(user=target_user, date=date_obj).first()
-    return render(request, 'planner/subpage.html', {'todos': todos, 'selected_date': selected_date, 'daily_goal':daily_goal, 'target_user': target_user})
+    todos = Todo.objects.filter(user=request.user, date=date_obj)
+    daily_goal = DailyGoal.objects.filter(user=request.user, date=date_obj).first()
+    comments = Comment.objects.filter(date=date_obj).select_related('writer__profile').order_by('created_at')
+    return render(request, 'planner/subpage.html', {'todos': todos, 'selected_date': selected_date, 'daily_goal':daily_goal, 'comments': comments,})
 
 def start_timer(request, user_id, todo_id, selected_date):
     if not request.user.is_authenticated:
         return redirect('accounts:login')
+
 
     if request.user.id != user_id:
         return HttpResponseForbidden("권한이 없습니다.")
@@ -132,7 +134,7 @@ def todo_complete(request, user_id, todo_id):
         except Profile.DoesNotExist:
             pass
 
-    return redirect('planner:subpage', user_id=user_id, selected_date=todo.date.strftime('%Y-%m-%d'))
+
 
 def write_goal(request, user_id, selected_date):
     if not request.user.is_authenticated:
@@ -178,3 +180,36 @@ def delete_goal(request, user_id, selected_date):
     goal_obj = DailyGoal.objects.get(user_id=user_id, date=date_obj)
     goal_obj.delete()
     return redirect('planner:subpage', user_id=user_id, selected_date=selected_date)
+
+ 
+
+def view_comment(request, selected_date):
+    date_obj = datetime.strptime(selected_date, '%Y-%m-%d').date()
+
+    if request.method == 'POST':
+        new_comment =  Comment()
+
+        new_comment.writer = request.user
+        new_comment.content = request.POST['content']
+        new_comment.date = date_obj
+        new_comment.created_at =timezone.now()
+        new_comment.save()
+        return redirect('planner:subpage', selected_date=selected_date)
+
+    
+    elif request.method == 'GET':
+        comments = Comment.objects.filter(date=date_obj).order_by('-created_at')
+        return render(request, 'planner/subpage.html', {'comments': comments,
+            'selected_date': selected_date})
+
+def comment_delete(request, comment_id):
+    comment = get_object_or_404(Comment, id=comment_id)
+    
+    if request.user == comment.writer:
+        selected_date = comment.date.strftime('%Y-%m-%d')
+        comment.delete()
+        return redirect('planner:subpage', selected_date=selected_date)
+    
+    return redirect('planner:subpage', selected_date=timezone.now().strftime('%Y-%m-%d'))
+
+
