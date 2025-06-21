@@ -108,7 +108,7 @@
             <!-- ✅ box4 -->
             {% if login_user.id == target_user.id %}
             <div class="box4">
-                <form method="POST" action="{% url 'planner:todo_create' request.user.id selected_date %}"
+                <form method="POST" action="{% url 'planner:todo_create' request.user.id selected_date %}">
                     class="todo-form-inline">
                     {% csrf_token %}
 

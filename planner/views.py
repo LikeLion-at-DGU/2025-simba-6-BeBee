@@ -229,6 +229,7 @@ def delete_goal(request, user_id, selected_date):
 
 def view_comment(request, selected_date):
     date_obj = datetime.strptime(selected_date, '%Y-%m-%d').date()
+
     if request.method == 'POST':
         target_user_id = request.POST.get('user_id')  # ✅ 폼에서 숨겨서 전달받기
         target_user = get_object_or_404(User, id=target_user_id)

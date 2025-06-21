@@ -1,4 +1,4 @@
-buddypage.js
+
 
 document.addEventListener("DOMContentLoaded", function () {
     const searchBox = document.querySelector(".search-box");

@@ -19,3 +19,5 @@ urlpatterns = [
     path('toggle/<int:user_id>/<int:todo_id>/', todo_complete, name='todo_toggle'),
 
 ]
+
+
