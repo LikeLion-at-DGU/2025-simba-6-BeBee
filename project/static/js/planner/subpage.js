@@ -1,4 +1,4 @@
-// ✅ 전역 함수
+// 할일을 DOM에 추가하는 함수
 function addTaskToDOM(taskText, taskId) {
     console.log("할일 DOM에 추가:", taskText);
     const taskList = document.getElementById("todo-list");
@@ -29,10 +29,16 @@ function addTaskToDOM(taskText, taskId) {
     taskList.appendChild(li);
 }
 
+// 타이머 숫자를 hh:mm:ss 형식으로 변환하는 함수
+function formatTime(seconds) {
+    const h = String(Math.floor(seconds / 3600)).padStart(2, '0');
+    const m = String(Math.floor((seconds % 3600) / 60)).padStart(2, '0');
+    const s = String(seconds % 60).padStart(2, '0');
+    return `${h} : ${m} : ${s}`;
+}
 
 
-
-
+// 아이콘 클릭 시 타이머 박스 또는 버디 박스를 표시하는 기능
 document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("todo-form");
     const timerBox = document.getElementById("timer-box");
@@ -58,8 +64,10 @@ document.addEventListener("DOMContentLoaded", () => {
 const timers = {};           // ← 전역에서 사용할 수 있게 선언
 const secondsElapsed = {};  // (추가로 쓰고 싶을 경우에 대비)
 
-// 타이머 기능
 
+
+// 타이머 기능
+// 각 할일의 타이머만 보이게 함
 document.querySelectorAll(".show-timer-btn").forEach((btn) => {
     btn.addEventListener("click", () => {
         const todoId = btn.dataset.todoId;
@@ -76,14 +84,19 @@ document.querySelectorAll(".show-timer-btn").forEach((btn) => {
     });
 });
 
-
+// 타이머 시작/중지 로직 및 백엔드와 연동
 document.querySelectorAll(".start-btn").forEach(function (button) {
     const todoId = button.dataset.todoId;
-    const display = document.getElementById(`timer-display-${todoId}`);
     let seconds = 0;
 
     button.addEventListener("click", function () {
+        const display = document.getElementById(`timer-display-${todoId}`); // ✅ 여기서 매번 새로 참조
         const isStart = button.textContent.trim() === "START";
+
+        if (!display) {
+            console.warn(`❌ 타이머 표시 요소 없음: timer-display-${todoId}`);
+            return;
+        }
 
         if (isStart) {
             console.log("⏱ START fetch 시작");

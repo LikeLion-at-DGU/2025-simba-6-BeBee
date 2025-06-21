@@ -2,12 +2,12 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import auth
 from django.contrib.auth.models import User
 from .models import Profile
-<<<<<<< HEAD
-=======
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 
->>>>>>> e546b543c3bc010f97895b800dc39ea2153c453d
+
+
+
 
 # 로그인
 def login(request):
