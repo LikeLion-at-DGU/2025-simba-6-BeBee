@@ -45,6 +45,16 @@ def start_timer(request, todo_id):
 #     return redirect('planner:subpage', selected_date=todo.date.strftime('%Y-%m-%d'))
 
 
+# def stop_timer(request, todo_id):
+#     todo = get_object_or_404(Todo, id=todo_id, user=request.user)
+#     if todo.started_at:
+#         elapsed_time = timezone.now() - todo.started_at
+#         todo.total_elapsed_time = (todo.total_elapsed_time or timedelta()) + elapsed_time
+#         todo.started_at = None
+#         todo.save()
+#     return redirect('planner:subpage', selected_date=todo.date.strftime('%Y-%m-%d'))
+
+
 def stop_timer(request, todo_id):
     print("✅ stop_timer 호출됨")  # ← 추가
 

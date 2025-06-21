@@ -63,8 +63,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
 const timers = {};           // ← 전역에서 사용할 수 있게 선언
 const secondsElapsed = {};  // (추가로 쓰고 싶을 경우에 대비)
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> e546b543c3bc010f97895b800dc39ea2153c453d
 
 // 타이머 기능
 // 각 할일의 타이머만 보이게 함
@@ -72,9 +75,19 @@ document.querySelectorAll(".show-timer-btn").forEach((btn) => {
     btn.addEventListener("click", () => {
         const todoId = btn.dataset.todoId;
 
+<<<<<<< HEAD
         // 모든 타이머 박스를 숨김
         document.querySelectorAll(".right-box2").forEach(box => box.style.display = "none");
 
+=======
+document.querySelectorAll(".show-timer-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+        const todoId = btn.dataset.todoId;
+
+        // 모든 타이머 박스를 숨김
+        document.querySelectorAll(".right-box2").forEach(box => box.style.display = "none");
+
+>>>>>>> e546b543c3bc010f97895b800dc39ea2153c453d
         // 해당 타이머만 표시
         const targetBox = document.getElementById(`timer-box-${todoId}`);
         if (targetBox) {
