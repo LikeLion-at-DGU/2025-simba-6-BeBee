@@ -1,0 +1,85 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>마이 페이지</title>
+    <link rel="stylesheet" href="{% static 'css/users/mypage.css'%}" />
+</head>
+
+
+
+<body>
+    <div class="wrapper">
+        <div class="header-wrapper">
+            <div class="honey-head">
+                <img src="{% static 'assets/images/mainpage_img6.png' %}" alt="honey drip" class="honey-drip-img">
+                <img src="{% static 'assets/images/mainpage_img6.png' %}" alt="honey drip" class="honey-drip-img">
+            </div>
+
+            
+
+            <div class="header-title-bar">
+                <h1 class="mypage-title">My page</h1>
+                <nav class="mypage-nav">
+                    <a class='nav' href="/">Calendar</a>
+                    <a class='nav' href="#">BuzzList</a>
+                    <a class='nav' href="/accounts/buddypage">Buddy page</a>
+                </nav>
+            </div>
+
+
+        </div>
+
+        <div class="content-wrapper">
+
+            <!-- ✅ 왼쪽 프로필/통계 영역 -->
+            <section class="left-panel">
+                <div class="profile-box">
+                    <div class="profile-info">
+                        <img src="{% static 'assets/bee_profile.png' %}" alt="profile" class="profile-img" />
+                        <div class="profile-text">
+                            <strong class="nickname">아기사자</strong>
+                            <span class="status">오늘 하루도 화이팅!</span>
+                        </div>
+                    </div>
+                    <button class="edit-button">✏️</button>
+                </div>
+
+                <div class="summary-box">
+                    <h2 class="summary-title">아기사자의 6월 요약</h2>
+                    <div class="summary-stats">
+                        <div class="stat hex">누적 할 일 개수<br><strong>00개</strong></div>
+                        <div class="stat hex">총 공부 시간<br><strong>00 hrs 00 mins</strong></div>
+                        <div class="stat hex">일별 평균 수행률<br><strong>00%</strong></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ✅ 오른쪽 상점 영역 -->
+            <section class="right-panel">
+                <h2 class="shop-title">상점</h2>
+                <div class="honey-progress">
+                    <progress value="50" max="2700"></progress>
+                    <span class="honey-label">50 / 2700g</span>
+                </div>
+
+                <div class="reward-box">
+                    <div class="reward-honey">
+                        <img src="{% static 'assets/honey_pot.png' %}" alt="꿀" />
+                        <span>50g</span>
+                    </div>
+                    <span class="reward-arrow">↔</span>
+                    <div class="reward-item">
+                        <img src="{% static 'assets/coffee.png' %}" alt="아메리카노" />
+                        <span>꿀 아메리카노 한 잔!</span>
+                        <button class="claim-button">수민</button>
+                    </div>
+                </div>
+            </section>
+
+
+        </div>
+</body>

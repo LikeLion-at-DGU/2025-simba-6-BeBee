@@ -1,0 +1,200 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>BuzzList</title>
+    <link rel="stylesheet" href="{% static 'css/planner/subpage.css' %}" />
+    <link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+</head>
+
+<body>
+    <!-- 꿀 이미지: 기존 설정 유지 -->
+    <img src="{% static 'assets/planner/honey.png' %}" alt="honey" class="background-honey" />
+
+    <!-- 전체 3분할 콘텐츠 -->
+    <div class="wrapper">
+
+        <!-- ✅ 상단 네비게이션 -->
+        <div class="top-nav">
+            <a href="/" class="nav-link">Calendar</a>
+            <a href="/accounts/buddypage" class="nav-link">Buddy page</a>
+            <a href="/mypage" class="nav-link">My page</a>
+        </div>
+
+        <!-- 왼쪽 여백용 사이드바 -->
+        <div class="sidebar"></div>
+
+        <!-- 메인 콘텐츠 -->
+        <main class="main-content">
+            <h1 class="logo">BuzzList</h1>
+
+            <!-- ✅ box1 -->
+            <div class="box1">
+
+                <div class="box1-left">
+                    <!-- <img src="{% static 'assets/planner/buzzlist-logo.png' %}" alt="logo" class="buzzlist-logo" /> -->
+                    <img src="{% static 'assets/planner/honey-icon.png' %}" alt="icon" class="honey-icon" />
+                </div>
+
+                <div class="box1-right">
+                    <p class="goal-text">오늘 모을 꿀을 정해 볼까요? 🐝</p>
+                    <p class="honey-gage"></p>
+                </div>
+            </div>
+
+            <!-- ✅ box2 -->
+            <div class="box2">
+                <span class="goal-label">오늘의 목표</span>
+                <div class="goal-line"></div>
+            </div>
+
+            <!-- ✅ box3 -->
+
+            <div class="box3">
+                {% if todos %}
+                <ul class="todo-list" id="todo-list">
+                    {% for todo in todos %}
+                    <li class="todo-item">
+                        <form method="POST" action="{% url 'planner:todo_delete' todo.id %}">
+                            {% csrf_token %}
+                            <label>
+                                {% if todo.status == 'completed' %}
+                                <input type="checkbox" checked />
+                                {% else %}
+                                <input type="checkbox" />
+                                {% endif %}
+
+                                <span class="todo-content">{{ todo.content }}</span>
+                                <span class="todo-meta">({{ todo.category }})</span>
+                                <span class="todo-meta">{{ todo.deadline|date:"Y-m-d" }}</span>
+
+                                {# ✅ total_elapsed_time이 있으면 표시 #}
+                                {% if todo.total_elapsed_time %}
+                                <span class="todo-meta"><strong>⏱ {{ todo.total_elapsed_time|time:"H:i:s"
+                                        }}</strong></span>
+
+                                {% endif %}
+                            </label>
+                            <button type="submit" class="delete-btn">삭제</button>
+                            <button type="button" class="show-timer-btn" data-todo-id="{{ todo.id }}">타이머</button>
+                        </form>
+                    </li>
+                    {% endfor %}
+
+                </ul>
+                {% else %}
+                <p class="todo-placeholder-text" id="placeholder">할일을 입력해주세요</p>
+                {% endif %}
+            </div>
+
+
+            <!-- ✅ box4 -->
+            <div class="box4">
+                <form id="todo-form" method="POST" action="{% url 'planner:todo_create' selected_date %}"
+                    class="todo-form-inline">
+                    {% csrf_token %}
+
+                    <!-- 카테고리 선택 -->
+                    <select id="todo-category" name="category" class="todo-select" required>
+                        <option value="">카테고리</option>
+                        <option value="대외활동">대외활동</option>
+                        <option value="과제">과제</option>
+                        <option value="시험공부">시험공부</option>
+                        <option value="자격증">자격증</option>
+                        <option value="알바">알바</option>
+                        <option value="동아리">동아리</option>
+                        <option value="취미활동">취미활동</option>
+                        <option value="기타">기타</option>
+                    </select>
+
+                    <!-- 마감일 -->
+                    <input type="date" id="todo-deadline" name="deadline" class="todo-date" required />
+                    <!-- 할일 입력칸 -->
+                    <input type="text" id="todo-input" name="content" class="todo-input-inline" placeholder="할일 입력"
+                        required />
+
+                    <!-- 제출 버튼 -->
+                    <button id="add-task" type="submit" class="submit-button">
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </form>
+            </div>
+
+        </main>
+
+        <!-- 오른쪽 패널 -->
+        <aside class="right-panel">
+            <!-- ✅ right box1: 요일 선택 -->
+            <div class="right-box1">
+                <div class="weekday-grid">
+                    <div class="honeycomb-weekdays">
+                        <div class="weekday-row top-row">
+                            <div class="hexagon-wrapper"><button class="hexagon-inner">MON</button></div>
+                            <div class="hexagon-wrapper"><button class="hexagon-inner">WED</button></div>
+                            <div class="hexagon-wrapper"><button class="hexagon-inner">FRI</button></div>
+                            <div class="hexagon-wrapper"><button class="hexagon-inner">SUN</button></div>
+                        </div>
+                        <div class="weekday-row bottom-row">
+                            <div class="hexagon-wrapper"><button class="hexagon-inner">TUE</button></div>
+                            <div class="hexagon-wrapper"><button class="hexagon-inner">THU</button></div>
+                            <div class="hexagon-wrapper"><button class="hexagon-inner">SAT</button></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- ✅ right box2: 집중 타이머 (반복적으로 생성) -->
+            {% for todo in todos %}
+            <div class="right-box2" id="timer-box-{{ todo.id }}">
+                <div class="timer-label">집중 타이머 <span class="bulb">💡</span></div>
+                <div class="counter" id="timer-display-{{ todo.id }}">00 : 00 : 00</div>
+                <button class="start-btn" data-todo-id="{{ todo.id }}"
+                    data-started="{{ todo.started_at|yesno:'true,false' }}" id="timer-button-{{ todo.id }}">
+                    {% if todo.started_at %}STOP{% else %}START{% endif %}
+                </button>
+            </div>
+            {% endfor %}
+
+
+            <!-- ✅ 버디 메시지 박스 -->
+            
+            <div class="buddy-box" id="buddy-box" style="display: flex;">
+                <div class="timer-label">Buddies say 🐝</div>
+                <ul class="buddy-messages" id="buddy-message-list">
+                    
+                </ul>
+
+                <!-- ✅ 메시지 입력 폼 -->
+                <form id="buddy-form" class="buddy-form" onsubmit="return false;">
+                    <input type="text" id="buddy-input" placeholder="응원 메시지 입력" class="goal-input" />
+                    <button type="submit" id="buddy-submit" class="submit-button">
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </form>
+            </div>
+
+
+
+
+        </aside>
+
+        <!-- 오른쪽 하단에 띄우는 아이콘 -->
+        <div class="floating-icons">
+            <img src="{% static 'assets/planner/bulb.png' %}" id="show-timer-btn" alt="타이머" />
+            <img src="{% static 'assets/planner/wing.png' %}" id="show-buddy-btn" alt="버디 메시지" />
+        </div>
+
+
+    </div>
+    <script src="{% static 'js/planner/subpage.js' %}"></script>
+</body>
+
+</html>

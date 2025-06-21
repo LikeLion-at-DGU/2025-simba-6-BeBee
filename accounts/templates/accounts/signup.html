@@ -1,0 +1,128 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>회원가입</title>
+    <link rel="stylesheet" href="{% static 'css/accounts/signup.css' %}" />
+</head>
+
+<body>
+    <div class="container">
+        <div class="signup-box">
+            <form method="POST" enctype="multipart/form-data" onsubmit="return validateForm();">
+                {% csrf_token %}
+
+                {% if error %}
+                <p class="error-message" style="color: red; margin-bottom: 10px;">
+                    {{ error }}
+                </p>
+                {% endif %}
+
+                <label for="nickname">닉네임</label>
+                <div class="input-group">
+                    <input type="text" id="nickname" name="nickname" placeholder="아기사자" required>
+                    <button type="button" onclick="checkNickname()" class="check-button">중복확인</button>
+                </div>
+                <p id="nickname-message" class="message" style="font-size: 13px; margin-bottom: 10px;"></p>
+
+                <label for="password">비밀번호</label>
+                <div class="input-group">
+                    <input type="password" id="password" name="password" placeholder="likeLion123" required>
+                </div>
+
+                <label for="confirm">비밀번호 확인</label>
+                <div class="input-group">
+                    <input type="password" id="password-confirm" name="confirm" placeholder="likeLion123" required>
+                </div>
+                <p id="password-message" class="message" style="font-size: 13px; margin-bottom: 10px;"></p>
+
+                <label for="univ">소속 대학</label>
+                <input type="text" id="univ" name="univ" placeholder="동국대학교" required>
+
+                <label for="profile_image">프로필 이미지</label>
+                <input type="file" id="profile_image" name="profile_image" accept="image/*">
+                <button type="submit" class="submit-button">회원가입</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let isNicknameValid = false;
+        let isPasswordMatch = false;
+
+        function checkNickname() {
+            const nickname = document.getElementById('nickname').value;
+            const message = document.getElementById('nickname-message');
+
+            if (!nickname.trim()) {
+                message.textContent = '닉네임을 입력해주세요.';
+                message.style.color = 'red';
+                isNicknameValid = false;
+                return;
+            }
+
+            fetch(`/accounts/check-nickname/?nickname=${encodeURIComponent(nickname)}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.exists) {
+                        message.textContent = '이미 존재하는 닉네임입니다.';
+                        message.style.color = 'red';
+                        isNicknameValid = false;
+                    } else {
+                        message.textContent = '사용 가능한 닉네임입니다.';
+                        message.style.color = 'green';
+                        isNicknameValid = true;
+                    }
+                });
+        }
+
+        document.getElementById('password-confirm').addEventListener('input', () => {
+            const pw = document.getElementById('password').value;
+            const confirm = document.getElementById('password-confirm').value;
+            const message = document.getElementById('password-message');
+
+            if (pw && confirm) {
+                if (pw === confirm) {
+                    message.textContent = '비밀번호가 일치합니다.';
+                    message.style.color = 'green';
+                    isPasswordMatch = true;
+                } else {
+                    message.textContent = '비밀번호가 맞는지 확인해주세요.';
+                    message.style.color = 'red';
+                    isPasswordMatch = false;
+                }
+            } else {
+                message.textContent = '';
+                isPasswordMatch = false;
+            }
+        });
+
+        function validateForm() {
+            const nickname = document.getElementById('nickname').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const confirm = document.getElementById('password-confirm').value.trim();
+            const univ = document.getElementById('univ').value.trim();
+
+            if (!nickname || !password || !confirm || !univ) {
+                alert("모든 항목을 입력해주세요.");
+                return false;
+            }
+
+            if (!isNicknameValid) {
+                alert("닉네임 중복확인을 완료해주세요.");
+                return false;
+            }
+
+            if (!isPasswordMatch) {
+                alert("비밀번호가 일치하지 않습니다.");
+                return false;
+            }
+
+            return true;
+        }
+    </script>
+</body>
+
+</html>
