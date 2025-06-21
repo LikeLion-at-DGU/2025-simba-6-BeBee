@@ -46,3 +46,13 @@ class DailyGoal(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     date = models.DateField()  # 목표가 적용되는 날짜
     goal = models.CharField(max_length=200)  # 오늘의 목표 내용
+
+
+class Comment(models.Model):
+    content = models.TextField()
+    writer = models.ForeignKey(User, null=False, on_delete=models.CASCADE)
+    todo = models.ForeignKey(Todo, null=False, on_delete = models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.writer.username}: {self.content[:20]}"

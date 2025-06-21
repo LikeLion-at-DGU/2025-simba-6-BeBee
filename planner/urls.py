@@ -10,7 +10,11 @@ urlpatterns = [
     path('update/<int:todo_id>/', todo_update, name='todo_update'),
     path('delete/<int:todo_id>/',todo_delete,name='todo_delete'),
     path('complete/<int:todo_id>/',todo_complete,name='todo_complete'),
+<<<<<<< Updated upstream
     path('goal/write/<str:selected_date>/', write_goal, name='write_goal'),
     path('goal/update/<str:selected_date>/', update_goal, name='update_goal'),
     path('goal/delete/<str:selected_date>/', delete_goal, name='delete_goal'),
+=======
+    path('comment/<int:id>/', view_comment, name='comment'),
+>>>>>>> Stashed changes
 ]
