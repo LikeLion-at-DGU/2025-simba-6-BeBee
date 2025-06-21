@@ -25,11 +25,8 @@
             alt="buddypage logo"
             class="buddypage-logo">
         <!--입력창 추가-->
-
-
-        <form method="get" action="{% url 'accounts:buddypage' %}" class="search-box">
-            <input type="text" name="q" placeholder="친구의 닉네임을 입력해주세요" value="{{ request.GET.q }}" />
-
+        <div class="search-box">
+            <input type="text" placeholder="친구의 닉네임을 입력해주세요" />
             <button type="submit">
                 <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 0 24 24" width="20" fill="#888">
                     <path d="M0 0h24v24H0z" fill="none"/>
@@ -41,12 +38,7 @@
                         9.5 12.99 14 10.5 14z"/>
                 </svg>
             </button>
-
-
-        </form>
-
-
-
+        </div>
         <button type="button" class="calender-button" onclick="location.href='/'">Calender</button>
         <button type="button" class="buzzlist-button" onclick="location.href='/planner/subpage/'">BuzzList</button>
         <button type="button" class="mypage-button" onclick="location.href='<!--마이페이지 링크-->'">My Page</button>
@@ -61,69 +53,79 @@
     <div class="column-container">
         <div class="my-profile">
             <div class="profile-border">
-                <div class="bee-text">🐝</div>
+                {% if user.profile.profile_image %}
+                    <img src="{{ user.profile.profile_image.url }}" alt="내 프로필 이미지" class="profile-img" />
+                {% else %}
+                    <div class="bee-text">🐝</div>
+                {% endif %}
             </div>
             <div class="column-container">
-                <div class="user-id">아기사자</div>
+                <div class="user-id">{{ user.username }}</div>
                 <div class="fighting">오늘 하루도 화이팅!</div>
             </div>
             <div class="column-center">
-                <div class="follower-num">00</div>
-                <a href="{주소}" class="follower-list-text">팔로워 목록</a>
+                <div class="follower-num">{{ user.profile.followers.count }}</div>
+                <a href="#" class="follower-list-text">팔로워 목록</a>
             </div>
             <div class="column-center">
-                <div class="following-num">00</div>
-                <a href="{주소}" class="following-list-text">팔로잉 목록</a>
+                <div class="following-num">{{ user.profile.followings.count }}</div>
+                <a href="#" class="following-list-text">팔로잉 목록</a>
             </div>
         </div>
-        <div class="follower-list">
-            <div class="follower-title">팔로워 목록</div>
-            <div class="follower-item" onclick="showFriendProfile('멋쟁이', 125)">
-                <div class="profile-border2">
-                    <div class="bee-text" style="font-size: 30px;">🐝</div>
+        </div>
+        <div class="row">
+            <div class="follower-list">
+                <div class="follower-title">팔로워 목록</div>
+                {% for follower in user.profile.followers.all %}
+                <div class="follower-item" onclick="showFriendProfile('{{ follower.user.username }}', {{ follower.honey|default:0 }})">
+                    <div class="profile-border2">
+                        {% if follower.profile_image %}
+                            <img src="{{ follower.profile_image.url }}" class="profile-img" style="width: 30px; height: 30px; border-radius: 50%;">
+                        {% else %}
+                            <div class="bee-text" style="font-size: 30px;">🐝</div>
+                        {% endif %}
+                    </div>
+                    <div class="follower-nickname">{{ follower.user.username }}</div>
                 </div>
-                <div class="follower-nickname">멋쟁이</div>
+                {% empty %}
+                <div style="margin-left: 10px; font-family: locus_sangsang; color: #999;">팔로워가 없습니다.</div>
+                {% endfor %}
             </div>
-            <div class="follower-item" onclick="showFriendProfile('사자처럼', 125)">
-                <div class="profile-border2">
-                    <div class="bee-text" style="font-size: 30px;">🐝</div>
+            
+            <div class="follower-list">
+                <div class="follower-title">팔로잉 목록</div>
+                {% for following in user.profile.followings.all %}
+                <div class="follower-item" onclick="showFriendProfile('{{ following.user.username }}', {{ following.honey|default:0 }})">
+                    <div class="profile-border2">
+                        {% if following.profile_image %}
+                            <img src="{{ following.profile_image.url }}" class="profile-img" style="width: 30px; height: 30px; border-radius: 50%;">
+                        {% else %}
+                            <div class="bee-text" style="font-size: 30px;">🐝</div>
+                        {% endif %}
+                    </div>
+                    <div class="follower-nickname">{{ following.user.username }}</div>
                 </div>
-                <div class="follower-nickname">사자처럼</div>
+                {% empty %}
+                <div style="margin-left: 10px; font-family: locus_sangsang; color: #999;">팔로잉이 없습니다.</div>
+                {% endfor %}
             </div>
-            <div class="follower-item" onclick="showFriendProfile('심바톤 가보자고', 125)">
-                <div class="profile-border2">
-                    <div class="bee-text" style="font-size: 30px;">🐝</div>
-                </div>
-                <div class="follower-nickname">심바톤 가보자고</div>
-            </div>
-            <div class="follower-item" onclick="showFriendProfile('동국대학교 중앙동아리', 125)">
-                <div class="profile-border2">
-                    <div class="bee-text" style="font-size: 30px;">🐝</div>
-                </div>
-                <div class="follower-nickname">동국대학교 중앙동아리</div>
-            </div>
-            <!-- 더 많은 follower-item 추가 가능 -->
+
         </div>
     </div>
     <div class="friend-profile" id="friend-profile">
-        <div class="friend-top">
-            <div class="profile-border">
-                <div class="bee-text">🐝</div>
-            </div>
-            <div class="friend-info">
-                <div class="friend-nickname" id="friend-name">친구 닉네임</div>
-                <div class="cheer-msg">오늘 하루도 화이팅!</div>
-            </div>
-            <button class="follow-button">팔로우</button>
+        <div style="
+            border: 2px dotted #ccc;
+            border-radius: 30px;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: locus_sangsang;
+            font-size: 20px;
+            color: #6e5a5a;">
+            친구의 프로필에 방문하여 방명록을 작성해 보세요~
         </div>
-        <div class="friend-honey">
-            <img src="{% static 'assets/images/mainpage_honeypot_img.png' %}" class="honeypot-icon">
-            <div class="honey-amount">
-                <div style="font-size: 25px;">현재 버디의 꿀</div>
-                <div class="honey-value" id="honey-value">125g</div>
-            </div>
-        </div>
-        <button class="calendar-button">Buddy's Calendar</button>
     </div>
     <script src="{% static 'js/accounts/buddypage.js' %}"></script>
 </body>
