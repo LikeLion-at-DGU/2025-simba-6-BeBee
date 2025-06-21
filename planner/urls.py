@@ -17,5 +17,3 @@ urlpatterns = [
     path('comment/<str:selected_date>/', view_comment, name='comment'),
     path('comment/delete/<int:comment_id>/', comment_delete , name='comment_delete'),
 ]
-
-
