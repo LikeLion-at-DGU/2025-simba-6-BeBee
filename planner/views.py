@@ -5,6 +5,9 @@ from django.http import JsonResponse, HttpResponseForbidden
 from datetime import datetime, timedelta
 from accounts.models import Profile
 from django.contrib.auth.models import User
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse
+from django.views.decorators.http import require_POST
 
 # ⭐ user_id 변경: 전체 뷰에게 적용
 
@@ -112,18 +115,51 @@ def todo_delete(request, user_id, todo_id):
     todo.delete()
     return redirect('planner:subpage', user_id=user_id, selected_date=selected_date)
 
+# def todo_complete(request, user_id, todo_id):
+#     if not request.user.is_authenticated:
+#         return redirect('accounts:login')
+
+#     if request.user.id != user_id:
+#         return HttpResponseForbidden("권한이 없습니다.")
+
+#     todo = get_object_or_404(Todo, id=todo_id, user_id=user_id)
+#     if todo.status != 'completed':
+#         todo.status = 'completed'
+#         todo.save()
+
+#         try:
+#             profile = todo.user.profile
+#             profile.completed_todo_count += 1
+#             today = timezone.now().date()
+#             HONEY_PER_TODO = 10
+#             DAILY_HONEY_CAP = 50
+#             if profile.last_honey_earned_date != today:
+#                 profile.daily_honey_earned = 0
+#                 profile.last_honey_earned_date = today
+#             if profile.daily_honey_earned < DAILY_HONEY_CAP:
+#                 profile.honey_count += HONEY_PER_TODO
+#                 profile.daily_honey_earned += HONEY_PER_TODO
+#             profile.save()
+#         except Profile.DoesNotExist:
+#             pass
+
+@require_POST
 def todo_complete(request, user_id, todo_id):
     if not request.user.is_authenticated:
-        return redirect('accounts:login')
+        return HttpResponseForbidden("로그인이 필요합니다.")
 
     if request.user.id != user_id:
         return HttpResponseForbidden("권한이 없습니다.")
 
     todo = get_object_or_404(Todo, id=todo_id, user_id=user_id)
-    if todo.status != 'completed':
-        todo.status = 'completed'
-        todo.save()
 
+    # 상태 토글
+    if todo.status == 'completed':
+        todo.status = 'not_completed'
+    else:
+        todo.status = 'completed'
+
+        # ✅ 완료로 바뀐 경우만 꿀 지급 로직 실행
         try:
             profile = todo.user.profile
             profile.completed_todo_count += 1
@@ -140,6 +176,8 @@ def todo_complete(request, user_id, todo_id):
         except Profile.DoesNotExist:
             pass
 
+    todo.save()
+    return JsonResponse({'status': todo.status})
 
 
 def write_goal(request, user_id, selected_date):
@@ -191,16 +229,6 @@ def delete_goal(request, user_id, selected_date):
 
 def view_comment(request, selected_date):
     date_obj = datetime.strptime(selected_date, '%Y-%m-%d').date()
-
-    # if request.method == 'POST':
-    #     new_comment =  Comment()
-
-    #     new_comment.writer = request.user
-    #     new_comment.content = request.POST['content']
-    #     new_comment.date = date_obj
-    #     new_comment.created_at =timezone.now()
-    #     new_comment.save()
-    #     return redirect('planner:subpage', user_id=request.user.id, selected_date=selected_date)
     if request.method == 'POST':
         target_user_id = request.POST.get('user_id')  # ✅ 폼에서 숨겨서 전달받기
         target_user = get_object_or_404(User, id=target_user_id)
