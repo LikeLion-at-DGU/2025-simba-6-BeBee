@@ -62,7 +62,7 @@
                 <ul class="todo-list" id="todo-list">
                     {% for todo in todos %}
                     <li class="todo-item">
-                        <form method="POST" action="{% url 'planner:todo_delete' todo.id %}">
+                        <form method="POST" action="{% url 'planner:todo_delete' request.user.id todo.id %}">
                             {% csrf_token %}
                             <label>
                                 {% if todo.status == 'completed' %}
@@ -97,7 +97,7 @@
 
             <!-- ✅ box4 -->
             <div class="box4">
-                <form id="todo-form" method="POST" action="{% url 'planner:todo_create' selected_date %}"
+                <form method="POST" action="{% url 'planner:todo_create' request.user.id selected_date %}">
                     class="todo-form-inline">
                     {% csrf_token %}
 
@@ -174,7 +174,7 @@
                 <span>{{ comment.content }}</span>
             </div>
 
-            {% if comment.writer == user %}
+            {% if comment.writer == request.user %}
                 <form method="POST" action="{% url 'planner:comment_delete' comment.id %}" style="display:inline;">
                     {% csrf_token %}
                     <button type="submit" class="buddy-delete-btn" style="background: none; border: none;">
