@@ -181,7 +181,7 @@ def delete_goal(request, user_id, selected_date):
     goal_obj.delete()
     return redirect('planner:subpage', user_id=user_id, selected_date=selected_date)
 
- 
+
 
 def view_comment(request, selected_date):
     date_obj = datetime.strptime(selected_date, '%Y-%m-%d').date()
@@ -194,7 +194,7 @@ def view_comment(request, selected_date):
         new_comment.date = date_obj
         new_comment.created_at =timezone.now()
         new_comment.save()
-        return redirect('planner:subpage', selected_date=selected_date)
+        return redirect('planner:subpage', user_id=request.user.id, selected_date=selected_date)
 
     
     elif request.method == 'GET':
@@ -208,8 +208,8 @@ def comment_delete(request, comment_id):
     if request.user == comment.writer:
         selected_date = comment.date.strftime('%Y-%m-%d')
         comment.delete()
-        return redirect('planner:subpage', selected_date=selected_date)
+        return redirect('planner:subpage', user_id=request.user.id, selected_date=selected_date)
     
-    return redirect('planner:subpage', selected_date=timezone.now().strftime('%Y-%m-%d'))
+    return redirect('planner:subpage',user_id=request.user.id, selected_date=timezone.now().strftime('%Y-%m-%d'))
 
 
