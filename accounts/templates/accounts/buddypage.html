@@ -64,51 +64,51 @@
                 <div class="fighting">오늘 하루도 화이팅!</div>
             </div>
             <div class="column-center">
-                <div class="follower-num">{{ user.profile.followers.count }}</div>
-                <a href="#" class="follower-list-text">팔로워 목록</a>
+                <div class="follower-num">{{ follower_count }}</div>
+                <div class="follower-list-text">팔로워 수</div>
             </div>
             <div class="column-center">
-                <div class="following-num">{{ user.profile.followings.count }}</div>
-                <a href="#" class="following-list-text">팔로잉 목록</a>
+                <div class="following-num">{{ following_count }}</div>
+                <div class="following-list-text">팔로잉 수</div>
             </div>
         </div>
         </div>
         <div class="row">
-            <div class="follower-list">
-                <div class="follower-title">팔로워 목록</div>
-                {% for follower in user.profile.followers.all %}
-                <div class="follower-item" onclick="showFriendProfile('{{ follower.user.username }}', {{ follower.honey|default:0 }})">
-                    <div class="profile-border2">
-                        {% if follower.profile_image %}
-                            <img src="{{ follower.profile_image.url }}" class="profile-img" style="width: 30px; height: 30px; border-radius: 50%;">
-                        {% else %}
-                            <div class="bee-text" style="font-size: 30px;">🐝</div>
-                        {% endif %}
+                <div class="follower-list">
+                    <div class="follower-title">팔로워 목록</div>
+                    {% for follower in user.profile.followers.all %}
+                    <div class="follower-item" onclick="showFriendProfile('{{ follower.user.username }}', )">
+                        <div class="profile-border2">
+                            {% if follower.profile_image %}
+                                <img src="{{ follower.profile_image.url }}" class="profile-img" style="width: 30px; height: 30px; border-radius: 50%;">
+                            {% else %}
+                                <div class="bee-text" style="font-size: 30px;">🐝</div>
+                            {% endif %}
+                        </div>
+                        <div class="follower-nickname">{{ follower.user.username }}</div>
                     </div>
-                    <div class="follower-nickname">{{ follower.user.username }}</div>
+                    {% empty %}
+                    <div style="margin-left: 10px; font-family: locus_sangsang; color: #999;">팔로워가 없습니다.</div>
+                    {% endfor %}
                 </div>
-                {% empty %}
-                <div style="margin-left: 10px; font-family: locus_sangsang; color: #999;">팔로워가 없습니다.</div>
-                {% endfor %}
-            </div>
-            
-            <div class="follower-list">
-                <div class="follower-title">팔로잉 목록</div>
-                {% for following in user.profile.followings.all %}
-                <div class="follower-item" onclick="showFriendProfile('{{ following.user.username }}', {{ following.honey|default:0 }})">
-                    <div class="profile-border2">
-                        {% if following.profile_image %}
-                            <img src="{{ following.profile_image.url }}" class="profile-img" style="width: 30px; height: 30px; border-radius: 50%;">
-                        {% else %}
-                            <div class="bee-text" style="font-size: 30px;">🐝</div>
-                        {% endif %}
+                
+                <div class="follower-list">
+                    <div class="follower-title">팔로잉 목록</div>
+                    {% for following in user.profile.followings.all %}
+                    <div class="follower-item" onclick="showFriendProfile('{{ following.user.username }}', )">
+                        <div class="profile-border2">
+                            {% if following.profile_image %}
+                                <img src="{{ following.profile_image.url }}" class="profile-img" style="width: 30px; height: 30px; border-radius: 50%;">
+                            {% else %}
+                                <div class="bee-text" style="font-size: 30px;">🐝</div>
+                            {% endif %}
+                        </div>
+                        <div class="follower-nickname">{{ following.user.username }}</div>
                     </div>
-                    <div class="follower-nickname">{{ following.user.username }}</div>
+                    {% empty %}
+                    <div style="margin-left: 10px; font-family: locus_sangsang; color: #999;">팔로잉이 없습니다.</div>
+                    {% endfor %}
                 </div>
-                {% empty %}
-                <div style="margin-left: 10px; font-family: locus_sangsang; color: #999;">팔로잉이 없습니다.</div>
-                {% endfor %}
-            </div>
 
         </div>
     </div>
