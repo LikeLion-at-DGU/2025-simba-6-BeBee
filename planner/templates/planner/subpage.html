@@ -164,16 +164,23 @@
             {% endfor %}
 
 
-            <!-- ✅ 버디 메시지 박스 (초기에는 숨김 처리) -->
+            <!-- ✅ 버디 메시지 박스 -->
+            
             <div class="buddy-box" id="buddy-box" style="display: flex;">
                 <div class="timer-label">Buddies say 🐝</div>
-                <ul class="buddy-messages">
-                    <li>완전 갓생러네!!! 덕분에 나도 힘 얻고 가~</li>
-                    <li>와 꿀 많이 모았네?</li>
-                    <li>5일 연속 출근 대박~</li>
+                <ul class="buddy-messages" id="buddy-message-list">
+                    
                 </ul>
-                <input type="text" placeholder="응원 메시지 입력" class="goal-input" />
+
+                <!-- ✅ 메시지 입력 폼 -->
+                <form id="buddy-form" class="buddy-form" onsubmit="return false;">
+                    <input type="text" id="buddy-input" placeholder="응원 메시지 입력" class="goal-input" />
+                    <button type="submit" id="buddy-submit" class="submit-button">
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </form>
             </div>
+
 
 
 
