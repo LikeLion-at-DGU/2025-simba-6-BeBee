@@ -104,6 +104,9 @@ def buddypage(request):
 # 팔로우/언팔로우 기능
 @login_required
 def follow(request, id):
+    if request.method != 'POST':
+        return JsonResponse({'error': 'Invalid request'}, status=400)
+
     user = request.user
     followed_user = get_object_or_404(User, pk=id)
     is_following = followed_user.profile in user.profile.followings.all()
@@ -113,6 +116,26 @@ def follow(request, id):
     else:
         user.profile.followings.add(followed_user.profile)
 
-    return redirect(request.META.get('HTTP_REFERER', 'accounts:buddypage'))
+    return JsonResponse({'success': True, 'following': not is_following})
 
 
+@login_required
+def friend_profile_api(request):
+    query = request.GET.get('q', '').strip()
+    if not query:
+        return JsonResponse({'exists': False})
+    
+    try:
+        user = User.objects.get(username=query)
+        profile = user.profile
+        is_following = profile in request.user.profile.followings.all()
+        return JsonResponse({
+            'exists': True,
+            'id': user.id,
+            'username': user.username,
+            'honey': profile.honey if hasattr(profile, 'honey') else 0,
+            'is_following': is_following,
+            'profile_image_url': profile.profile_image.url if profile.profile_image else ''
+        })
+    except User.DoesNotExist:
+        return JsonResponse({'exists': False})
