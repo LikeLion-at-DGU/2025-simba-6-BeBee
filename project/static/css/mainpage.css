@@ -1,7 +1,7 @@
 body {
     background-image: linear-gradient(#fffacd, #f4cd69);
-    width: 1920px;
-    height: 1080px;
+    width: 100vw;
+    height: 100vh;
 }
 
 .honey-head {
