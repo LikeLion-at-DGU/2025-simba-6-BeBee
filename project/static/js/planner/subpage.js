@@ -162,3 +162,5 @@ document.addEventListener("DOMContentLoaded", () => {
             window.location.href = `/planner/subpage/${userId}/${formatted}/`;
         });
     });
+});
+
