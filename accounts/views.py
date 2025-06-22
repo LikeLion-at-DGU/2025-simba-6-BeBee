@@ -135,22 +135,25 @@ def friend_profile_api(request):
     query = request.GET.get('q', '').strip()
     if not query:
         return JsonResponse({'exists': False})
-    
+
     try:
+        # 🔥 여기서 request.user가 아닌, 'username=query'로 친구 유저를 가져와야 함!
         user = User.objects.get(username=query)
         profile = user.profile
         is_following = profile in request.user.profile.followings.all()
+
         return JsonResponse({
             'exists': True,
-            'id': user.id,
+            'id': user.id,  # ← 🔥 이게 친구 ID여야 함
             'username': user.username,
-            'honey': profile.honey if hasattr(profile, 'honey') else 0,
+            'honey': getattr(profile, 'honey', 0),
             'is_following': is_following,
-            'profile_image_url': profile.profile_image.url if profile.profile_image else ''
+            'profile_image_url': profile.profile_image.url if profile.profile_image else '',
         })
     except User.DoesNotExist:
         return JsonResponse({'exists': False})
     
+
 @login_required
 def follow_lists_partial(request):
     return render(request, 'accounts/_follow_lists.html', {
