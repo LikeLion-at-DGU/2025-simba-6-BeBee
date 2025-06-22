@@ -1,7 +1,7 @@
 body {
     background-image: linear-gradient(#fffacd, #f4cd69);
-    width: 1920px;
-    height: 1080px;
+    width: 100vw;
+    height: 100vh;
 }
 
 .honey-head {
@@ -38,10 +38,24 @@ body {
     left: 960px;
 }
 
+.year-month {
+    display: flex;
+    flex-direction: column;
+    margin-left: 170px;
+    margin-top: 35px;
+}
 
-.month-img {
-    margin-top: 55px;
-    margin-left: 120px;
+.current-month {
+    font-size: 80px;
+    font-family: "Bagel Fat One";
+    color: #FFD640;
+    margin-top: -30px;
+}
+
+.current-year {
+    font-size: 40px;
+    font-family: "Hanken Grotesk";
+    color: #6E5A5A;
 }
 
 .month-header {
@@ -68,20 +82,21 @@ body {
     margin-top: 55px;
 }
 
-.buzzlist-img {
-    width: 173px;
-    height: 46px;
-    aspect-ratio: 173/46;
-    margin-left: 16px;
-    margin-top: 25px
+.top-bar {
+    position: absolute;
+    top: 80px;
+    left: 1100px;
+    display: flex;
+    flex-direction: row;
 }
+
 
 .buddypage-img {
     width: 190px;
     height: 46px;
     aspect-ratio: 21/5;
     margin-left: 160px;
-    margin-top: 25px;
+    margin-top: 50px;
 }
 
 .mypage-img {
@@ -89,7 +104,7 @@ body {
     height: 46px;
     aspect-ratio: 150/43;
     margin-left: 16px;
-    margin-top: 25px
+    margin-top: 50px;
 }
 
 .honeypot-img {
@@ -124,18 +139,18 @@ body {
 
 .honey-deeper {
     position: absolute;
-    top: 340px;
-    left: 20px;
-    width: 454px;
-    height: 453px;
+    top: 700px;
+    left: 250px;
+    width: 160px;
+    height: 360px;
 }
 
 .flower-img {
     position: absolute;
     width: 131px;
     height: 101px;
-    left: 1750px;
-    top: 650px;
+    left: 1700px;
+    top: 300px;
 }
 
 .hex-container {
@@ -173,29 +188,13 @@ body {
     transform: translateY(58px);
 }
 
-
-/* 
-1) Arial: 이 값은 웹페이지에서 텍스트를 표시할 때 사용할 글꼴 중 첫 번째로 지정한 글꼴 이름이다. 
-웹 브라우저는 컴퓨터에 설치된 해당 글꼴을 찾아서 사용하려고 시도한다. 
-만약 컴퓨터에 Arial 글꼴이 설치되어 있지 않다면, 다음에 오는 글꼴 이름(두 번째 값)로 대체되어 텍스트가 표시된다.
-2) sans-serif: 이 값은 웹 브라우저가 Arial 글꼴을 찾을 수 없는 경우 대체할 기본 sans-serif 글꼴을 지정한다. 
-"sans-serif"는 비행기체(serif) 없이 깔끔하게 디자인된 글꼴을 의미한다. 
-보통 Arial이나 Helvetica, Verdana 등과 같은 글꼴이 이에 해당한다. 
-
-따라서 font-family: Arial, sans-serif;는 웹페이지에서 텍스트를 Arial 글꼴로 표시하려고 시도하고, 
-만약 Arial 글꼴이 없으면 기본적으로 sans-serif 글꼴을 사용하도록 지정하는 CSS 속성이다. 
-이렇게 함으로써 모든 사용자들이 비슷한 형태의 텍스트를 보게 된다. 
-*/
-
 .calendar-container {
-    width: 1000px;
+    width: 1100px;
     margin: 30px auto;
-    border: 1px solid #ccc;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     padding: 10px;
     position: absolute;
     top: 300px;
-    left: 550px;
+    left: 500px;
     border-radius: 25px;
 }
 
@@ -209,35 +208,30 @@ body {
 .calendar-days {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    /* 
-    grid-template-columns : CSS의 Grid 레이아웃에서 사용되는 속성(property) 중 하나로, 
-    그리드 컨테이너(grid container)의 열(column) 크기를 지정하는 것을 말한다.
-    repeat(7, 1fr) : 1행에 7개의 열이 있으며, 
-    각 열의 크기를 동일하게 1분의 1(fractional unit, fr)로 설정하라는 의미한다. */
     font-weight: bold;
     border-bottom: 1px solid #ccc;
     padding-bottom: 5px;
     text-align: center;
 }
-/* grid-template-columns 속성을 사용하여 그리드 컨테이너의 열 크기를 유연하게 조정할 수 있으며, 
-반응형 웹 디자인에서 유용하게 활용된다. 
-이렇게 함으로써 웹페이지의 레이아웃을 다양한 화면 크기와 장치에 맞추는데 도움이 된다. */
 
 .day {
     padding: 5px;
     font-size: 28px;
+    font-family: "Fredoka";
 }
 
 .calendar-dates {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    grid-gap: 8px;
+    grid-gap: 12px;
+    margin-top: 20px;
 }
 
 .date {
+    position: relative;
     width: 90px;
     height: 105px;
-    background-color: #fff8b3; /* 벌꿀 느낌 색상 */
+    background-color: #FFFDC2;
     clip-path: polygon(
         50% 0%, 100% 25%, 100% 75%,
         50% 100%, 0% 75%, 0% 25%
@@ -245,27 +239,47 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 24px;
+    font-size: 30px;
     font-weight: bold;
     color: #5a4a2c;
-    box-shadow: 0 0 0 2px #d4a017; /* 테두리 벌꿀색 */
     transition: transform 0.2s ease;
     margin: auto;
+    font-family: "Henny Penny";
 }
+
 
 .date:hover {
     background-color: #ffe066;
     transform: scale(1.05); /* 마우스 호버 시 약간 확대 */
 }
 
-.current-month {
-    font-size: 40px;
-}
-
 .empty {
     visibility: hidden;
 }
 
-.next-button {
-    border-radius: 50%;
+.prev-sector {
+    position: absolute;
+    top: 600px;
+    left: 340px;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.next-sector {
+    position: absolute;
+    top: 600px;
+    left: 1700px;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.prev-btn {
+    width: 78px;
+}
+
+.next-btn {
+    width: 78px;
+    transform: scaleX(-1);
 }
