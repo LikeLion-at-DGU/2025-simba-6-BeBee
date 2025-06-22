@@ -40,7 +40,9 @@
             </button>
         </div>
         <button type="button" class="calender-button" onclick="location.href='/main/1'">Calender</button>
+        <!--
         <button type="button" class="buzzlist-button" onclick="location.href='/planner/subpage/'">BuzzList</button>
+        -->
         <button type="button" class="mypage-button" onclick="location.href='<!--마이페이지 링크-->'">My Page</button>
         <img src="{% static 'assets/images/mainpage_honeypot_img.png' %}"
             alt="honeypot img"
@@ -127,7 +129,11 @@
             친구의 프로필에 방문하여 방명록을 작성해 보세요~
         </div>
     </div>
+    <script>
+        const CURRENT_USER_ID = "{{ user.id }}";
+    </script>
     <script src="{% static 'js/accounts/buddypage.js' %}"></script>
+
 </body>
 
 {% endblock %}
