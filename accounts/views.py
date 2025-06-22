@@ -86,12 +86,14 @@ def check_nickname(request):
 
 # 버디페이지
 @login_required
-def buddypage(request):
+def buddypage(request, user_id):
     query = request.GET.get('q', '')
     following_ids = request.user.profile.followings.values_list('id', flat=True)
 
     follower_count = request.user.profile.followers.count()
     following_count = request.user.profile.followings.count()
+    
+    page_user = get_object_or_404(User, id=user_id)
 
     if query:
         users = User.objects.filter(profile__isnull=False, username__icontains=query).exclude(id=request.user.id)
@@ -101,8 +103,9 @@ def buddypage(request):
     return render(request, 'accounts/buddypage.html', {
         'users': users,
         'following_ids': following_ids,
-        'follower_count': follower_count,
+        'follower_count': folower_count,
         'following_count': following_count,
+        'page_user': page_user
     })
 
 

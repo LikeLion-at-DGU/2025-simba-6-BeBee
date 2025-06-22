@@ -4,11 +4,11 @@ from planner.models import Todo
 from django.contrib.auth.models import User
 from datetime import date
 
-def mypage(request, id):
+def mypage(request, user_id):
     if not request.user.is_authenticated:
         return redirect('accounts:login')
     
-    user = get_object_or_404(User, pk=id)
+    user = get_object_or_404(User, pk=user_id)
     profile = user.profile
 
     today = date.today()
