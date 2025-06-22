@@ -86,12 +86,14 @@ def check_nickname(request):
 
 # 버디페이지
 @login_required
-def buddypage(request):
+def buddypage(request, user_id):
     query = request.GET.get('q', '')
     following_ids = request.user.profile.followings.values_list('id', flat=True)
 
     follower_count = request.user.profile.followers.count()
     following_count = request.user.profile.followings.count()
+    
+    page_user = get_object_or_404(User, id=user_id)
 
     if query:
         users = User.objects.filter(profile__isnull=False, username__icontains=query).exclude(id=request.user.id)
@@ -101,8 +103,9 @@ def buddypage(request):
     return render(request, 'accounts/buddypage.html', {
         'users': users,
         'following_ids': following_ids,
-        'follower_count': follower_count,
+        'follower_count': folower_count,
         'following_count': following_count,
+        'page_user': page_user
     })
 
 
@@ -135,22 +138,25 @@ def friend_profile_api(request):
     query = request.GET.get('q', '').strip()
     if not query:
         return JsonResponse({'exists': False})
-    
+
     try:
+        # 🔥 여기서 request.user가 아닌, 'username=query'로 친구 유저를 가져와야 함!
         user = User.objects.get(username=query)
         profile = user.profile
         is_following = profile in request.user.profile.followings.all()
+
         return JsonResponse({
             'exists': True,
-            'id': user.id,
+            'id': user.id,  # ← 🔥 이게 친구 ID여야 함
             'username': user.username,
-            'honey': profile.honey if hasattr(profile, 'honey') else 0,
+            'honey': getattr(profile, 'honey', 0),
             'is_following': is_following,
-            'profile_image_url': profile.profile_image.url if profile.profile_image else ''
+            'profile_image_url': profile.profile_image.url if profile.profile_image else '',
         })
     except User.DoesNotExist:
         return JsonResponse({'exists': False})
     
+
 @login_required
 def follow_lists_partial(request):
     return render(request, 'accounts/_follow_lists.html', {

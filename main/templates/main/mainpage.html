@@ -27,12 +27,14 @@
             <img src="{% static 'assets/images/mainpage_buzzlist_img.png' %}"
             class="buzzlist-img">
         </a>
-        <a href="/accounts/buddypage/">
+        <a href="/accounts/buddypage/{{user.id}}/">
             <img src="{% static 'assets/images/mainpage_buddypage_img.png' %}"
             class="buddypage-img">
         </a>
+        <a href="/users/mypage/{{ user.id }}/">
         <img src="{% static 'assets/images/mainpage_mypage_img.png' %}"
         class="mypage-img">
+        </a>
         <img src="{% static 'assets/images/mainpage_honeypot_img.png' %}"
         class="honeypot-img">
         <div clsass="amount-of-honey">

@@ -1,5 +1,3 @@
-
-
 document.addEventListener("DOMContentLoaded", function () {
     const searchBox = document.querySelector(".search-box");
     const input = searchBox.querySelector("input");
@@ -74,7 +72,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 <div class="honey-value">${data.honey}g</div>
             </div>
         </div>
-        <button class="calendar-button">Buddy's Calendar</button>`;
+        <button class="calendar-button" data-user-id="${data.id}">Buddy's Calendar</button>`;
 
         const followBtn = profileBox.querySelector(".follow-button");
         followBtn.addEventListener("click", () => {
@@ -88,31 +86,32 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(res => res.json())
             .then(data => {
                 if (data.success) {
-                    // 1. 버튼 텍스트 변경
                     followBtn.textContent = data.following ? '언팔로우' : '팔로우';
 
-                    // 2. 나의 팔로잉 수만 갱신
                     const followingNum = document.querySelector(".following-num");
                     if (followingNum) {
                         followingNum.textContent = data.following_count;
                     }
 
-                    // 3. 목록 갱신 (팔로워/팔로잉 모두)
                     fetch('/accounts/buddypage/partial_follow_lists/')
                         .then(res => res.text())
                         .then(html => {
                             const tempDiv = document.createElement("div");
                             tempDiv.innerHTML = html;
-
                             const newLists = tempDiv.querySelectorAll(".follower-list");
                             const currentLists = document.querySelectorAll(".follower-list");
-
                             currentLists.forEach((list, i) => {
                                 list.innerHTML = newLists[i].innerHTML;
                             });
                         });
                 }
             });
+        });
+
+        const calendarBtn = profileBox.querySelector(".calendar-button");
+        calendarBtn.addEventListener("click", () => {
+            const userId = calendarBtn.dataset.userId;
+            window.location.href = `/main/${userId}`;
         });
     }
 

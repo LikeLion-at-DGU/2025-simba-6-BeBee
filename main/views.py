@@ -5,8 +5,5 @@ from django.contrib.auth.models import User
 def mainpage(request, user_id):
     if not request.user.is_authenticated:
         return redirect('accounts:login')
-    
-    if request.user.id != user_id:
-        return redirect('main:mainpage', user_id=request.user.id)
 
     return render(request, 'main/mainpage.html',{'user_id': user_id,})
