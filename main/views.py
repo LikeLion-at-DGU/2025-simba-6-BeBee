@@ -6,4 +6,7 @@ def mainpage(request, user_id):
     if not request.user.is_authenticated:
         return redirect('accounts:login')
 
+    if not (user_id == request.user.id or request.user.profile.followings.filter(user__id=user_id).exists()):
+        return redirect('main:mainpage', user_id=request.user.id)
+
     return render(request, 'main/mainpage.html',{'user_id': user_id,})
