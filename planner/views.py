@@ -28,8 +28,10 @@ def subpage(request, user_id, selected_date):
     user_id=target_user.id,  # ❗ 댓글이 속한 사용자
     date=date_obj).select_related('writer__profile').order_by('created_at')
 
+    like_obj = Like.objects.filter(target_user=target_user, date=date_obj).first()
+
     return render(request, 'planner/subpage.html', {'todos': todos, 'selected_date': selected_date, 'daily_goal':daily_goal, 'comments': comments, 'target_user': target_user,
-    'login_user': request.user,
+    'login_user': request.user,'like_obj': like_obj,
     })
 
 # def start_timer(request, user_id, todo_id, selected_date):
@@ -301,4 +303,19 @@ def comment_delete(request, comment_id):
     
     return redirect('planner:subpage',user_id=request.user.id, selected_date=timezone.now().strftime('%Y-%m-%d'))
 
+def like_subpage(request, user_id, selected_date):
+    target_user = get_object_or_404(User, id=user_id)
+    date_obj = datetime.strptime(selected_date, '%Y-%m-%d').date()
+
+    like_obj, created = Like.objects.get_or_create(target_user=target_user, date=date_obj)
+
+    if request.user in like_obj.like.all():
+        like_obj.like.remove(request.user)
+        like_obj.like_count -= 1
+    else:
+        like_obj.like.add(request.user)
+        like_obj.like_count += 1
+
+    like_obj.save()
+    return redirect('planner:subpage', user_id=user_id, selected_date=selected_date)
 

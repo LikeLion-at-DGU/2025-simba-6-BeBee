@@ -57,3 +57,12 @@ class Comment(models.Model):
     content = models.TextField()
     date = models.DateField()
     created_at = models.DateTimeField(auto_now_add=True)
+
+class Like(models.Model):
+    target_user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    date = models.DateField(default=timezone.now)
+    like = models.ManyToManyField(User, related_name='likes', blank=True)
+    like_count = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        unique_together = ('target_user', 'date')
