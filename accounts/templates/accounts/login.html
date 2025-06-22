@@ -27,8 +27,8 @@
         <!-- 🔘 회색 원 배경 -->
         <div class="login-circle">
             <div class="login-wrapper">
-                <h1 class="site-title">Beebe</h1>
-                <p class="site-description">당신의 일상을 기록하는 공간</p>
+                <img src="{% static 'assets/images/bebee_char_img.png' %}" class="bebee-char">
+                <img src="{% static 'assets/images/bebee_logo_img.png' %}" class="bebee-logo">
 
                 
                 <form method="POST" action="{% url 'accounts:login' %}" class="login-form">
