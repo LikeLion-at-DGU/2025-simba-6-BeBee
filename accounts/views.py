@@ -103,7 +103,7 @@ def buddypage(request, user_id):
     return render(request, 'accounts/buddypage.html', {
         'users': users,
         'following_ids': following_ids,
-        'follower_count': folower_count,
+        'follower_count': follower_count,
         'following_count': following_count,
         'page_user': page_user
     })
