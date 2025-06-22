@@ -6,11 +6,11 @@ body, html {
     background-color: #6b675f;
     font-family: 'Noto Sans KR', sans-serif;
     overflow: hidden;
+    background: linear-gradient(180deg, #F7AB5C 0%, #FFEA6E 100%);
 }
 
 /* 배경 컨테이너 */
 .background {
-    position: relative;
     width: 100%;
     height: 100%;
 }
@@ -38,7 +38,8 @@ body, html {
 .login-circle {
     width: 899px;
     height: 899px;
-    background-color: #9a968b;  /* 부드러운 중간 회색 */
+    background: rgba(255, 254, 236, 0.60);
+    backdrop-filter: blur(7.5px);
     border-radius: 50%;
     position: absolute;
     top: 50%;
@@ -53,21 +54,26 @@ body, html {
 /* 로그인 폼 wrapper (정중앙, 정확한 크기) */
 .login-wrapper {
     width: 463px;
-    height: 515px;
+    height: 600px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 20px;
     z-index: 2;
 }
 
-/* 타이틀 & 설명 */
-.site-title {
-    font-size: 24px;
-    font-weight: bold;
-    color: white;
-    margin: 0;
+.bebee-char {
+    position: absolute;
+    width: 100px;
+    top:100px;
+    left: 600px;
 }
+
+.bebee-logo {
+    width: 450px;
+}
+
+/* 타이틀 & 설명 */
+
 .site-desc {
     font-size: 14px;
     color: white;
@@ -85,7 +91,7 @@ body, html {
     }
 
 .login-form label {
-    color: #ffe97f;
+    color: #2F4F4F;
     font-size: 16px;
     margin-bottom: 4px;
     font-family: "Jua", sans-serif;
@@ -127,7 +133,7 @@ body, html {
     margin-top: 15px;
 }
 .signup-link a {
-    color: #ffe97f;
+    color: #2F4F4F;
     text-decoration: none;
     font-size: 25px;
     font-family: "Jua", sans-serif;
