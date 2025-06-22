@@ -57,55 +57,20 @@
                     <p class="honey-gage"></p>
                 </div>
                 <div class="box1-right">
-                    <div class="heart-icon">🤍</div>
-                    <div class="heart-label">좋아요</div>
+                    <!-- <div class="heart-icon">🤍</div>
+                    <div class="heart-label">좋아요</div> -->
+                    <form method="POST" action="{% url 'planner:like_subpage' user_id=target_user.id selected_date=selected_date %}">
+                        {% csrf_token %}
+                        <button type="submit">❤️ 좋아요</button>
+                    </form>
+                    <!-- 좋아요 수 -->
+                    <p style="margin: 0;">
+                        좋아요 수: {{ like_obj.like_count|default:0 }}
+                    </p>
                 </div>
 
             </div>
 
-
-            <!-- <div class="box2">
-                <form method="POST" action="{% url 'planner:update_goal' login_user.id selected_date %}"
-                    class="goal-form">
-                    {% csrf_token %}
-                    <input type="text" name="goal" value="{{ daily_goal.goal|default:'' }}" class="goal-input"
-                        placeholder="오늘의 다짐을 입력하세요" />
-
-                    <div class="goal-button-group">
-                        <button type="submit" class="submit-button"><i class="fas fa-pen"></i></button>
-                </form>
-
-                <form method="POST" action="{% url 'planner:delete_goal' login_user.id selected_date %}">
-                    {% csrf_token %}
-                    <button type="submit" class="submit-button"><i class="fas fa-trash"></i></button>
-                </form>
-            </div> -->
-
-            <!-- <div class="box2">
-                {% if daily_goal %}
-                <form method="POST" action="{% url 'planner:update_goal' login_user.id selected_date %}"
-                    class="goal-form">
-                    {% csrf_token %}
-                    <input type="text" name="goal" value="{{ daily_goal.goal|default:'' }}" class="goal-input"
-                        placeholder="오늘의 다짐을 입력하세요" />
-                    <div class="goal-button-group">
-                        <button type="submit" class="submit-button"><i class="fas fa-pen"></i></button>
-                </form>
-                <form method="POST" action="{% url 'planner:delete_goal' login_user.id selected_date %}">
-                    {% csrf_token %}
-                    <button type="submit" class="submit-button"><i class="fas fa-trash"></i></button>
-                </form>
-                {% else %}
-                <form method="POST" action="{% url 'planner:write_goal' login_user.id selected_date %}"
-                    class="goal-form">
-                    {% csrf_token %}
-                    <input type="text" name="goal" class="goal-input" placeholder="오늘의 다짐을 입력하세요" />
-                    <button type="submit" class="submit-button">
-                        <i class="fas fa-arrow-right"></i>
-                    </button>
-                </form>
-                {% endif %}
-            </div> -->
 
             <div class="box2">
                 <form method="POST"
