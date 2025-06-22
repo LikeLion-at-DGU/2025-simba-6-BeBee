@@ -32,11 +32,24 @@ def subpage(request, user_id, selected_date):
     'login_user': request.user,
     })
 
+# def start_timer(request, user_id, todo_id, selected_date):
+#     if not request.user.is_authenticated:
+#         return redirect('accounts:login')
+
+
+#     if request.user.id != user_id:
+#         return HttpResponseForbidden("권한이 없습니다.")
+
+#     todo = get_object_or_404(Todo, id=todo_id, user_id=user_id)
+#     if not todo.started_at:
+#         todo.started_at = timezone.now()
+#         todo.save()
+
+#     return redirect('planner:subpage', user_id=user_id, selected_date=selected_date)
+
 def start_timer(request, user_id, todo_id, selected_date):
     if not request.user.is_authenticated:
-        return redirect('accounts:login')
-
-
+        return HttpResponseForbidden("로그인이 필요합니다.")
     if request.user.id != user_id:
         return HttpResponseForbidden("권한이 없습니다.")
 
@@ -44,28 +57,58 @@ def start_timer(request, user_id, todo_id, selected_date):
     if not todo.started_at:
         todo.started_at = timezone.now()
         todo.save()
+    return JsonResponse({"message": "타이머 시작됨", "started_at": todo.started_at})
 
-    return redirect('planner:subpage', user_id=user_id, selected_date=selected_date)
 
+
+# def stop_timer(request, user_id, todo_id, selected_date):
+#     if not request.user.is_authenticated:
+#         return redirect('accounts:login')
+
+#     if request.user.id != user_id:
+#         return HttpResponseForbidden("권한이 없습니다.")
+
+#     todo = get_object_or_404(Todo, id=todo_id, user_id=user_id)
+#     if todo.started_at:
+#         now = timezone.now()
+#         start_dt = datetime.combine(todo.date, todo.started_at)
+#         if timezone.is_naive(start_dt):
+#             start_dt = timezone.make_aware(start_dt)
+#         elapsed_time = now - start_dt
+#         todo.ended_at = now
+#         todo.total_elapsed_time = (todo.total_elapsed_time or timedelta()) + elapsed_time
+#         todo.started_at = None
+#         todo.save()
+
+#     return redirect('planner:subpage', user_id=user_id, selected_date=selected_date)
 
 def stop_timer(request, user_id, todo_id, selected_date):
     if not request.user.is_authenticated:
-        return redirect('accounts:login')
-
+        return HttpResponseForbidden("로그인이 필요합니다.")
     if request.user.id != user_id:
         return HttpResponseForbidden("권한이 없습니다.")
 
     todo = get_object_or_404(Todo, id=todo_id, user_id=user_id)
     if todo.started_at:
         now = timezone.now()
-        elapsed_time = now - timezone.make_aware(datetime.combine(todo.date, todo.started_at))
+
+        # ✅ datetime 필드이므로 바로 사용
+        start_dt = todo.started_at
+
+        elapsed_time = now - start_dt
         todo.ended_at = now
         todo.total_elapsed_time = (todo.total_elapsed_time or timedelta()) + elapsed_time
         todo.started_at = None
         todo.save()
 
-    return redirect('planner:subpage', user_id=user_id, selected_date=selected_date)
+        return JsonResponse({
+            "message": "타이머 종료됨",
+            "ended_at": todo.ended_at,
+            "elapsed": str(elapsed_time),
+            "total_elapsed": str(todo.total_elapsed_time),
+        })
 
+    return JsonResponse({"error": "타이머가 시작되지 않았습니다."}, status=400)
 
 def todo_create(request, user_id, selected_date):
     if not request.user.is_authenticated:
