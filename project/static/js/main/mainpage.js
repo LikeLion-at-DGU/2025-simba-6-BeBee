@@ -1,5 +1,6 @@
 const calendarDates = document.getElementById("calendarDates");
 const currentMonthElement = document.getElementById("currentMonth");
+const currentYearElement = document.getElementById("currentYear");
 const prevBtn = document.getElementById("prevBtn");
 const nextBtn = document.getElementById("nextBtn");
 
@@ -13,9 +14,11 @@ function renderCalendar() {
   const firstDayOfMonth = new Date(currentYear, currentMonth, 1);
   const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
   const startDayOfWeek = firstDayOfMonth.getDay();
-  currentMonthElement.textContent = `${currentYear}년 ${currentMonth + 1}월`;
-
+  currentMonthElement.textContent = `${currentMonth + 1}월`;
+  currentYearElement.textContent = `${currentYear}`;
   calendarDates.innerHTML = "";
+  const monthName = new Intl.DateTimeFormat('en-US', { month: 'long' }).format(new Date(currentYear, currentMonth));
+  currentMonthElement.textContent = monthName;
 
   // 빈 날짜
   for (let i = 0; i < startDayOfWeek; i++) {

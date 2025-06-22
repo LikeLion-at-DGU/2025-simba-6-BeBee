@@ -7,33 +7,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>로그인 페이지</title>
     <link rel="stylesheet" href="{% static 'css/accounts/login.css' %}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
 </head>
 
 <body>
     <div class="background">
         <!-- 🟡 노란 버블 배경 -->
-        <div class="bubble small"></div>
+        <div class="bubble small1"></div>
+        <div class="bubble small2"></div>
+
         <div class="bubble medium"></div>
-        <div class="bubble large"></div>
+
+        <div class="bubble large1"></div>
+        <div class="bubble large2"></div>
+        <div class="bubble xlarge"></div>
 
         <!-- 🔘 회색 원 배경 -->
         <div class="login-circle">
             <div class="login-wrapper">
-                <h1 class="site-title">Beebe</h1>
-                <p class="site-description">당신의 일상을 기록하는 공간</p>
+                <img src="{% static 'assets/images/bebee_char_img.png' %}" class="bebee-char">
+                <img src="{% static 'assets/images/bebee_logo_img.png' %}" class="bebee-logo">
 
                 
                 <form method="POST" action="{% url 'accounts:login' %}" class="login-form">
                     {% csrf_token %}
 
-                    <label for="username">닉네임</label>
+                    <label for="username" style="font-size: 20px;">닉네임</label>
                     <input type="text" id="username" name="username" placeholder="닉네임을 입력하세요" required />
-
-                    <label for="password">비밀번호</label>
+                    <label for="password" style="font-size: 20px; margin-top: 20px;">비밀번호</label>
                     <input type="password" id="password" name="password" placeholder="비밀번호를 입력하세요" required />
 
 
-                <button type="submit" id="login-btn" disabled>로그인</button>
+                <button type="submit" id="login-btn" disabled class="login-btn">로그인</button>
                 
                     <div class="signup-link">
                         <a href="{% url 'accounts:signup' %}">회원가입</a>
