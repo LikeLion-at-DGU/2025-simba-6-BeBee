@@ -4,6 +4,7 @@ from planner.models import Todo
 from django.contrib.auth.models import User
 from datetime import date
 
+
 def mypage(request, user_id):
     if not request.user.is_authenticated:
         return redirect('accounts:login')
@@ -32,3 +33,4 @@ def mypage(request, user_id):
     }
 
     return render(request, 'users/mypage.html', context)
+
