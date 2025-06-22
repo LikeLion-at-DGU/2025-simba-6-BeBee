@@ -8,6 +8,7 @@ from django.contrib import messages
 from accounts.models import GiftExchange
 
 
+
 def mypage(request, user_id):
     if not request.user.is_authenticated:
         return redirect('accounts:login')

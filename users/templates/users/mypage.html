@@ -20,7 +20,7 @@
                 <img src="{% static 'assets/images/mainpage_img6.png' %}" alt="honey drip" class="honey-drip-img">
             </div>
 
-            
+
 
             <div class="header-title-bar">
                 <h1 class="mypage-title">My page</h1>
@@ -42,69 +42,188 @@
                     <div class="profile-header">
                         <h2 class="profile-title">나의 프로필</h2>
                     </div>
-                        
+
                     <div class="profile-info">
                         <img src="{{ profile.profile_image.url}}" alt="프로필 이미지" class="profile-img" />
-                        
+
 
                         <div class="profile-text">
 
                             <div class="profile-top">
                                 <strong class="nickname">{{ user.username }}님</strong>
-                                <button class="logout-button">로그아웃</button>
+                                <form method="GET" action="{% url 'accounts:logout' %}">
+                                    {% csrf_token %}
+                                    <button type="submit">로그아웃</button>
+                                </form>
+
                                 <button class="edit-button">✏️</button>
                             </div>
 
                             <div class="profile-bottom">
                                 <span class="status">오늘 하루도 화이팅!</span>
                             </div>
-                            
+
                         </div>
                     </div>
-                    
+
                 </div>
 
                 <div class="summary-box">
                     <h2 class="summary-title">{{ user.username }}님의 6월 요약</h2>
                     <div class="summary-stats">
-                        <div class="stat hex">누적 할 일 개수<br><strong>00개</strong></div>
-                        <div class="stat hex">총 공부 시간<br><strong>00 hrs 00 mins</strong></div>
-                        <div class="stat hex">일별 평균 수행률<br><strong>00%</strong></div>
+                        <div class="stat hex">누적 할 일 개수 <br>
+                            {{ total_todos }} 개</div>
+                        <div class="stat hex">총 공부 시간 <br>
+                            {{ profile.total_study_time|default:"0" }} 시간
+                        </div>
+                        <div class="stat hex">🔥 평균 수행률<br>
+                            {{ success_rate }} %</div>
                     </div>
-                </div>
             </section>
 
             <!-- ✅ 오른쪽 상점 영역 -->
             <section class="right-panel">
-    <h2 class="shop-title">상점</h2>
-    <div class="honey-progress">
-        <progress value="{{ profile.honey_count }}" max="2700"></progress>
-        <span class="honey-label">{{ profile.honey_count }} / 2700g</span>
-    </div>
+                <h2 class="shop-title">상점</h2>
+                <div class="honey-progress">
+                    <progress value="{{ profile.honey_count }}" max="2700"></progress>
+                    <span class="honey-label">{{ profile.honey_count }} / 2700g</span>
+                </div>
 
-    <div class="reward-box">
-        <div class="reward-honey">
-            <img src="{% static 'assets/honey_pot.png' %}" alt="꿀" />
-            <span>{{ profile.honey_count }}</span>
+                <div class="reward-box">
+                    <div class="reward-honey">
+                        <img src="{% static 'assets/honey_pot.png' %}" alt="꿀" />
+                        <span>{{ profile.honey_count }}</span>
+                    </div>
+                    <span class="reward-arrow">↔</span>
+                    <div class="reward-item">
+                        <img src="{% static 'assets/coffee.png' %}" alt="아메리카노" />
+                        <span>꿀 아메리카노 한 잔!</span>
+                    </div>
+                </div>
+
+                {% if profile.honey_count >= 2700 %}
+                <form method="POST" action="{% url 'users:exchange_honey' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="user_id" value="{{ user.id }}">
+                    <button type="submit" class="claim-button">기프티콘 교환하기</button>
+                </form>
+                {% else %}
+                <p class="need-more-honey">2700g 이상 모아야 교환할 수 있어요!</p>
+                {% endif %}
+            </section>
+
+
         </div>
-        <span class="reward-arrow">↔</span>
-        <div class="reward-item">
-            <img src="{% static 'assets/coffee.png' %}" alt="아메리카노" />
-            <span>꿀 아메리카노 한 잔!</span>
+
+        <!-- ✏️ 수정 버튼 누르면 이 모달이 나타납니다 -->
+        <div id="edit-profile-modal" class="modal hidden">
+            <div class="modal-content">
+
+                <form method="POST" enctype="multipart/form-data" action="">
+                    {% csrf_token %}
+                    <!-- X 버튼 -->
+                    <button type="button" class="close-btn" id="close-modal">✖</button>
+
+                    <!-- 프로필 이미지 & 업로드 -->
+                    <label for="profile_image" class="modal-profile-label">
+                        <img src="{{ profile.profile_image.url }}" alt="프로필 이미지" class="profile-img" />
+                        <p class="modal-subtitle">프로필 사진 변경</p>
+                    </label>
+                    <input type="file" id="profile_image" name="profile_image" class="hidden-input" accept="image/*">
+
+                    <!-- 닉네임 수정 -->
+                    <label for="modal-nickname-input" class="nickname-label">닉네임 수정</label>
+                    <div class="nickname-input-box">
+                        <input id="modal-nickname-input" name="nickname" type="text" placeholder="기존 닉네임"
+                            value="{{ user.username }}" />
+                        <button type="button" onclick="checkNickname()">🔍</button>
+                    </div>
+                    <p id="modal-nickname-message" class="check-result">중복 여부를 확인해주세요!</p>
+
+                    <!-- 수정 버튼 -->
+                    <button type="submit" class="submit-btn">수정</button>
+                </form>
+
+            </div>
         </div>
-    </div>
 
-            {% if profile.honey_count >= 2700 %}
-            <form method="POST" action="{% url 'users:exchange_honey' %}">
-                {% csrf_token %}
-                <input type="hidden" name="user_id" value="{{ user.id }}">
-                <button type="submit" class="claim-button">기프티콘 교환하기</button>
-            </form>
-            {% else %}
-            <p class="need-more-honey">2700g 이상 모아야 교환할 수 있어요!</p>
-            {% endif %}
-        </section>
+        <script>
+            let isNicknameValid = false;
+            let isPasswordMatch = false;
+
+            function checkNickname() {
+                const nickname = document.getElementById('modal-nickname-input').value;
+                const message = document.getElementById('modal-nickname-message');
+
+                if (!nickname.trim()) {
+                    message.textContent = '닉네임을 입력해주세요.';
+                    message.style.color = 'red';
+                    isNicknameValid = false;
+                    return;
+                }
+
+                fetch(`/accounts/check-nickname/?nickname=${encodeURIComponent(nickname)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.exists) {
+                            message.textContent = '이미 존재하는 닉네임입니다.';
+                            message.style.color = 'red';
+                            isNicknameValid = false;
+                        } else {
+                            message.textContent = '사용 가능한 닉네임입니다.';
+                            message.style.color = 'green';
+                            isNicknameValid = true;
+                        }
+                    });
+            }
+
+            document.getElementById('password-confirm').addEventListener('input', () => {
+                const pw = document.getElementById('password').value;
+                const confirm = document.getElementById('password-confirm').value;
+                const message = document.getElementById('password-message');
+
+                if (pw && confirm) {
+                    if (pw === confirm) {
+                        message.textContent = '비밀번호가 일치합니다.';
+                        message.style.color = 'green';
+                        isPasswordMatch = true;
+                    } else {
+                        message.textContent = '비밀번호가 맞는지 확인해주세요.';
+                        message.style.color = 'red';
+                        isPasswordMatch = false;
+                    }
+                } else {
+                    message.textContent = '';
+                    isPasswordMatch = false;
+                }
+            });
+
+            function validateForm() {
+                const nickname = document.getElementById('nickname').value.trim();
+                const password = document.getElementById('password').value.trim();
+                const confirm = document.getElementById('password-confirm').value.trim();
+                const univ = document.getElementById('univ').value.trim();
+
+                if (!nickname || !password || !confirm || !univ) {
+                    alert("모든 항목을 입력해주세요.");
+                    return false;
+                }
+
+                if (!isNicknameValid) {
+                    alert("닉네임 중복확인을 완료해주세요.");
+                    return false;
+                }
+
+                if (!isPasswordMatch) {
+                    alert("비밀번호가 일치하지 않습니다.");
+                    return false;
+                }
+
+                return true;
+            }
+        </script>
 
 
-        </div>
+        <script src="{% static 'js/users/mypage.js' %}"></script>
+        <script src="{% static 'js/utils/check.js' %}"></script>
 </body>
