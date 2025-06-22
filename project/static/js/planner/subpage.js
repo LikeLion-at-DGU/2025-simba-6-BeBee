@@ -23,8 +23,7 @@ function getCookie(name) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    const userId = document.querySelector(".login-user-info").dataset.userId;
-
+    const userId = document.querySelector(".login-user-info").textContent.match(/ID: (\d+)/)[1];
     const selectedDate = window.location.pathname.split("/")[4];
 
     // ✅ 할일 등록 (AJAX)
@@ -46,8 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 .then(res => res.json())
                 .then(data => {
                     if (data.id) {
-                        addTaskToDOM(data.content, data.id);
-                        form.reset();
+                        location.reload(); // 새로고침으로 UI 반영
                     } else {
                         alert("할일 등록 실패: " + (data.error || "Unknown error"));
                     }
@@ -84,7 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // ✅ 타이머 기능 연결
+    // ✅ 타이머 기능
     document.querySelectorAll(".start-btn").forEach(function (button) {
         const todoId = button.dataset.todoId;
         const display = document.getElementById(`timer-display-${todoId}`);
@@ -112,23 +110,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
         button.addEventListener("click", () => {
             const isStart = button.textContent.trim() === "START";
-            if (isStart) {
-                fetch(`/planner/start/${userId}/${todoId}/${selectedDate}/`)
-                    .then(res => res.json())
-                    .then(() => {
-                        button.textContent = "STOP";
-                        startTimer();
-                    })
-                    .catch(err => console.error("START 오류:", err));
-            } else {
-                fetch(`/planner/stop/${userId}/${todoId}/${selectedDate}/`)
-                    .then(res => res.json())
-                    .then(() => {
-                        button.textContent = "START";
-                        stopTimer();
-                    })
-                    .catch(err => console.error("STOP 오류:", err));
-            }
+            const url = isStart ? "start" : "stop";
+
+            fetch(`/planner/${url}/${userId}/${todoId}/${selectedDate}/`)
+                .then(res => res.json())
+                .then(() => {
+                    button.textContent = isStart ? "STOP" : "START";
+                    isStart ? startTimer() : stopTimer();
+                })
+                .catch(err => console.error(`${url.toUpperCase()} 오류:`, err));
         });
     });
 
@@ -143,10 +133,32 @@ document.addEventListener("DOMContentLoaded", () => {
                     "X-CSRFToken": getCookie("csrftoken")
                 },
             })
-                .then(res => {
-                    if (!res.ok) throw new Error("상태 변경 실패");
-                })
-                .catch(err => console.error("Toggle error:", err));
+            .then(res => {
+                if (!res.ok) throw new Error("상태 변경 실패");
+            })
+            .catch(err => console.error("Toggle error:", err));
+            }).catch(err => console.error("Toggle error:", err));
+        });
+    });
+
+    // ✅ 요일 버튼 클릭 시 이동
+    document.querySelectorAll(".hexagon-inner").forEach((button) => {
+        button.addEventListener("click", function () {
+            const dayMap = {
+                'SUN': 0, 'MON': 1, 'TUE': 2,
+                'WED': 3, 'THU': 4, 'FRI': 5, 'SAT': 6,
+            };
+
+            const targetDay = dayMap[this.dataset.day];
+            const pathParts = window.location.pathname.split("/");
+            const baseDateStr = pathParts[4];
+            const baseDate = new Date(baseDateStr);
+            const baseDay = baseDate.getDay();
+            const diff = targetDay - baseDay;
+            baseDate.setDate(baseDate.getDate() + diff);
+
+            const formatted = baseDate.toISOString().split("T")[0];
+            window.location.href = `/planner/subpage/${userId}/${formatted}/`;
         });
     });
 });
