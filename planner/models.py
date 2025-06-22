@@ -32,7 +32,7 @@ class Todo(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='not_completed')
     category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
     deadline = models.DateField(null=True, blank=True)
-    started_at = models.TimeField(null=True, blank=True)
+    started_at = models.DateTimeField(null=True, blank=True)
     ended_at = models.DateTimeField(null=True, blank=True)
     elapsed_time = models.DurationField(null=True, blank=True)
     total_elapsed_time = models.DurationField(default=timedelta())
@@ -53,7 +53,7 @@ class DailyGoal(models.Model):
     
 class Comment(models.Model):
     writer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='written_comments')
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments_on_page', null=False)  # 🐝 이 줄이 있어야 함
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments_on_page', null=True)  # 🐝 이 줄이 있어야 함
     content = models.TextField()
     date = models.DateField()
     created_at = models.DateTimeField(auto_now_add=True)

@@ -27,7 +27,7 @@
             <a href="/accounts/buddypage" class="nav-link">Buddy page</a>
             <a href="/mypage" class="nav-link">My page</a>
             <!-- 로그인 사용자 정보 표시 -->
-            <div class="login-user-info">
+            <div class="login-user-info" data-user-id="{{ login_user.id }}">
                 <p>현재 로그인: <strong>{{ login_user.username }}</strong> (ID: {{ login_user.id }})</p>
             </div>
 
@@ -71,11 +71,9 @@
                         <form method="POST" action="{% url 'planner:todo_delete' request.user.id todo.id %}">
                             {% csrf_token %}
                             <label>
-                                <input type="checkbox" 
-                                        class="todo-status-toggle" 
-                                        data-user-id="{{ request.user.id }}" 
-                                        data-todo-id="{{ todo.id }}"
-                                        {% if todo.status == 'completed' %}checked{% endif %}>
+                                <input type="checkbox" class="todo-status-toggle" data-user-id="{{ request.user.id }}"
+                                    data-todo-id="{{ todo.id }}" {% if todo.status == "completed" %}checked{% endif %}>
+
 
 
                                 <span class="todo-content">{{ todo.content }}</span>
@@ -84,10 +82,15 @@
 
                                 {# ✅ total_elapsed_time이 있으면 표시 #}
                                 {% if todo.total_elapsed_time %}
-                                <span class="todo-meta"><strong>⏱ {{ todo.total_elapsed_time|time:"H:i:s"
-                                        }}</strong></span>
-
+                                <!-- {% with seconds=todo.total_elapsed_time.total_seconds %}
+                                <span class="todo-meta"><strong>⏱ {{
+                                        seconds|floatformat:0|divisibleby:"1"|yesno:"%H:%M:%S" }}</strong></span>
+                                {% endwith %} -->
+                                <span class="todo-meta"><strong>⏱
+                                    {{ todo.total_elapsed_time|time:"H:i:s" }}
+                                </strong></span>
                                 {% endif %}
+
                             </label>
 
                             {% if login_user.id == target_user.id %}
@@ -108,7 +111,7 @@
             <!-- ✅ box4 -->
             {% if login_user.id == target_user.id %}
             <div class="box4">
-                <form method="POST" action="{% url 'planner:todo_create' request.user.id selected_date %}">
+                <form method="POST" action="{% url 'planner:todo_create' request.user.id selected_date %}"
                     class="todo-form-inline">
                     {% csrf_token %}
 
@@ -167,7 +170,11 @@
             <!-- ✅ right box2: 집중 타이머 -->
             <div class="right-box2" id="timer-box-{{ todo.id }}">
                 <div class="timer-label">집중 타이머 <span class="bulb">💡</span></div>
-                <div class="counter" id="timer-display-{{ todo.id }}">00 : 00 : 00</div>
+                <div class="counter" id="timer-display-{{ todo.id }}"
+                    data-elapsed-seconds="{{ todo.total_elapsed_time.total_seconds|default:0|floatformat:0 }}">
+                    00 : 00 : 00
+                </div>
+
                 <button class="start-btn" data-todo-id="{{ todo.id }}"
                     data-started="{{ todo.started_at|yesno:'true,false' }}" id="timer-button-{{ todo.id }}">
                     {% if todo.started_at %}STOP{% else %}START{% endif %}
