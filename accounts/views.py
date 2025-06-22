@@ -90,6 +90,9 @@ def buddypage(request, user_id):
     query = request.GET.get('q', '')
     following_ids = request.user.profile.followings.values_list('id', flat=True)
 
+    follower_count = request.user.profile.followers.count()
+    following_count = request.user.profile.followings.count()
+    
     page_user = get_object_or_404(User, id=user_id)
 
     if query:
@@ -100,6 +103,8 @@ def buddypage(request, user_id):
     return render(request, 'accounts/buddypage.html', {
         'users': users,
         'following_ids': following_ids,
+        'followr_count': folower_count,
+        'following_count': following_count,
         'page_user': page_user
     })
 
