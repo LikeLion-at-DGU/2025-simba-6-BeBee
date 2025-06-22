@@ -68,13 +68,14 @@
                 <ul class="todo-list" id="todo-list">
                     {% for todo in todos %}
                     <li class="todo-item">
-                        <form id="todo-form" method="POST" action="{% url 'planner:todo_delete' request.user.id todo.id %}">
+                        <form method="POST" action="{% url 'planner:todo_delete' request.user.id todo.id %}">
                             {% csrf_token %}
                             <label>
                                 <input type="checkbox" class="todo-status-toggle" data-user-id="{{ request.user.id }}"
                                     data-todo-id="{{ todo.id }}" {% if todo.status == "completed" %}checked{% endif %}>
 
 
+                                
 
                                 <span class="todo-content">{{ todo.content }}</span>
                                 <span class="todo-meta">({{ todo.category }})</span>

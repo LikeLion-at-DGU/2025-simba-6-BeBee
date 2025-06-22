@@ -26,3 +26,12 @@ def create_user_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance)
         
+
+class GiftExchange(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    exchange_time = models.DateTimeField(auto_now_add=True)
+    honey_used = models.PositiveIntegerField(default=2700)
+    is_successful = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.honey_used}g at {self.exchanged_at.strftime('%Y-%m-%d %H:%M')}"
