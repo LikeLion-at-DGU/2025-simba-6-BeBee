@@ -90,6 +90,9 @@ def buddypage(request):
     query = request.GET.get('q', '')
     following_ids = request.user.profile.followings.values_list('id', flat=True)
 
+    follower_count = request.user.profile.followers.count()
+    following_count = request.user.profile.followings.count()
+
     if query:
         users = User.objects.filter(profile__isnull=False, username__icontains=query).exclude(id=request.user.id)
     else:
@@ -97,7 +100,9 @@ def buddypage(request):
 
     return render(request, 'accounts/buddypage.html', {
         'users': users,
-        'following_ids': following_ids
+        'following_ids': following_ids,
+        'follower_count': follower_count,
+        'following_count': following_count,
     })
 
 
@@ -116,7 +121,13 @@ def follow(request, id):
     else:
         user.profile.followings.add(followed_user.profile)
 
-    return JsonResponse({'success': True, 'following': not is_following})
+    return JsonResponse({
+        'success': True,
+        'following': not is_following,
+        'follower_count': followed_user.profile.followers.count(),
+        'following_count': user.profile.followings.count(),
+    })
+
 
 
 @login_required
@@ -139,3 +150,11 @@ def friend_profile_api(request):
         })
     except User.DoesNotExist:
         return JsonResponse({'exists': False})
+    
+@login_required
+def follow_lists_partial(request):
+    return render(request, 'accounts/_follow_lists.html', {
+        'user': request.user,
+        'follower_count': request.user.profile.followers.count(),
+        'following_count': request.user.profile.followings.count(),
+    })

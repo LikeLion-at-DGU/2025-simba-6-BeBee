@@ -10,5 +10,6 @@ urlpatterns = [
     path('buddypage/', buddypage, name='buddypage'), 
     path('follow/<int:id>/',follow, name='follow'),
     path('api/friend_profile/', friend_profile_api, name='friend_profile_api'),
+    path('buddypage/partial_follow_lists/', follow_lists_partial, name='partial_follow_lists'),
 ]
 
