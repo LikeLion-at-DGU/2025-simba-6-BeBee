@@ -22,6 +22,10 @@ document.addEventListener("DOMContentLoaded", function () {
             .then((response) => response.json())
             .then((data) => {
                 if (data.exists) {
+                    if (data.id === CURRENT_USER_ID) {
+                        resetProfile("자기 자신은 검색할 수 없습니다.");
+                        return;
+                    }
                     renderFriendProfile(data);
                 } else {
                     resetProfile("일치하는 친구가 없습니다. 다시 검색해 주세요.");
@@ -72,7 +76,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 <div class="honey-value">${data.honey}g</div>
             </div>
         </div>
-        <button class="calendar-button" data-user-id="${data.id}">Buddy's Calendar</button>`;
+        <button class="calendar-button" data-user-id="${data.id}" data-is-following="${data.is_following}">
+            Buddy's Calendar
+        </button>`;
 
         const followBtn = profileBox.querySelector(".follow-button");
         followBtn.addEventListener("click", () => {
@@ -89,30 +95,39 @@ document.addEventListener("DOMContentLoaded", function () {
                     followBtn.textContent = data.following ? '언팔로우' : '팔로우';
 
                     const followingNum = document.querySelector(".following-num");
-                    if (followingNum) {
-                        followingNum.textContent = data.following_count;
-                    }
+                    if (followingNum) followingNum.textContent = data.following_count;
 
                     fetch('/accounts/buddypage/partial_follow_lists/')
                         .then(res => res.text())
                         .then(html => {
                             const tempDiv = document.createElement("div");
                             tempDiv.innerHTML = html;
+
                             const newLists = tempDiv.querySelectorAll(".follower-list");
                             const currentLists = document.querySelectorAll(".follower-list");
+
                             currentLists.forEach((list, i) => {
                                 list.innerHTML = newLists[i].innerHTML;
                             });
                         });
+
+                    handleSearch();  // 검색 결과 갱신
                 }
             });
         });
 
         const calendarBtn = profileBox.querySelector(".calendar-button");
-        calendarBtn.addEventListener("click", () => {
-            const userId = calendarBtn.dataset.userId;
-            window.location.href = `/main/${userId}`;
-        });
+        if (calendarBtn) {
+            calendarBtn.addEventListener("click", () => {
+                const isFollowing = calendarBtn.dataset.isFollowing === "true";
+                const userId = calendarBtn.dataset.userId;
+                if (isFollowing) {
+                    window.location.href = `/main/${userId}`;
+                } else {
+                    alert("친구의 캘린더를 보려면 팔로우를 하세요!");
+                }
+            });
+        }
     }
 
     function getCSRFToken() {

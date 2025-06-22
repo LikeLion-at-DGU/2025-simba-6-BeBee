@@ -3,6 +3,10 @@ from .models import *
 from planner.models import Todo
 from django.contrib.auth.models import User
 from datetime import date
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from accounts.models import GiftExchange
+
 
 
 def mypage(request, user_id):
@@ -33,4 +37,24 @@ def mypage(request, user_id):
     }
 
     return render(request, 'users/mypage.html', context)
+
+@login_required
+def exchange_honey(request):
+    profile = request.user.profile
+
+    if profile.honey_count >= 2700:
+        profile.honey_count -= 2700
+        profile.save()
+
+        GiftExchange.objects.create(
+            user=request.user,
+            honey_used=2700,
+            is_successful=True
+        )
+
+        messages.success(request, "기프티콘으로 교환되었습니다! 🎁")
+    else:
+        messages.error(request, "꿀이 부족해요! 최소 2700g이 필요합니다.")
+
+    return redirect('users:mypage', user_id=request.user.id)
 

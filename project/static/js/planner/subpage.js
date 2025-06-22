@@ -23,8 +23,10 @@ function getCookie(name) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    const userId = document.querySelector(".login-user-info").textContent.match(/ID: (\d+)/)[1];
-    const selectedDate = window.location.pathname.split("/")[4];
+    // ✅ 안정적인 방식으로 userId 가져오기
+    const userId = document.querySelector(".login-user-info").dataset.userId;
+    const pathParts = window.location.pathname.split("/");
+    const selectedDate = pathParts[4];
 
     // ✅ 할일 등록 (AJAX)
     const form = document.getElementById("todo-form");
@@ -45,7 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 .then(res => res.json())
                 .then(data => {
                     if (data.id) {
-                        location.reload(); // 새로고침으로 UI 반영
+                        location.reload();
                     } else {
                         alert("할일 등록 실패: " + (data.error || "Unknown error"));
                     }
@@ -137,7 +139,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (!res.ok) throw new Error("상태 변경 실패");
             })
             .catch(err => console.error("Toggle error:", err));
-            }).catch(err => console.error("Toggle error:", err));
+
         });
     });
 
@@ -150,9 +152,8 @@ document.addEventListener("DOMContentLoaded", () => {
             };
 
             const targetDay = dayMap[this.dataset.day];
-            const pathParts = window.location.pathname.split("/");
-            const baseDateStr = pathParts[4];
-            const baseDate = new Date(baseDateStr);
+            const [year, month, day] = selectedDate.split("-").map(Number);
+            const baseDate = new Date(year, month - 1, day);
             const baseDay = baseDate.getDay();
             const diff = targetDay - baseDay;
             baseDate.setDate(baseDate.getDate() + diff);
