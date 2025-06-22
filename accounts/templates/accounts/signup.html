@@ -6,45 +6,64 @@
     <meta charset="UTF-8">
     <title>회원가입</title>
     <link rel="stylesheet" href="{% static 'css/accounts/signup.css' %}" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Pen+Script&display=swap" rel="stylesheet">
 </head>
 
 <body>
+    <div class="background">
+        <div class="bubble small1"></div>
+        <div class="bubble small2"></div>
+
+        <div class="bubble medium"></div>
+
+        <div class="bubble large1"></div>
+        <div class="bubble large2"></div>
+        <div class="bubble xlarge"></div>
+    </div>
+
     <div class="container">
         <div class="signup-box">
-            <form method="POST" enctype="multipart/form-data" onsubmit="return validateForm();">
-                {% csrf_token %}
+            <div class="form-container">
+                <form method="POST" enctype="multipart/form-data" onsubmit="return validateForm();">
+                    {% csrf_token %}
 
-                {% if error %}
-                <p class="error-message" style="color: red; margin-bottom: 10px;">
-                    {{ error }}
-                </p>
-                {% endif %}
+                    {% if error %}
+                    <p class="error-message" style="color: red;">
+                        {{ error }}
+                    </p>
+                    {% endif %}
+                    <img src="{% static 'assets/images/bebee_char_img.png' %}" class="bebee-char">
+                    <img src="{% static 'assets/images/bebee_logo_img.png' %}" class="bebee-logo">
+                    <label for="nickname">닉네임</label>
+                    <div class="input-group">
+                        <input type="text" id="nickname" name="nickname" placeholder="예시: 아기사자" required>
+                        <button type="button" onclick="checkNickname()" class="check-button">중복확인</button>
+                    </div>
+                    <p id="nickname-message" class="message" style="font-size: 13px;"></p>
 
-                <label for="nickname">닉네임</label>
-                <div class="input-group">
-                    <input type="text" id="nickname" name="nickname" placeholder="아기사자" required>
-                    <button type="button" onclick="checkNickname()" class="check-button">중복확인</button>
-                </div>
-                <p id="nickname-message" class="message" style="font-size: 13px; margin-bottom: 10px;"></p>
+                    <label for="password">비밀번호</label>
+                    <div class="input-group">
+                        <input type="password" id="password" name="password" placeholder="예시: likeLion123" required>
+                    </div>
 
-                <label for="password">비밀번호</label>
-                <div class="input-group">
-                    <input type="password" id="password" name="password" placeholder="likeLion123" required>
-                </div>
+                    <label for="confirm">비밀번호 확인</label>
+                    <div class="input-group">
+                        <input type="password" id="password-confirm" name="confirm" placeholder="예시: likeLion123" required>
+                    </div>
+                    <p id="password-message" class="message" style="font-size: 13px;"></p>
 
-                <label for="confirm">비밀번호 확인</label>
-                <div class="input-group">
-                    <input type="password" id="password-confirm" name="confirm" placeholder="likeLion123" required>
-                </div>
-                <p id="password-message" class="message" style="font-size: 13px; margin-bottom: 10px;"></p>
-
-                <label for="univ">소속 대학</label>
-                <input type="text" id="univ" name="univ" placeholder="동국대학교" required>
-
-                <label for="profile_image">프로필 이미지</label>
-                <input type="file" id="profile_image" name="profile_image" accept="image/*">
-                <button type="submit" class="submit-button">회원가입</button>
-            </form>
+                    <label for="univ">소속 대학</label>
+                    <div class="input-group">
+                        <input type="text" id="univ" name="univ" placeholder="예시: 동국대학교" required>
+                    </div>
+                    <label for="profile_image">프로필 이미지</label>
+                    <input type="file" id="profile_image" name="profile_image" accept="image/*" class="profile-image-submit">
+                    <button type="submit" class="submit-button">회원가입</button>
+                </form>
+            </div>
         </div>
     </div>
 
