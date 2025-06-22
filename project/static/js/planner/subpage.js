@@ -143,10 +143,63 @@ document.addEventListener("DOMContentLoaded", () => {
                     "X-CSRFToken": getCookie("csrftoken")
                 },
             })
-                .then(res => {
-                    if (!res.ok) throw new Error("상태 변경 실패");
-                })
-                .catch(err => console.error("Toggle error:", err));
+            .then(res => {
+                if (!res.ok) throw new Error("상태 변경 실패");
+            })
+            .catch(err => console.error("Toggle error:", err));
+        });
+    });
+});
+
+// CSRF 토큰 가져오는 함수 (필요한 경우에만 추가)
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+// 클릭시 날짜 계산 후 리다이렉트 요일버튼
+document.addEventListener("DOMContentLoaded", function () {
+    const weekdayBtns = document.querySelectorAll('.hexagon-inner');
+
+    weekdayBtns.forEach(btn => {
+        btn.addEventListener('click', function () {
+            const selectedDay = this.dataset.day;
+
+            const userId = window.location.pathname.split("/")[3];  // 예: /planner/subpage/8/2025-06-22/
+            const baseDateStr = window.location.pathname.split("/")[4];
+            const baseDate = new Date(baseDateStr);
+
+            const dayMap = {
+                'SUN': 0,
+                'MON': 1,
+                'TUE': 2,
+                'WED': 3,
+                'THU': 4,
+                'FRI': 5,
+                'SAT': 6,
+            };
+
+            const baseDay = baseDate.getDay();
+            const targetDay = dayMap[selectedDay];
+            const diff = targetDay - baseDay;
+
+            const targetDate = new Date(baseDate);
+            targetDate.setDate(baseDate.getDate() + diff);
+
+            // yyyy-mm-dd 형식으로 포맷
+            const formatted = targetDate.toISOString().slice(0, 10);
+
+            window.location.href = `/planner/subpage/${userId}/${formatted}/`;
         });
     });
 });

@@ -68,7 +68,7 @@
                 <ul class="todo-list" id="todo-list">
                     {% for todo in todos %}
                     <li class="todo-item">
-                        <form method="POST" action="{% url 'planner:todo_delete' request.user.id todo.id %}">
+                        <form id="todo-form" method="POST" action="{% url 'planner:todo_delete' request.user.id todo.id %}">
                             {% csrf_token %}
                             <label>
                                 <input type="checkbox" class="todo-status-toggle" data-user-id="{{ request.user.id }}"
@@ -151,15 +151,15 @@
                 <div class="weekday-grid">
                     <div class="honeycomb-weekdays">
                         <div class="weekday-row top-row">
-                            <div class="hexagon-wrapper"><button class="hexagon-inner">MON</button></div>
-                            <div class="hexagon-wrapper"><button class="hexagon-inner">WED</button></div>
-                            <div class="hexagon-wrapper"><button class="hexagon-inner">FRI</button></div>
-                            <div class="hexagon-wrapper"><button class="hexagon-inner">SUN</button></div>
+                            <div class="hexagon-wrapper"><button class="hexagon-inner" data-day="MON">MON</button></div>
+                            <div class="hexagon-wrapper"><button class="hexagon-inner" data-day="WED">WED</button></div>
+                            <div class="hexagon-wrapper"><button class="hexagon-inner" data-day="FRI">FRI</button></div>
+                            <div class="hexagon-wrapper"><button class="hexagon-inner" data-day="SUN">SUN</button></div>
                         </div>
                         <div class="weekday-row bottom-row">
-                            <div class="hexagon-wrapper"><button class="hexagon-inner">TUE</button></div>
-                            <div class="hexagon-wrapper"><button class="hexagon-inner">THU</button></div>
-                            <div class="hexagon-wrapper"><button class="hexagon-inner">SAT</button></div>
+                            <div class="hexagon-wrapper"><button class="hexagon-inner" data-day="TUE">TUE</button></div>
+                            <div class="hexagon-wrapper"><button class="hexagon-inner" data-day="THU">THU</button></div>
+                            <div class="hexagon-wrapper"><button class="hexagon-inner" data-day="SAT">SAT</button></div>
                         </div>
                     </div>
 
