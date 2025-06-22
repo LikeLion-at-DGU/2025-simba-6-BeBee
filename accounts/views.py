@@ -103,7 +103,7 @@ def buddypage(request, user_id):
     return render(request, 'accounts/buddypage.html', {
         'users': users,
         'following_ids': following_ids,
-        'follower_count': folower_count,
+        'follower_count': follower_count,
         'following_count': following_count,
         'page_user': page_user
     })
@@ -136,25 +136,31 @@ def follow(request, id):
 @login_required
 def friend_profile_api(request):
     query = request.GET.get('q', '').strip()
+
     if not query:
         return JsonResponse({'exists': False})
+    
+    # 자기 자신
+    if query == 'me':
+        user = request.user
+    else:
+        try:
+            user = User.objects.get(username=query)
+        except User.DoesNotExist:
+            return JsonResponse({'exists': False})
 
-    try:
-        # 🔥 여기서 request.user가 아닌, 'username=query'로 친구 유저를 가져와야 함!
-        user = User.objects.get(username=query)
-        profile = user.profile
-        is_following = profile in request.user.profile.followings.all()
+    profile = user.profile
+    is_following = profile in request.user.profile.followings.all()
+    
+    return JsonResponse({
+        'exists': True,
+        'id': user.id,
+        'username': user.username,
+        'honey': getattr(profile, 'honey', 0),
+        'is_following': is_following,
+        'profile_image_url': profile.profile_image.url if profile.profile_image else ''
+    })
 
-        return JsonResponse({
-            'exists': True,
-            'id': user.id,  # ← 🔥 이게 친구 ID여야 함
-            'username': user.username,
-            'honey': getattr(profile, 'honey', 0),
-            'is_following': is_following,
-            'profile_image_url': profile.profile_image.url if profile.profile_image else '',
-        })
-    except User.DoesNotExist:
-        return JsonResponse({'exists': False})
     
 
 @login_required

@@ -76,25 +76,34 @@
 
             <!-- ✅ 오른쪽 상점 영역 -->
             <section class="right-panel">
-                <h2 class="shop-title">상점</h2>
-                <div class="honey-progress">
-                    <progress value="50" max="2700"></progress>
-                    <span class="honey-label">50 / 2700g</span>
-                </div>
+    <h2 class="shop-title">상점</h2>
+    <div class="honey-progress">
+        <progress value="{{ profile.honey_count }}" max="2700"></progress>
+        <span class="honey-label">{{ profile.honey_count }} / 2700g</span>
+    </div>
 
-                <div class="reward-box">
-                    <div class="reward-honey">
-                        <img src="{% static 'assets/honey_pot.png' %}" alt="꿀" />
-                        <span>50g</span>
-                    </div>
-                    <span class="reward-arrow">↔</span>
-                    <div class="reward-item">
-                        <img src="{% static 'assets/coffee.png' %}" alt="아메리카노" />
-                        <span>꿀 아메리카노 한 잔!</span>
-                        <button class="claim-button">수민</button>
-                    </div>
-                </div>
-            </section>
+    <div class="reward-box">
+        <div class="reward-honey">
+            <img src="{% static 'assets/honey_pot.png' %}" alt="꿀" />
+            <span>{{ profile.honey_count }}</span>
+        </div>
+        <span class="reward-arrow">↔</span>
+        <div class="reward-item">
+            <img src="{% static 'assets/coffee.png' %}" alt="아메리카노" />
+            <span>꿀 아메리카노 한 잔!</span>
+        </div>
+    </div>
+
+            {% if profile.honey_count >= 2700 %}
+            <form method="POST" action="{% url 'users:exchange_honey' %}">
+                {% csrf_token %}
+                <input type="hidden" name="user_id" value="{{ user.id }}">
+                <button type="submit" class="claim-button">기프티콘 교환하기</button>
+            </form>
+            {% else %}
+            <p class="need-more-honey">2700g 이상 모아야 교환할 수 있어요!</p>
+            {% endif %}
+        </section>
 
 
         </div>

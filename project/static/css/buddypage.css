@@ -57,7 +57,7 @@ body {
     color: #FFD640; /* 원하는 색상 지정 */
     font-size: 32px;
     font-family: "Bagel Fat One";
-    margin-left: 100px;
+    margin-left: 250px;
     height: 35px;
     margin-top: 10px;
     text-shadow:
@@ -403,6 +403,7 @@ body {
 
 .calendar-button {
     align-self: center;
+    text-align: center;
     padding: 10px 20px;
     background-color: #604500;
     color: white;
