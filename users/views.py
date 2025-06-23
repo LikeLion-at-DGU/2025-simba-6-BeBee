@@ -58,3 +58,6 @@ def exchange_honey(request):
 
     return redirect('users:mypage', user_id=request.user.id)
 
+
+
+

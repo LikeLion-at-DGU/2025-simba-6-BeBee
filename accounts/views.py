@@ -5,10 +5,6 @@ from .models import Profile
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 
-
-
-
-
 # 로그인
 def login(request):
     if request.method == 'POST':
