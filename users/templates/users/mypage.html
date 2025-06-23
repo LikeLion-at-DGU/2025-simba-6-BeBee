@@ -3,16 +3,45 @@
 <html lang="ko">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>마이 페이지</title>
-    <link rel="stylesheet" href="{% static 'css/users/mypage.css'%}" />
-    <link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <title>마이페이지</title>
+    <link rel="stylesheet" href="{% static 'css/users/mypage.css' %}">
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: #f8f8f8;
+            padding: 30px;
+        }
+
+        .stat-box {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            margin: auto;
+        }
+
+        .stat-item {
+            margin-bottom: 20px;
+        }
+
+        .stat-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            color: #007BFF;
+        }
+    </style>
 </head>
 
-
-
 <body>
+<<<<<<< HEAD
     <div class="wrapper">
         <div class="header-wrapper">
             <div class="honey-head">
@@ -227,3 +256,26 @@
         <script src="{% static 'js/users/mypage.js' %}"></script>
         <script src="{% static 'js/utils/check.js' %}"></script>
 </body>
+=======
+    <div class="stat-box">
+        <div class="stat-item">
+            <div class="stat-title">📌 누적 할일</div>
+            <div class="stat-value">{{ total_todos }} 개</div>
+        </div>
+
+        <div class="stat-item">
+            <div class="stat-title">⏱ 총 공부 시간</div>
+            <div class="stat-value">
+                {{ profile.total_study_time|default:"0" }} 시간
+            </div>
+        </div>
+
+        <div class="stat-item">
+            <div class="stat-title">🔥 평균 수행률</div>
+            <div class="stat-value">{{ success_rate }} %</div>
+        </div>
+    </div>
+</body>
+
+</html>
+>>>>>>> 9a573a7 (임시 커밋: rebase 전에 저장)
