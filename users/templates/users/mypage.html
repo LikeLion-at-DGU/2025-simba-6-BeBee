@@ -116,18 +116,18 @@
         <!-- ✏️ 닉네임/프로필 수정 모달 -->
         <div id="edit-profile-modal" class="profile-modal hidden">
             <div class="profile-modal-content">
-                <form method="POST" enctype="multipart/form-data" action="">
+                <form action="{% url 'users:update_profile' user.id %}" method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
                     <button type="button" class="profile-close-btn" id="close-modal">✖</button>
                     <label for="profile_image" class="profile-modal-label">
                         <img src="{{ profile.profile_image.url }}" alt="프로필 이미지" class="profile-modal-img" />
                         <p class="profile-modal-subtitle">프로필 사진 변경</p>
                     </label>
-                    <input type="file" id="profile_image" name="profile_image" class="hidden-input" accept="image/*">
+                    <input type="file" id="profile_image" name="image" class="hidden-input" accept="image/*">
 
                     <label for="modal-nickname-input" class="nickname-label">닉네임 수정</label>
                     <div class="nickname-input-box">
-                        <input id="modal-nickname-input" name="nickname" type="text" placeholder="기존 닉네임"
+                        <input id="modal-nickname-input" name="username" type="text" placeholder="기존 닉네임"
                             value="{{ user.username }}" />
                         <button type="button" onclick="checkNickname()">🔍</button>
                     </div>
