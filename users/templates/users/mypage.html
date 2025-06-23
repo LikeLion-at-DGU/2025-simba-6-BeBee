@@ -3,99 +3,62 @@
 <html lang="ko">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>마이 페이지</title>
-    <link rel="stylesheet" href="{% static 'css/users/mypage.css'%}" />
-    <link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <title>마이페이지</title>
+    <link rel="stylesheet" href="{% static 'css/users/mypage.css' %}">
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: #f8f8f8;
+            padding: 30px;
+        }
+
+        .stat-box {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            margin: auto;
+        }
+
+        .stat-item {
+            margin-bottom: 20px;
+        }
+
+        .stat-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            color: #007BFF;
+        }
+    </style>
 </head>
 
-
-
 <body>
-    <div class="wrapper">
-        <div class="header-wrapper">
-            <div class="honey-head">
-                <img src="{% static 'assets/images/mainpage_img6.png' %}" alt="honey drip" class="honey-drip-img">
-                <img src="{% static 'assets/images/mainpage_img6.png' %}" alt="honey drip" class="honey-drip-img">
-            </div>
-
-            
-
-            <div class="header-title-bar">
-                <h1 class="mypage-title">My page</h1>
-                <nav class="mypage-nav">
-                    <a class='nav' href="/">Calendar</a>
-                    <a class='nav' href="#">BuzzList</a>
-                    <a class='nav' href="/accounts/buddypage">Buddy page</a>
-                </nav>
-            </div>
-
-
+    <div class="stat-box">
+        <div class="stat-item">
+            <div class="stat-title">📌 누적 할일</div>
+            <div class="stat-value">{{ total_todos }} 개</div>
         </div>
 
-        <div class="content-wrapper">
-
-            <!-- ✅ 왼쪽 프로필/통계 영역 -->
-            <section class="left-panel">
-                <div class="profile-box">
-                    <div class="profile-header">
-                        <h2 class="profile-title">나의 프로필</h2>
-                    </div>
-                        
-                    <div class="profile-info">
-                        <img src="{{ profile.profile_image.url}}" alt="프로필 이미지" class="profile-img" />
-                        
-
-                        <div class="profile-text">
-
-                            <div class="profile-top">
-                                <strong class="nickname">{{ user.username }}님</strong>
-                                <button class="logout-button">로그아웃</button>
-                                <button class="edit-button">✏️</button>
-                            </div>
-
-                            <div class="profile-bottom">
-                                <span class="status">오늘 하루도 화이팅!</span>
-                            </div>
-                            
-                        </div>
-                    </div>
-                    
-                </div>
-
-                <div class="summary-box">
-                    <h2 class="summary-title">{{ user.username }}님의 6월 요약</h2>
-                    <div class="summary-stats">
-                        <div class="stat hex">누적 할 일 개수<br><strong>00개</strong></div>
-                        <div class="stat hex">총 공부 시간<br><strong>00 hrs 00 mins</strong></div>
-                        <div class="stat hex">일별 평균 수행률<br><strong>00%</strong></div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ✅ 오른쪽 상점 영역 -->
-            <section class="right-panel">
-                <h2 class="shop-title">상점</h2>
-                <div class="honey-progress">
-                    <progress value="50" max="2700"></progress>
-                    <span class="honey-label">50 / 2700g</span>
-                </div>
-
-                <div class="reward-box">
-                    <div class="reward-honey">
-                        <img src="{% static 'assets/honey_pot.png' %}" alt="꿀" />
-                        <span>50g</span>
-                    </div>
-                    <span class="reward-arrow">↔</span>
-                    <div class="reward-item">
-                        <img src="{% static 'assets/coffee.png' %}" alt="아메리카노" />
-                        <span>꿀 아메리카노 한 잔!</span>
-                        <button class="claim-button">수민</button>
-                    </div>
-                </div>
-            </section>
-
-
+        <div class="stat-item">
+            <div class="stat-title">⏱ 총 공부 시간</div>
+            <div class="stat-value">
+                {{ profile.total_study_time|default:"0" }} 시간
+            </div>
         </div>
+
+        <div class="stat-item">
+            <div class="stat-title">🔥 평균 수행률</div>
+            <div class="stat-value">{{ success_rate }} %</div>
+        </div>
+    </div>
 </body>
+
+</html>
