@@ -36,39 +36,72 @@
         </div>
 
         <div class="content-wrapper">
-
-            <!-- ✅ 왼쪽 프로필/통계 영역 -->
+            <!-- ✅ 왼쪽: 프로필 + 상점 -->
             <section class="left-panel">
+
+                <!-- 🐝 프로필 박스 -->
                 <div class="profile-box">
                     <div class="profile-header">
                         <h2 class="profile-title">나의 프로필</h2>
                     </div>
 
                     <div class="profile-info">
-                        <img src="{{ profile.profile_image.url}}" alt="프로필 이미지" class="profile-img" />
-
-
+                        <img src="{{ profile.profile_image.url }}" alt="프로필 이미지" class="profile-img" />
                         <div class="profile-text">
-
                             <div class="profile-top">
-                                <strong class="nickname">{{ user.username }}님</strong>
-                                <form method="GET" action="{% url 'accounts:logout' %}">
-                                    {% csrf_token %}
-                                    <button type="submit">로그아웃</button>
-                                </form>
-
-                                <button class="edit-button">✏️</button>
+                                <div class="profile-top-left">
+                                    <strong class="nickname">{{ user.username }}님</strong>
+                                </div>
+                                <div class="profile-top-right">
+                                    <form method="GET" action="{% url 'accounts:logout' %}">
+                                        {% csrf_token %}
+                                        <button type="submit">로그아웃</button>
+                                    </form>
+                                    <button class="edit-button">✏️</button>
+                                </div>
                             </div>
-
                             <div class="profile-bottom">
                                 <span class="status">오늘 하루도 화이팅!</span>
                             </div>
+                        </div>
+                    </div>
+                </div>
 
+                <!-- 🍯 상점 박스 -->
+                <div class="shop-box">
+                    <h2 class="shop-title">상점</h2>
+                    <div class="honey-progress">
+                        <progress value="{{ profile.honey_count }}" max="2700"></progress>
+                        <span class="honey-label">{{ profile.honey_count }} / 2700g</span>
+                    </div>
+
+                    <div class="reward-box">
+                        <div class="reward-honey">
+                            <img src="{% static 'assets/planner/honey-icon.png' %}" alt="꿀" />
+                            <span>{{ profile.honey_count }}</span>
+                        </div>
+                        <span class="reward-arrow">↔</span>
+                        <div class="reward-item">
+                            <img src="{% static 'assets/users/coffee.png' %}" alt="아메리카노" />
+                            <span>꿀 아메리카노 한 잔!</span>
                         </div>
                     </div>
 
-                </div>
+                    {% if profile.honey_count >= 2700 %}
+                    <form method="POST" action="{% url 'users:exchange_honey' %}" id="gifticonForm">
+                        {% csrf_token %}
+                        <input type="hidden" name="user_id" value="{{ user.id }}">
+                        <button type="button" id="openGifticonModal" class="claim-button">기프티콘 교환하기</button>
+                    </form>
 
+                    {% else %}
+                    <p class="need-more-honey">2700g 이상 모아야 교환할 수 있어요!</p>
+                    {% endif %}
+                </div>
+            </section>
+
+            <!-- ✅ 오른쪽: 요약 -->
+            <section class="right-panel">
                 <div class="summary-box">
                     <h2 class="summary-title">{{ user.username }}님의 6월 요약</h2>
                     <div class="summary-stats">
@@ -82,71 +115,51 @@
                     </div>
             </section>
 
-            <!-- ✅ 오른쪽 상점 영역 -->
-            <section class="right-panel">
-                <h2 class="shop-title">상점</h2>
-                <div class="honey-progress">
-                    <progress value="{{ profile.honey_count }}" max="2700"></progress>
-                    <span class="honey-label">{{ profile.honey_count }} / 2700g</span>
-                </div>
-
-                <div class="reward-box">
-                    <div class="reward-honey">
-                        <img src="{% static 'assets/honey_pot.png' %}" alt="꿀" />
-                        <span>{{ profile.honey_count }}</span>
-                    </div>
-                    <span class="reward-arrow">↔</span>
-                    <div class="reward-item">
-                        <img src="{% static 'assets/coffee.png' %}" alt="아메리카노" />
-                        <span>꿀 아메리카노 한 잔!</span>
-                    </div>
-                </div>
-
-                {% if profile.honey_count >= 2700 %}
-                <form method="POST" action="{% url 'users:exchange_honey' %}">
-                    {% csrf_token %}
-                    <input type="hidden" name="user_id" value="{{ user.id }}">
-                    <button type="submit" class="claim-button">기프티콘 교환하기</button>
-                </form>
-                {% else %}
-                <p class="need-more-honey">2700g 이상 모아야 교환할 수 있어요!</p>
-                {% endif %}
-            </section>
-
-
         </div>
 
-        <!-- ✏️ 수정 버튼 누르면 이 모달이 나타납니다 -->
-        <div id="edit-profile-modal" class="modal hidden">
-            <div class="modal-content">
 
-                <form method="POST" enctype="multipart/form-data" action="">
+        <!-- ✏️ 닉네임/프로필 수정 모달 -->
+        <div id="edit-profile-modal" class="profile-modal hidden">
+            <div class="profile-modal-content">
+                <form action="{% url 'users:update_profile' user.id %}" method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
-                    <!-- X 버튼 -->
-                    <button type="button" class="close-btn" id="close-modal">✖</button>
-
-                    <!-- 프로필 이미지 & 업로드 -->
-                    <label for="profile_image" class="modal-profile-label">
-                        <img src="{{ profile.profile_image.url }}" alt="프로필 이미지" class="profile-img" />
-                        <p class="modal-subtitle">프로필 사진 변경</p>
+                    <button type="button" class="profile-close-btn" id="close-modal">✖</button>
+                    <label for="profile_image" class="profile-modal-label">
+                        <img src="{{ profile.profile_image.url }}" alt="프로필 이미지" class="profile-modal-img" />
+                        <p class="profile-modal-subtitle">프로필 사진 변경</p>
                     </label>
-                    <input type="file" id="profile_image" name="profile_image" class="hidden-input" accept="image/*">
+                    <input type="file" id="profile_image" name="image" class="hidden-input" accept="image/*">
 
-                    <!-- 닉네임 수정 -->
                     <label for="modal-nickname-input" class="nickname-label">닉네임 수정</label>
                     <div class="nickname-input-box">
-                        <input id="modal-nickname-input" name="nickname" type="text" placeholder="기존 닉네임"
+                        <input id="modal-nickname-input" name="username" type="text" placeholder="기존 닉네임"
                             value="{{ user.username }}" />
                         <button type="button" onclick="checkNickname()">🔍</button>
                     </div>
                     <p id="modal-nickname-message" class="check-result">중복 여부를 확인해주세요!</p>
 
-                    <!-- 수정 버튼 -->
-                    <button type="submit" class="submit-btn">수정</button>
+                    <button type="submit" class="profile-submit-btn">수정</button>
                 </form>
-
             </div>
         </div>
+
+        <!-- 🍯 기프티콘 전송 모달 -->
+        <div id="gifticonModal" class="gifticon-modal-overlay">
+            <div class="gifticon-modal-content">
+                <div class="gifticon-modal-title">기프티콘 전송</div>
+                <input type="tel" id="phoneInput" placeholder="기프티콘을 받을 전화번호를 입력해주세요" />
+                <div class="gifticon-checkbox-container">
+                    <input type="checkbox" id="confirmCheck" />
+                    <label for="confirmCheck" class="gifticon-confirm-label">
+                        Be-BEE는 이용자의 기프티콘 발송을 위해 개인 전화번호를 수집하고자 합니다. 수집일로부터 기프티콘 발송 완료 후 30일까지 보관 후 즉시 파기될 예정입니다. 단,
+                        동의하지 않으실 경우 기프티콘 발송이 제한될 수 있습니다.
+                    </label>
+                </div>
+                <button id="redeemGiftBtn" disabled>기프티콘 받기</button>
+            </div>
+        </div>
+
+
 
         <script>
             let isNicknameValid = false;
@@ -224,7 +237,5 @@
             }
         </script>
 
-
         <script src="{% static 'js/users/mypage.js' %}"></script>
-        <script src="{% static 'js/utils/check.js' %}"></script>
 </body>
