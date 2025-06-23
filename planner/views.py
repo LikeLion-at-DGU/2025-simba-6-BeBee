@@ -34,7 +34,7 @@ def subpage(request, user_id, selected_date):
 
     comments = Comment.objects.filter(user_id=target_user.id, date=date_obj).order_by('created_at')
     daily_goal = DailyGoal.objects.filter(user=target_user, date=date_obj).first()
-
+    like_obj = Like.objects.filter(target_user=target_user, date=date_obj).first()
     return render(request, 'planner/subpage.html', {
         'todos': todos,
         'selected_date': selected_date,
@@ -42,6 +42,7 @@ def subpage(request, user_id, selected_date):
         'comments': comments,
         'target_user': target_user,
         'login_user': request.user,
+        like_obj: like_obj
     })
 
 
@@ -277,4 +278,19 @@ def comment_delete(request, comment_id):
     
     return redirect('planner:subpage',user_id=request.user.id, selected_date=timezone.now().strftime('%Y-%m-%d'))
 
+def like_subpage(request, user_id, selected_date):
+    target_user = get_object_or_404(User, id=user_id)
+    date_obj = datetime.strptime(selected_date, '%Y-%m-%d').date()
+
+    like_obj, created = Like.objects.get_or_create(target_user=target_user, date=date_obj)
+
+    if request.user in like_obj.like.all():
+        like_obj.like.remove(request.user)
+        like_obj.like_count -= 1
+    else:
+        like_obj.like.add(request.user)
+        like_obj.like_count += 1
+
+    like_obj.save()
+    return redirect('planner:subpage', user_id=user_id, selected_date=selected_date)
 
