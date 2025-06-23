@@ -165,23 +165,53 @@ document.querySelectorAll(".todo-status-toggle").forEach(checkbox => {
 
 
     // ✅ 요일 버튼 클릭 시 이동
+
+document.querySelectorAll(".hexagon-inner").forEach((button) => {
+    button.addEventListener("click", function () {
+        const dayMap = {
+            'MON': 1,
+            'TUE': 2,
+            'WED': 3,
+            'THU': 4,
+            'FRI': 5,
+            'SAT': 6,
+            'SUN': 0,
+        };
+
+        const targetDay = dayMap[this.dataset.day];
+        const [year, month, day] = selectedDate.split("-").map(Number);
+        const baseDate = new Date(year, month - 1, day);
+
+        // ✅ baseDate 기준으로 해당 주의 '월요일' 찾기
+// ✅ 요일 버튼 클릭 시 이동
     document.querySelectorAll(".hexagon-inner").forEach((button) => {
         button.addEventListener("click", function () {
             const dayMap = {
-                'SUN': 0, 'MON': 1, 'TUE': 2,
-                'WED': 3, 'THU': 4, 'FRI': 5, 'SAT': 6,
+                'MON': 1,
+                'TUE': 2,
+                'WED': 3,
+                'THU': 4,
+                'FRI': 5,
+                'SAT': 6,
+                'SUN': 7,
             };
 
             const targetDay = dayMap[this.dataset.day];
             const [year, month, day] = selectedDate.split("-").map(Number);
-            const baseDate = new Date(year, month - 1, day);
-            const baseDay = baseDate.getDay();
-            const diff = targetDay - baseDay;
-            baseDate.setDate(baseDate.getDate() + diff);
+            const fixedDate = new Date(year, month - 1, day); // 기준일 고정
 
-            const formatted = baseDate.toISOString().split("T")[0];
+            const baseDay = fixedDate.getDay(); // 0(일)~6(토)
+            const diffToMonday = (baseDay + 6) % 7 * -1; // 월요일은 1 → 0으로 만들기 위한 보정
+            const monday = new Date(fixedDate);
+            monday.setDate(fixedDate.getDate() + diffToMonday); // 주의 월요일 기준으로 설정
+
+            const targetDate = new Date(monday);
+            targetDate.setDate(monday.getDate() + targetDay); // 요일 차만큼 더함
+
+            const formatted = targetDate.toISOString().split("T")[0];
             window.location.href = `/planner/subpage/${userId}/${formatted}/`;
         });
     });
 });
-
+});
+});
