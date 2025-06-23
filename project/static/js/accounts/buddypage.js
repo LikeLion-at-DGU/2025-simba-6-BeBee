@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", function () {
             .then((response) => response.json())
             .then((data) => {
                 if (data.exists) {
-                    if (data.id === CURRENT_USER_ID) {
+                    if (data.id === Number(CURRENT_USER_ID)) {
                         resetProfile("자기 자신은 검색할 수 없습니다.");
                         return;
                     }
@@ -73,7 +73,8 @@ document.addEventListener("DOMContentLoaded", function () {
             <img src="/static/assets/images/mainpage_honeypot_img.png" class="honeypot-icon">
             <div class="honey-amount">
                 <div style="font-size: 25px;">현재 버디의 꿀</div>
-                <div class="honey-value">${data.honey}g</div>
+
+                <div class="honey-value">${data.honey_count}g</div>
             </div>
         </div>
         <button class="calendar-button" data-user-id="${data.id}" data-is-following="${data.is_following}">
@@ -111,8 +112,12 @@ document.addEventListener("DOMContentLoaded", function () {
                             });
                         });
 
-                    handleSearch();  // 검색 결과 갱신
-                }
+                    fetch(`/accounts/api/friend_profile/?q=${encodeURIComponent(data.username)}`)
+                        .then(res => res.json())
+                        .then(updatedData => {
+                            if (updatedData.exists) renderFriendProfile(updatedData);
+                        });
+                            }
             });
         });
 

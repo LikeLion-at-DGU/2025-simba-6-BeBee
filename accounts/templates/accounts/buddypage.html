@@ -43,13 +43,13 @@
         <!--
         <button type="button" class="buzzlist-button" onclick="location.href='/planner/subpage/'">BuzzList</button>
         -->
-        <button type="button" class="mypage-button" onclick="location.href='<!--마이페이지 링크-->'">My Page</button>
+        <button type="button" class="mypage-button" onclick="location.href='/users/mypage/{{ user.id }}/'">My Page</button>
         <img src="{% static 'assets/images/mainpage_honeypot_img.png' %}"
             alt="honeypot img"
             class="honeypot-img">
         <div class="amount-of-honey">
             <div class="amount-of-honey-text">현재 수집된 꿀</div>
-            <div class="amount-of-honey-num">50g</div>
+            <div class="amount-of-honey-num">{{ profile.honey_count }}g</div>
         </div>
     </div>
     <div class="column-container">
