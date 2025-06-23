@@ -25,9 +25,9 @@
 
         <!-- ✅ 상단 네비게이션 -->
         <div class="top-nav">
-            <a href="/" class="nav-link">Calendar</a>
-            <a href="/accounts/buddypage" class="nav-link">Buddy page</a>
-            <a href="/mypage" class="nav-link">My page</a>
+            <a href="{% url 'main:mainpage' login_user.id %}" class="nav-link">Calendar</a>
+            <a href="{% url 'accounts:buddypage' login_user.id %}" class="nav-link">Buddy page</a>
+            <a href="{% url 'users:mypage' login_user.id %}" class="nav-link">My page</a>
             <!-- 로그인 사용자 정보 표시 -->
             <div class="login-user-info" data-user-id="{{ login_user.id }}">
                 <p>현재 로그인: <strong>{{ login_user.username }}</strong> (ID: {{ login_user.id }}) <br>
