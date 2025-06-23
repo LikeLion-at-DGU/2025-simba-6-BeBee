@@ -59,6 +59,12 @@ def start_timer(request, user_id, todo_id, selected_date):
         todo.save()
     return JsonResponse({"message": "타이머 시작됨", "started_at": todo.started_at})
 
+# 시간+분 으로 바꿔주는 함수
+def format_timedelta(td):
+    total_seconds = int(td.total_seconds())
+    hours, remainder = divmod(total_seconds, 3600)
+    minutes, _ = divmod(remainder, 60)
+    return f"{hours}시간 {minutes}분"
 
 
 def stop_timer(request, user_id, todo_id, selected_date):
@@ -73,18 +79,24 @@ def stop_timer(request, user_id, todo_id, selected_date):
 
         # ✅ datetime 필드이므로 바로 사용
         start_dt = todo.started_at
-
+        
+        #할 일마다 timer 시간 저장
         elapsed_time = now - start_dt
         todo.ended_at = now
         todo.total_elapsed_time = (todo.total_elapsed_time or timedelta()) + elapsed_time
         todo.started_at = None
         todo.save()
 
+        # 프로필 총 공부시간 필드에 저장
+        profile = request.user.profile
+        profile.total_study_time = (profile.total_study_time or timedelta()) + elapsed_time
+        profile.save()
+
         return JsonResponse({
             "message": "타이머 종료됨",
             "ended_at": todo.ended_at,
             "elapsed": str(elapsed_time),
-            "total_elapsed": str(todo.total_elapsed_time),
+            "total_elapsed": format_timedelta(todo.total_elapsed_time),
         })
 
     return JsonResponse({"error": "타이머가 시작되지 않았습니다."}, status=400)
@@ -273,10 +285,11 @@ def comment_delete(request, comment_id):
     
     if request.user == comment.writer:
         selected_date = comment.date.strftime('%Y-%m-%d')
+        target_user_id = comment.user.id
         comment.delete()
-        return redirect('planner:subpage', user_id=request.user.id, selected_date=selected_date)
+        return redirect('planner:subpage', user_id=target_user_id, selected_date=selected_date)
     
-    return redirect('planner:subpage',user_id=request.user.id, selected_date=timezone.now().strftime('%Y-%m-%d'))
+    return redirect('planner:subpage',user_id=comment.user.id, selected_date=timezone.now().strftime('%Y-%m-%d'))
 
 def like_subpage(request, user_id, selected_date):
     target_user = get_object_or_404(User, id=user_id)

@@ -135,6 +135,21 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
+    window.loadAndRenderProfile = function(username) {
+        fetch(`/accounts/api/friend_profile/?q=${encodeURIComponent(username)}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.exists) {
+                    renderFriendProfile(data);
+                } else {
+                    alert("프로필 정보를 불러올 수 없습니다.");
+                }
+            })
+            .catch(() => {
+                alert("서버 요청 중 오류가 발생했습니다.");
+            });
+    };
+
     function getCSRFToken() {
         const name = 'csrftoken';
         const cookies = document.cookie.split(';');
