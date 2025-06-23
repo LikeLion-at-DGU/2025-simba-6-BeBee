@@ -159,9 +159,10 @@ body {
 /* ✅ 4-2. 오른쪽: 상점 */
 .right-panel {
     flex: 1;
-    border-radius: 30px;
+    height:100%;
+    /* border-radius: 30px;
     background: #FFFEEC;
-    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25), 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25), 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset; */
 }
 
 .profile-box {
@@ -458,4 +459,91 @@ progress::-webkit-progress-value {
     font-weight: bold;
     font-size: 15px;
     cursor: pointer;
+}
+
+
+/* 🍯 기프티콘 전송 모달 스타일 */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.8);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.modal-overlay.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background: #F9EBA2;
+    padding: 20px;
+    border-radius: 10px;
+    width: 500px;
+    max-width: 90%;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.modal-title {
+    margin-top: 0;
+    margin-bottom: 12px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+
+.modal-content input[type="tel"] {
+    width: 100%;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.modal-content input[type="tel"]::placeholder {
+    color: #999;
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: flex-start;
+    margin: 15px 0;
+}
+
+.checkbox-container input[type="checkbox"] {
+    margin: 2px 5px 0 0;
+}
+
+.confirm-label {
+    font-size: 13px;
+    line-height: 1.4;
+    color: #333;
+}
+
+.modal-content button {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background: #ccc;
+    color: #666;
+}
+
+.modal-content button:enabled {
+    background: #6B4F1D;
+    color: #fff;
+}
+
+.modal-content button:disabled {
+    cursor: not-allowed;
 }
