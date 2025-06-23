@@ -151,6 +151,15 @@ document.querySelectorAll(".todo-status-toggle").forEach(checkbox => {
             const listItem = checkbox.closest("li.todo-item");
             const ul = document.getElementById("todo-list");
 
+            // ✅ 하루 수확 프로그레스 바 업데이트
+            const progressElem = document.querySelector("progress");
+            const progressLabel = document.querySelector(".honey-label");
+            if (progressElem && progressLabel && data.daily_earned !== undefined) {
+                progressElem.value = data.daily_earned;
+                progressLabel.textContent = `${data.daily_earned} / 50g`;
+            }
+            
+
             if (data.status === "completed") {
                 listItem.classList.add("completed");   // 흐림 효과
                 ul.appendChild(listItem);              // 맨 아래로 이동
@@ -199,24 +208,3 @@ document.querySelectorAll(".todo-status-toggle").forEach(checkbox => {
 });
 
 
-// 좋아요 버튼 클릭 이벤트
-
-document.addEventListener("DOMContentLoaded", function () {
-    const likeBtn = document.getElementById("like-button");
-    const likeForm = document.getElementById("like-form");
-
-    let liked = likeBtn.textContent.trim() === "❤️";
-
-    likeBtn.addEventListener("click", function () {
-        if (!liked) {
-            // 좋아요 상태로 변경
-            likeBtn.textContent = "❤️";
-            liked = true;
-
-            // 서버에 전송
-            likeForm.submit();
-        } 
-        // ❌ 한 번 누르면 그대로 유지 (submit만 하고 UI만 유지)
-        // ❌ 다시 누르면 아무 반응 없음 (submit 없음)
-    });
-});

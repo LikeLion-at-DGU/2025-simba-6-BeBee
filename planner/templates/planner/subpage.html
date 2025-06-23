@@ -53,38 +53,41 @@
 
 
             <!-- ✅ box1 -->
+            <div class="box1">
 
-            <!-- <div class="box1-right">
-                <form method="POST"
-                    action="{% url 'planner:like_subpage' user_id=target_user.id selected_date=selected_date %}"
-                    style="display: flex; flex-direction: column; align-items: center;">
-                    {% csrf_token %}
-                    <button type="submit" class="heart-icon"
-                        style="background: none; border: none; font-size: 2rem; cursor: pointer;">
-                        {% if is_liked %}
-                        ❤️
-                        {% else %}
-                        🤍
-                        {% endif %}
-                    </button>
-                    <div class="heart-label">좋아요 <span>{{ like_obj.like_count|default:0 }}</span></div>
-                </form>
-            </div> -->
+                <div class="box1-left">
+                    <!-- <img src="{% static 'assets/planner/buzzlist-logo.png' %}" alt="logo" class="buzzlist-logo" /> -->
+                    <img src="{% static 'assets/planner/honey-icon.png' %}" alt="icon" class="honey-icon" />
+                </div>
 
-            <form method="POST"
-                action="{% url 'planner:like_subpage' user_id=target_user.id selected_date=selected_date %}"
-                style="display: flex; flex-direction: column; align-items: center;" id="like-form">
-                {% csrf_token %}
-                <button type="button" class="heart-icon" id="like-button"
-                    style="background: none; border: none; font-size: 2rem; cursor: pointer;">
-                    {% if is_liked %}
-                    ❤️
-                    {% else %}
-                    🤍
-                    {% endif %}
-                </button>
-                <div class="heart-label">좋아요 <span id="like-count">{{ like_obj.like_count|default:0 }}</span></div>
-            </form>
+                <div class="box1-middle">
+                    <p class="goal-text">오늘도 꿀을 모아볼까요? 🐝</p>
+                    <p class="honey-progress">
+                        <progress value="{{ login_user.profile.daily_honey_earned }}" max="50"></progress>
+                        <span class="honey-label">{{ login_user.profile.daily_honey_earned }} / 50g</span>
+                    </p>
+                </div>
+
+                <div class="box1-right">
+                    <form method="POST"
+                        action="{% url 'planner:like_subpage' user_id=target_user.id selected_date=selected_date %}"
+                        style="display: flex; flex-direction: column; align-items: center;">
+                        {% csrf_token %}
+                        <button type="submit" class="heart-icon"
+                            style="background: none; border: none; font-size: 2rem; cursor: pointer;">
+                            {% if is_liked %}
+                            ❤️
+                            {% else %}
+                            🤍
+                            {% endif %}
+                        </button>
+                        <div class="heart-label">좋아요 <span>{{ like_obj.like_count|default:0 }}</span></div>
+                    </form>
+                </div>
+
+            </div>
+
+
 
 
             <div class="box2">
@@ -143,6 +146,11 @@
                     <!-- ✅ 2줄: 기한 + 카테고리 뱃지 -->
                     <div class="todo-bottom-row">
                         <span class="todo-deadline">기한: {{ todo.deadline|date:"Y-m-d" }}</span>
+                        {% if todo.total_elapsed_time %}
+                        <div class="todo-studytime">
+                            공부 시간: {{ todo.formatted_time }}
+                        </div>
+                        {% endif %}
                         <span class="todo-category">{{ todo.category }}</span>
                     </div>
                 </form>
