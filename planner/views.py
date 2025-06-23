@@ -8,8 +8,10 @@ from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 from django.views.decorators.http import require_POST
+from django.db.models import Case, When, Value, IntegerField
 
 # ⭐ user_id 변경: 전체 뷰에게 적용
+
 
 def subpage(request, user_id, selected_date):
     if not request.user.is_authenticated:
@@ -21,33 +23,29 @@ def subpage(request, user_id, selected_date):
     except ValueError:
         return redirect('planner:subpage', user_id=user_id, selected_date=timezone.now().strftime('%Y-%m-%d'))
 
-    todos = Todo.objects.filter(user=target_user, date=date_obj)
+    # ✅ 여기에 status 정렬 우선순위 지정
+    todos = Todo.objects.filter(user=target_user, date=date_obj).annotate(
+        status_order=Case(
+            When(status='completed', then=Value(1)),
+            default=Value(0),
+            output_field=IntegerField()
+        )
+    ).order_by('status_order', 'id')
+
+    comments = Comment.objects.filter(user_id=target_user.id, date=date_obj).order_by('created_at')
     daily_goal = DailyGoal.objects.filter(user=target_user, date=date_obj).first()
-
-    comments = Comment.objects.filter(
-    user_id=target_user.id,  # ❗ 댓글이 속한 사용자
-    date=date_obj).select_related('writer__profile').order_by('created_at')
-
     like_obj = Like.objects.filter(target_user=target_user, date=date_obj).first()
-
-    return render(request, 'planner/subpage.html', {'todos': todos, 'selected_date': selected_date, 'daily_goal':daily_goal, 'comments': comments, 'target_user': target_user,
-    'login_user': request.user,'like_obj': like_obj,
+    return render(request, 'planner/subpage.html', {
+        'todos': todos,
+        'selected_date': selected_date,
+        'daily_goal': daily_goal,
+        'comments': comments,
+        'target_user': target_user,
+        'login_user': request.user,
+        like_obj: like_obj
     })
 
-# def start_timer(request, user_id, todo_id, selected_date):
-#     if not request.user.is_authenticated:
-#         return redirect('accounts:login')
 
-
-#     if request.user.id != user_id:
-#         return HttpResponseForbidden("권한이 없습니다.")
-
-#     todo = get_object_or_404(Todo, id=todo_id, user_id=user_id)
-#     if not todo.started_at:
-#         todo.started_at = timezone.now()
-#         todo.save()
-
-#     return redirect('planner:subpage', user_id=user_id, selected_date=selected_date)
 
 def start_timer(request, user_id, todo_id, selected_date):
     if not request.user.is_authenticated:
@@ -62,27 +60,6 @@ def start_timer(request, user_id, todo_id, selected_date):
     return JsonResponse({"message": "타이머 시작됨", "started_at": todo.started_at})
 
 
-
-# def stop_timer(request, user_id, todo_id, selected_date):
-#     if not request.user.is_authenticated:
-#         return redirect('accounts:login')
-
-#     if request.user.id != user_id:
-#         return HttpResponseForbidden("권한이 없습니다.")
-
-#     todo = get_object_or_404(Todo, id=todo_id, user_id=user_id)
-#     if todo.started_at:
-#         now = timezone.now()
-#         start_dt = datetime.combine(todo.date, todo.started_at)
-#         if timezone.is_naive(start_dt):
-#             start_dt = timezone.make_aware(start_dt)
-#         elapsed_time = now - start_dt
-#         todo.ended_at = now
-#         todo.total_elapsed_time = (todo.total_elapsed_time or timedelta()) + elapsed_time
-#         todo.started_at = None
-#         todo.save()
-
-#     return redirect('planner:subpage', user_id=user_id, selected_date=selected_date)
 
 def stop_timer(request, user_id, todo_id, selected_date):
     if not request.user.is_authenticated:
@@ -160,34 +137,6 @@ def todo_delete(request, user_id, todo_id):
     todo.delete()
     return redirect('planner:subpage', user_id=user_id, selected_date=selected_date)
 
-# def todo_complete(request, user_id, todo_id):
-#     if not request.user.is_authenticated:
-#         return redirect('accounts:login')
-
-#     if request.user.id != user_id:
-#         return HttpResponseForbidden("권한이 없습니다.")
-
-#     todo = get_object_or_404(Todo, id=todo_id, user_id=user_id)
-#     if todo.status != 'completed':
-#         todo.status = 'completed'
-#         todo.save()
-
-#         try:
-#             profile = todo.user.profile
-#             profile.completed_todo_count += 1
-#             today = timezone.now().date()
-#             HONEY_PER_TODO = 10
-#             DAILY_HONEY_CAP = 50
-#             if profile.last_honey_earned_date != today:
-#                 profile.daily_honey_earned = 0
-#                 profile.last_honey_earned_date = today
-#             if profile.daily_honey_earned < DAILY_HONEY_CAP:
-#                 profile.honey_count += HONEY_PER_TODO
-#                 profile.daily_honey_earned += HONEY_PER_TODO
-#             profile.save()
-#         except Profile.DoesNotExist:
-#             pass
-
 @require_POST
 def todo_complete(request, user_id, todo_id):
     if not request.user.is_authenticated:
@@ -197,32 +146,42 @@ def todo_complete(request, user_id, todo_id):
         return HttpResponseForbidden("권한이 없습니다.")
 
     todo = get_object_or_404(Todo, id=todo_id, user_id=user_id)
+    profile = todo.user.profile
+    today = timezone.now().date()
+    HONEY_PER_TODO = 10
 
-    # 상태 토글
+    # ✅ 날짜가 바뀌면 일일 꿀 초기화
+    if profile.last_honey_earned_date != today:
+        profile.daily_honey_earned = 0
+        profile.last_honey_earned_date = today
+
     if todo.status == 'completed':
+        # ✅ 체크 해제 → 꿀 차감
         todo.status = 'not_completed'
+        profile.completed_todo_count = max(0, profile.completed_todo_count - 1)
+        profile.honey_count = max(0, profile.honey_count - HONEY_PER_TODO)
+        profile.daily_honey_earned = max(0, profile.daily_honey_earned - HONEY_PER_TODO)
     else:
+        # ✅ 체크 → 꿀 지급
         todo.status = 'completed'
+        profile.completed_todo_count += 1
 
-        # ✅ 완료로 바뀐 경우만 꿀 지급 로직 실행
-        try:
-            profile = todo.user.profile
-            profile.completed_todo_count += 1
-            today = timezone.now().date()
-            HONEY_PER_TODO = 10
-            DAILY_HONEY_CAP = 50
-            if profile.last_honey_earned_date != today:
-                profile.daily_honey_earned = 0
-                profile.last_honey_earned_date = today
-            if profile.daily_honey_earned < DAILY_HONEY_CAP:
-                profile.honey_count += HONEY_PER_TODO
-                profile.daily_honey_earned += HONEY_PER_TODO
-            profile.save()
-        except Profile.DoesNotExist:
-            pass
+        if profile.daily_honey_earned < 50:
+            give = min(HONEY_PER_TODO, 50 - profile.daily_honey_earned)
+            profile.honey_count += give
+            profile.daily_honey_earned += give
 
     todo.save()
-    return JsonResponse({'status': todo.status})
+    profile.save()
+    print("🔁 상태 저장됨:", todo.id, todo.status)
+
+    return JsonResponse({
+    'status': todo.status,
+    'honey_count': profile.honey_count,  # ✅ 꿀 정보 추가
+    
+})
+
+
 
 
 def write_goal(request, user_id, selected_date):
@@ -258,6 +217,19 @@ def update_goal(request, user_id, selected_date):
             goal_obj.save()
     return redirect('planner:subpage', user_id=user_id, selected_date=selected_date)
 
+# def delete_goal(request, user_id, selected_date):
+#     if not request.user.is_authenticated:
+#         return redirect('accounts:login')
+
+#     if request.user.id != user_id:
+#         return HttpResponseForbidden("권한이 없습니다.")
+
+#     date_obj = datetime.strptime(selected_date, '%Y-%m-%d').date()
+#     goal_obj = DailyGoal.objects.get(user_id=user_id, date=date_obj)
+#     goal_obj.delete()
+#     return redirect('planner:subpage', user_id=user_id, selected_date=selected_date)
+
+
 def delete_goal(request, user_id, selected_date):
     if not request.user.is_authenticated:
         return redirect('accounts:login')
@@ -266,10 +238,13 @@ def delete_goal(request, user_id, selected_date):
         return HttpResponseForbidden("권한이 없습니다.")
 
     date_obj = datetime.strptime(selected_date, '%Y-%m-%d').date()
-    goal_obj = DailyGoal.objects.get(user_id=user_id, date=date_obj)
-    goal_obj.delete()
-    return redirect('planner:subpage', user_id=user_id, selected_date=selected_date)
 
+    # 안전하게 goal 객체 조회
+    goal_obj = DailyGoal.objects.filter(user_id=user_id, date=date_obj).first()
+    if goal_obj:
+        goal_obj.delete()
+
+    return redirect('planner:subpage', user_id=user_id, selected_date=selected_date)
 
 
 def view_comment(request, selected_date):

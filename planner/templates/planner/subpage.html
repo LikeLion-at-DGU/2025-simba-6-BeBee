@@ -45,6 +45,7 @@
             <h1 class="logo">BuzzList</h1>
 
             <!-- ✅ box1 -->
+
             <div class="box1-right">
                 <form method="POST"
                     action="{% url 'planner:like_subpage' user_id=target_user.id selected_date=selected_date %}"
@@ -62,34 +63,35 @@
                 </form>
             </div>
 
-            <!-- ✅ box2 -->
-            <!-- <div class="box2">
-                <span class="goal-label">오늘의 목표</span>
-                <div class="goal-line"></div>
-            </div> -->
 
             <div class="box2">
-                <form method="POST" action="{% url 'planner:update_goal' login_user.id selected_date %}"
+                <form method="POST"
+                    action="{% if daily_goal %}{% url 'planner:update_goal' login_user.id selected_date %}{% else %}{% url 'planner:write_goal' login_user.id selected_date %}{% endif %}"
                     class="goal-form">
                     {% csrf_token %}
-                    <input type="text" name="goal" value="{{ daily_goal.goal }}" class="goal-input"
+                    <input type="text" name="goal" value="{{ daily_goal.goal|default:'' }}" class="goal-input"
                         placeholder="오늘의 다짐을 입력하세요" />
-
                     <div class="goal-button-group">
+                        {% if daily_goal %}
                         <button type="submit" class="submit-button"><i class="fas fa-pen"></i></button>
                 </form>
-
                 <form method="POST" action="{% url 'planner:delete_goal' login_user.id selected_date %}">
                     {% csrf_token %}
                     <button type="submit" class="submit-button"><i class="fas fa-trash"></i></button>
                 </form>
+                {% else %}
+                <button type="submit" class="submit-button"><i class="fas fa-arrow-right"></i></button>
+                </form>
+                {% endif %}
             </div>
+
+
+
     </div>
 
 
 
     <!-- ✅ box3-->
-
 
 
     <div class="box3">
@@ -99,7 +101,7 @@
             <li class="todo-item {% if todo.status == 'completed' %}completed{% endif %}">
                 <form method="POST" action="{% url 'planner:todo_delete' request.user.id todo.id %}">
                     {% csrf_token %}
-
+                    
                     <!-- ✅ 1줄: 체크박스 + 내용 + 버튼 -->
                     <div class="todo-top-row">
                         <input type="checkbox" class="todo-status-toggle" data-user-id="{{ request.user.id }}"
