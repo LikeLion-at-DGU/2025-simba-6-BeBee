@@ -19,14 +19,14 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from django.shortcuts import redirect
+from main.views import login_redirect
 
 
 urlpatterns = [
-    path('', lambda request: redirect('accounts:login')),
+    path('', login_redirect), # default 로 로그인 페이지.
     path('admin/', admin.site.urls),
-    path('main/', include('main.urls')), # default 로 mainpage 연결!,
+    path('main/', include('main.urls')), 
     path('accounts/', include('accounts.urls')),
     path('planner/', include('planner.urls')),
     path('users/', include('users.urls')),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-

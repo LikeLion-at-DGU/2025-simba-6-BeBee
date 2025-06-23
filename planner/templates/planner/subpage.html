@@ -25,9 +25,9 @@
 
         <!-- ✅ 상단 네비게이션 -->
         <div class="top-nav">
-            <a href="/" class="nav-link">Calendar</a>
-            <a href="/accounts/buddypage" class="nav-link">Buddy page</a>
-            <a href="/mypage" class="nav-link">My page</a>
+            <a href="{% url 'main:mainpage' login_user.id %}" class="nav-link">Calendar</a>
+            <a href="{% url 'accounts:buddypage' login_user.id %}" class="nav-link">Buddy page</a>
+            <a href="{% url 'users:mypage' login_user.id %}" class="nav-link">My page</a>
             <!-- 로그인 사용자 정보 표시 -->
             <div class="login-user-info" data-user-id="{{ login_user.id }}">
                 <p>현재 로그인: <strong>{{ login_user.username }}</strong> (ID: {{ login_user.id }}) <br>
@@ -45,30 +45,22 @@
             <h1 class="logo">BuzzList</h1>
 
             <!-- ✅ box1 -->
-            <div class="box1">
 
-                <div class="box1-left">
-                    <!-- <img src="{% static 'assets/planner/buzzlist-logo.png' %}" alt="logo" class="buzzlist-logo" /> -->
-                    <img src="{% static 'assets/planner/honey-icon.png' %}" alt="icon" class="honey-icon" />
-                </div>
-
-                <div class="box1-middle">
-                    <p class="goal-text">오늘도 꿀을 모아볼까요? 🐝</p>
-                    <p class="honey-gage"></p>
-                </div>
-                <div class="box1-right">
-                    <!-- <div class="heart-icon">🤍</div>
-                    <div class="heart-label">좋아요</div> -->
-                    <form method="POST" action="{% url 'planner:like_subpage' user_id=target_user.id selected_date=selected_date %}">
-                        {% csrf_token %}
-                        <button type="submit">❤️ 좋아요</button>
-                    </form>
-                    <!-- 좋아요 수 -->
-                    <p style="margin: 0;">
-                        좋아요 수: {{ like_obj.like_count|default:0 }}
-                    </p>
-                </div>
-
+            <div class="box1-right">
+                <form method="POST"
+                    action="{% url 'planner:like_subpage' user_id=target_user.id selected_date=selected_date %}"
+                    style="display: flex; flex-direction: column; align-items: center;">
+                    {% csrf_token %}
+                    <button type="submit" class="heart-icon"
+                        style="background: none; border: none; font-size: 2rem; cursor: pointer;">
+                        {% if is_liked %}
+                        ❤️
+                        {% else %}
+                        🤍
+                        {% endif %}
+                    </button>
+                    <div class="heart-label">좋아요 <span>{{ like_obj.like_count|default:0 }}</span></div>
+                </form>
             </div>
 
 
@@ -109,7 +101,7 @@
             <li class="todo-item {% if todo.status == 'completed' %}completed{% endif %}">
                 <form method="POST" action="{% url 'planner:todo_delete' request.user.id todo.id %}">
                     {% csrf_token %}
-
+                    
                     <!-- ✅ 1줄: 체크박스 + 내용 + 버튼 -->
                     <div class="todo-top-row">
                         <input type="checkbox" class="todo-status-toggle" data-user-id="{{ request.user.id }}"
