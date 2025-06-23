@@ -1,13 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from .models import *
 from django.contrib import auth
 from django.contrib.auth.models import User
 from .models import Profile
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
-
-
-
-
 
 # 로그인
 def login(request):
@@ -83,9 +80,6 @@ def check_nickname(request):
     exists = User.objects.filter(username=nickname).exists()
     return JsonResponse({'exists': exists})
 
-
-# 버디페이지
-@login_required
 def buddypage(request, user_id):
     query = request.GET.get('q', '')
     following_ids = request.user.profile.followings.values_list('id', flat=True)
@@ -94,19 +88,29 @@ def buddypage(request, user_id):
     following_count = request.user.profile.followings.count()
     
     page_user = get_object_or_404(User, id=user_id)
+    profile = page_user.profile  # ✅ 수정: 페이지 주인의 프로필 가져오기
 
     if query:
-        users = User.objects.filter(profile__isnull=False, username__icontains=query).exclude(id=request.user.id)
+        users = User.objects.filter(
+            profile__isnull=False,
+            username__icontains=query
+        ).exclude(id=request.user.id)
     else:
         users = [request.user]
 
-    return render(request, 'accounts/buddypage.html', {
-        'users': users,
+    context = {
+        'user': request.user,         # ✅ 현재 로그인한 사용자
+        'users': users,               # ✅ 검색 또는 전체 유저 리스트
+        'profile': profile,           # ✅ 현재 페이지 주인의 프로필
         'following_ids': following_ids,
         'follower_count': follower_count,
         'following_count': following_count,
-        'page_user': page_user
-    })
+        'page_user': page_user,
+        'honey_count': profile.honey_count,
+    }
+
+    return render(request, 'accounts/buddypage.html', context)
+
 
 
 # 팔로우/언팔로우 기능
@@ -129,6 +133,7 @@ def follow(request, id):
         'following': not is_following,
         'follower_count': followed_user.profile.followers.count(),
         'following_count': user.profile.followings.count(),
+        'honey_count': user.profile.honey_count,
     })
 
 
@@ -156,7 +161,7 @@ def friend_profile_api(request):
         'exists': True,
         'id': user.id,
         'username': user.username,
-        'honey': getattr(profile, 'honey', 0),
+        'honey_count': profile.honey_count,
         'is_following': is_following,
         'profile_image_url': profile.profile_image.url if profile.profile_image else ''
     })

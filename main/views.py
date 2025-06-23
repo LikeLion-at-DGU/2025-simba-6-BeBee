@@ -2,6 +2,12 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.models import User
 
 # Create your views here.
+
+from django.shortcuts import redirect
+
+def login_redirect(request):
+    return redirect('accounts:login')
+
 def mainpage(request, user_id):
     if not request.user.is_authenticated:
         return redirect('accounts:login')
