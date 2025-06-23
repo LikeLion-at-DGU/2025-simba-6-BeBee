@@ -24,7 +24,8 @@ def mypage(request, user_id):
     today = date.today()
     start_of_month = today.replace(day=1)  # 이번 달 1일을 만드는 코드 날짜만 1일로 바꿈
     end_of_range = today  # 오늘까지
-
+    current_month = today.month
+    
     #한 달 단위 초기화 로직, 한 달이 지나면 총 공부시간 초기화 됨
     if profile.last_reset_date != start_of_month:
         profile.total_study_time = timedelta()  # 시간 초기화
@@ -48,6 +49,7 @@ def mypage(request, user_id):
         'success_rate': success_rate,
         'honey_count': profile.honey_count,
         'formatted_time': formatted_time,
+        'current_month': current_month,
     }
 
     return render(request, 'users/mypage.html', context)
