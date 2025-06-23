@@ -4,7 +4,7 @@ body {
     /* width: 1920px;
     height: 1080px; */
     width: 100vw;
-    font-family: 'Pretendard', sans-serif;
+    font-family: 'yg-jalnan', sans-serif;
     /* ✅ 수정: 뷰포트 너비로 설정 */
     height: 100vh;
     /* overflow: auto; */
@@ -18,7 +18,7 @@ body {
     margin: 0 auto;
     padding: 50px;
     gap: 50px;
-    width: 100%;
+    width: 90%;
     height: auto;
     position: relative;
 }
@@ -150,57 +150,58 @@ body {
 
 /* ✅ 4-1. 왼쪽: 프로필 + 요약 */
 .left-panel {
-    flex: 1;
+    flex: 1.5;
     display: flex;
     flex-direction: column;
     gap: 30px;
+    
 }
 
 /* ✅ 4-2. 오른쪽: 상점 */
 .right-panel {
-    flex: 1;
-    height:100%;
-    /* border-radius: 30px;
-    background: #FFFEEC;
-    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25), 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset; */
+    flex: 2;
+    height: 100%;
+    margin-top: 8rem;
 }
 
 .profile-box {
     display: flex;
     flex-direction: column;
-    gap: 10px;
     margin-bottom: 20px;
 }
 
 .profile-header {
     padding: 0;
     margin: 0;
+    flex: 1.2;
 }
 
 /* ✅ 프로필 카드 */
 .profile-info {
     background: #fffbe1;
+    flex: 2.4;
     padding: 10px;
     border-radius: 16px;
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.05);
     display: flex;
-    width: 50%;
+    width: 60%;
     justify-content: space-between;
     align-items: center;
     gap: 0px;
 }
 
-.profile-tilte {
-    font-family: 'Jua', sans-serif;
+
+.profile-title {
+    font-family: 'yg-jalnan', sans-serif;
     font-size: 18px;
-    padding-left: 20px;
+    padding-bottom: 1.2rem;
     margin: 0;
 }
 
 .profile-text {
     display: flex;
     flex-direction: column;
-    margin-left: 5px;
+    margin-left: 0px;
 }
 
 .profile-img {
@@ -208,7 +209,8 @@ body {
     height: 60px;
     border-radius: 50%;
     object-fit: cover;
-    margin-right: 0px;
+    margin: 0px;
+    padding: 0px;
 }
 
 .nickname {
@@ -228,20 +230,33 @@ body {
     cursor: pointer;
 }
 
+.profile-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.profile-top-left {}
+
+.profile-top-right {}
+
+
 /* ✅ 요약 통계 */
 .summary-box {
-    padding: 20px;
+    padding: 2rem;
     /* box-shadow: 0 0 15px rgba(0, 0, 0, 0.05); */
     border-radius: 30px;
     background: #FFFEEC;
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25), 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
-    width: 100%;
-    height: 800x;
-    ;
+    width: 90%;
+    min-height: 400px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    margin-left: 5rem;
+    margin-right: 5rem;
 
 }
 
@@ -267,45 +282,80 @@ body {
 }
 
 /* ✅ 상점 */
-.mypage-shop {
+.shop-box {
     background: #fff5cc;
     padding: 20px;
     border-radius: 16px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
 }
 
-.shop-title {
-    font-size: 18px;
-    margin-bottom: 12px;
+@font-face {
+    font-family: 'yg-jalnan';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.2/JalnanOTF00.woff2') format('woff2'),
+        url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_four@1.2/JalnanOTF00.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+h2.shop-title {
+    color: #736153;
+    text-align: center;
+    font-family: 'yg-jalnan', sans-serif;
+    font-size: 2rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin-bottom: 1rem;
 }
 
 .honey-progress {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 16px;
-}
-
-progress {
+    position: relative;
     width: 100%;
-    height: 16px;
+    max-width: 500px;
+    background-color: #fff9dc;
+    padding: 10px 0;
+    border-radius: 20px;
+    margin: 10px auto;
+}
+
+/* 커스텀 progress 바 */
+.honey-progress progress {
+    -webkit-appearance: none;
     appearance: none;
-}
-
-progress::-webkit-progress-bar {
+    width: 100%;
+    height: 2.5rem;
+    border-radius: 20px;
+    overflow: hidden;
     background-color: #eee;
-    border-radius: 10px;
 }
 
-progress::-webkit-progress-value {
-    background-color: #ffc300;
-    border-radius: 10px;
+.honey-progress progress::-webkit-progress-bar {
+    background-color: #f2efef;
+    border-radius: 20px;
 }
 
+.honey-progress progress::-webkit-progress-value {
+    background: linear-gradient(90deg, #f4c430, #f2b100);
+    border-radius: 20px;
+    transition: width 0.3s ease-in-out;
+}
+
+.honey-progress progress::-moz-progress-bar {
+    background: linear-gradient(90deg, #f4c430, #f2b100);
+    border-radius: 20px;
+}
+
+/* 숫자 라벨 */
 .honey-label {
-    font-size: 14px;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: 'yg-jalnan', sans-serif;
+    font-size: 1.3rem;
+    color: #8c5a00;
     font-weight: bold;
-    color: #a87400;
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.6);
 }
 
 /* 교환 */
@@ -347,9 +397,8 @@ progress::-webkit-progress-value {
 }
 
 
-/* ✅ 5. 모달 */
-/* 모달 기본 배경 */
-.modal {
+/* === 프로필/닉네임 수정 모달 === */
+.profile-modal {
     position: fixed;
     top: 0;
     left: 0;
@@ -362,22 +411,21 @@ progress::-webkit-progress-value {
     z-index: 1000;
 }
 
-.modal.hidden {
+.profile-modal.hidden {
     display: none;
 }
 
-.modal-content {
-    position: relative;
-    background: white;
+.profile-modal-content {
+    background: #fffefb;
     border-radius: 20px;
     padding: 30px;
-    width: 260px;
+    width: 300px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     text-align: center;
+    position: relative;
 }
 
-/* X 버튼 */
-.close-btn {
+.profile-close-btn {
     position: absolute;
     top: 10px;
     right: 15px;
@@ -387,83 +435,42 @@ progress::-webkit-progress-value {
     cursor: pointer;
 }
 
-/* 프로필 이미지와 텍스트 클릭 → 파일 업로드 */
-.modal-profile-label {
+.profile-modal-label {
     cursor: pointer;
 }
 
-.modal-profile-img {
+.profile-modal-img {
     width: 60px;
     height: 60px;
-    object-fit: contain;
+    border-radius: 50%;
+    border: 3px solid #f6cc47;
+    object-fit: cover;
     margin: 0 auto;
 }
 
-.modal-subtitle {
+.profile-modal-subtitle {
     font-weight: bold;
     margin: 8px 0 20px;
     font-size: 14px;
     color: #4b4b4b;
 }
 
-/* 숨긴 file input */
-.hidden-input {
-    display: none;
-}
-
-.nickname-label {
-    display: block;
-    text-align: left;
-    font-size: 14px;
-    margin-bottom: 6px;
-    color: #444;
-}
-
-.nickname-input-box {
-    display: flex;
-    align-items: center;
-    border: 1px solid #ccc;
-    border-radius: 999px;
-    padding: 6px 10px;
-    background-color: #f9f9f9;
-}
-
-.nickname-input-box input {
-    border: none;
-    outline: none;
-    flex: 1;
-    background: transparent;
-}
-
-.nickname-input-box button {
-    background: none;
-    border: none;
+.profile-submit-btn {
+    margin-top: 25px;
+    width: 100%;
+    padding: 12px 0;
     font-size: 16px;
-    cursor: pointer;
-}
-
-.check-result {
-    font-size: 12px;
-    color: #777;
-    margin-top: 5px;
-    text-align: left;
-}
-
-.submit-btn {
-    margin-top: 20px;
-    background-color: #5C432D;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 999px;
     font-weight: bold;
-    font-size: 15px;
+    color: white;
+    background-color: #6B4F1D;
+    border: none;
+    border-radius: 999px;
     cursor: pointer;
 }
 
 
-/* 🍯 기프티콘 전송 모달 스타일 */
-.modal-overlay {
+/* === 기프티콘 모달 === */
+.gifticon-modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -476,74 +483,78 @@ progress::-webkit-progress-value {
     z-index: 9999;
 }
 
-.modal-overlay.active {
+.gifticon-modal-overlay.active {
     display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
-.modal-content {
-    background: #F9EBA2;
-    padding: 20px;
-    border-radius: 10px;
+.gifticon-modal-content {
+    background: #fff4ae;
+    border-radius: 20px;
+    padding: 40px 30px 30px;
     width: 500px;
-    max-width: 90%;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    position: relative;
 }
 
-.modal-title {
+.gifticon-modal-title {
     margin-top: 0;
-    margin-bottom: 12px;
-    font-size: 18px;
+    margin-bottom: 20px;
+    font-size: 22px;
     font-weight: bold;
-    color: #333;
+    color: #6B4F1D;
 }
 
-.modal-content input[type="tel"] {
+.gifticon-modal-content input[type="tel"] {
     width: 100%;
-    padding: 8px;
+    padding: 12px 16px;
     font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    border: none;
+    border-radius: 999px;
+    box-shadow: inset 0 0 0 1px #ccc;
     box-sizing: border-box;
+    margin-bottom: 16px;
 }
 
-.modal-content input[type="tel"]::placeholder {
-    color: #999;
+.gifticon-modal-content input[type="tel"]::placeholder {
+    color: #aaa;
 }
 
-.checkbox-container {
+.gifticon-checkbox-container {
     display: flex;
     align-items: flex-start;
     margin: 15px 0;
-}
-
-.checkbox-container input[type="checkbox"] {
-    margin: 2px 5px 0 0;
-}
-
-.confirm-label {
     font-size: 13px;
-    line-height: 1.4;
-    color: #333;
 }
 
-.modal-content button {
+.gifticon-checkbox-container input[type="checkbox"] {
+    margin: 3px 8px 0 0;
+}
+
+.gifticon-confirm-label {
+    font-size: 13px;
+    line-height: 1.5;
+    color: #333;
+    text-align: left;
+}
+
+.gifticon-modal-content button {
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     font-size: 16px;
     border: none;
-    border-radius: 5px;
+    border-radius: 999px;
     cursor: pointer;
     background: #ccc;
     color: #666;
+    font-weight: bold;
 }
 
-.modal-content button:enabled {
+.gifticon-modal-content button:enabled {
     background: #6B4F1D;
     color: #fff;
 }
 
-.modal-content button:disabled {
+.gifticon-modal-content button:disabled {
     cursor: not-allowed;
 }
