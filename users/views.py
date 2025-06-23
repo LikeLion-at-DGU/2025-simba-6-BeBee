@@ -2,12 +2,17 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import *
 from planner.models import Todo
 from django.contrib.auth.models import User
-from datetime import date
+from datetime import date,timedelta
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from accounts.models import GiftExchange
 
 
+def format_timedelta(td):
+    total_seconds = int(td.total_seconds())
+    hours, remainder = divmod(total_seconds, 3600)
+    minutes, _ = divmod(remainder, 60)
+    return f"{hours}시간 {minutes}분"
 
 def mypage(request, user_id):
     if not request.user.is_authenticated:
@@ -17,14 +22,22 @@ def mypage(request, user_id):
     profile = user.profile
 
     today = date.today()
-    start_of_month = today.replace(day=1)  # 이번 달 1일
+    start_of_month = today.replace(day=1)  # 이번 달 1일을 만드는 코드 날짜만 1일로 바꿈
     end_of_range = today  # 오늘까지
+
+    #한 달 단위 초기화 로직, 한 달이 지나면 총 공부시간 초기화 됨
+    if profile.last_reset_date != start_of_month:
+        profile.total_study_time = timedelta()  # 시간 초기화
+        profile.last_reset_date = start_of_month  # 마지막 초기화 날짜 갱신
+        profile.save()
+
 
     # 이번 달 1일부터 오늘까지의 투두 필터링
     todos = Todo.objects.filter(user=user, date__range=[start_of_month, end_of_range])
     completed_todos = todos.filter(status='completed').count()
     total_todos = todos.count()
     success_rate = round((completed_todos / total_todos) * 100, 1) if total_todos else 0
+    formatted_time = format_timedelta(profile.total_study_time)
 
     context = {
         'user': user,
@@ -34,6 +47,7 @@ def mypage(request, user_id):
         'completed_todos': completed_todos,
         'success_rate': success_rate,
         'honey_count': profile.honey_count,
+        'formatted_time': formatted_time,
     }
 
     return render(request, 'users/mypage.html', context)
@@ -47,7 +61,7 @@ def update_profile(request,user_id):
         profile=user.profile
 
         
-        new_profile_image=request.FILES.get('image')
+        new_profile_image=request.FILES.get('profile_image')
         if new_profile_image:
             profile.profile_image=new_profile_image
             profile.save()

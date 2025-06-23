@@ -234,19 +234,8 @@ body {
 }
 
 .follower-list-text {
-    align-self: stretch;
     color: #8A8A8A;
-    font-family: locus_sangsang;
     font-size: 20px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-    text-decoration-line: underline;
-    text-decoration-style: solid;
-    text-decoration-skip-ink: auto;
-    text-decoration-thickness: auto;
-    text-underline-offset: auto;
-    text-underline-position: from-font;
     margin-left: 20px;
 }
 
@@ -263,19 +252,8 @@ body {
 }
 
 .following-list-text {
-    align-self: stretch;
     color: #8A8A8A;
-    font-family: locus_sangsang;
     font-size: 20px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-    text-decoration-line: underline;
-    text-decoration-style: solid;
-    text-decoration-skip-ink: auto;
-    text-decoration-thickness: auto;
-    text-underline-offset: auto;
-    text-underline-position: from-font;
     margin-left: 13px;
 }
 
