@@ -42,7 +42,7 @@ def subpage(request, user_id, selected_date):
         'comments': comments,
         'target_user': target_user,
         'login_user': request.user,
-        like_obj: like_obj
+        'like_obj': like_obj
     })
 
 
