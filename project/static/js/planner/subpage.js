@@ -24,7 +24,7 @@ function getCookie(name) {
 
 document.addEventListener("DOMContentLoaded", () => {
     // ✅ 안정적인 방식으로 userId 가져오기
-    const userId = document.querySelector(".login-user-info").dataset.userId;
+    const userId = document.body.dataset.userid;
     const pathParts = window.location.pathname.split("/");
     const selectedDate = pathParts[4];
 
@@ -164,23 +164,7 @@ document.querySelectorAll(".todo-status-toggle").forEach(checkbox => {
 });
 
 
-    // ✅ 요일 버튼 클릭 시 이동
 
-document.querySelectorAll(".hexagon-inner").forEach((button) => {
-    button.addEventListener("click", function () {
-        const dayMap = {
-            'MON': 1,
-            'TUE': 2,
-            'WED': 3,
-            'THU': 4,
-            'FRI': 5,
-            'SAT': 6,
-            'SUN': 0,
-        };
-
-        const targetDay = dayMap[this.dataset.day];
-        const [year, month, day] = selectedDate.split("-").map(Number);
-        const baseDate = new Date(year, month - 1, day);
 
         // ✅ baseDate 기준으로 해당 주의 '월요일' 찾기
 // ✅ 요일 버튼 클릭 시 이동
@@ -212,6 +196,4 @@ document.querySelectorAll(".hexagon-inner").forEach((button) => {
             window.location.href = `/planner/subpage/${userId}/${formatted}/`;
         });
     });
-});
-});
 });

@@ -273,10 +273,11 @@ def comment_delete(request, comment_id):
     
     if request.user == comment.writer:
         selected_date = comment.date.strftime('%Y-%m-%d')
+        target_user_id = comment.user.id
         comment.delete()
-        return redirect('planner:subpage', user_id=request.user.id, selected_date=selected_date)
+        return redirect('planner:subpage', user_id=target_user_id, selected_date=selected_date)
     
-    return redirect('planner:subpage',user_id=request.user.id, selected_date=timezone.now().strftime('%Y-%m-%d'))
+    return redirect('planner:subpage',user_id=comment.user.id, selected_date=timezone.now().strftime('%Y-%m-%d'))
 
 def like_subpage(request, user_id, selected_date):
     target_user = get_object_or_404(User, id=user_id)
