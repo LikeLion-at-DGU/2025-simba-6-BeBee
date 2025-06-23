@@ -38,6 +38,36 @@ def mypage(request, user_id):
 
     return render(request, 'users/mypage.html', context)
 
+def update_profile(request,user_id):
+    if not request.user.is_authenticated:
+        return redirect('accounts:login')
+    
+    if request.method=='POST':
+        user=get_object_or_404(User,pk=user_id)
+        profile=user.profile
+
+        
+        new_profile_image=request.FILES.get('image')
+        if new_profile_image:
+            profile.profile_image=new_profile_image
+            profile.save()
+        
+        new_username=request.POST.get('username')
+        if new_username:
+            if User.objects.filter(username=new_username).exclude(pk=user.id).exists():
+                return render(request, 'users/mypage.html', {
+            'user': user,
+            'profile': profile,
+            'error': '이미 존재하는 닉네임입니다.'
+        })
+        user.username=new_username
+        user.save()
+
+        return redirect('users:mypage',user_id=user.id)
+
+
+    return redirect('users:mypage',user_id=user_id)
+
 @login_required
 def exchange_honey(request):
     profile = request.user.profile
