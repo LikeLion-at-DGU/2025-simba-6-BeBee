@@ -24,10 +24,11 @@
 
             <div class="header-title-bar">
                 <h1 class="mypage-title">My page</h1>
+                {% now "Y-m-d" as today %}
                 <nav class="mypage-nav">
-                    <a class='nav' href="/">Calendar</a>
-                    <a class='nav' href="#">BuzzList</a>
-                    <a class='nav' href="/accounts/buddypage">Buddy page</a>
+                    <a class='nav' href="{% url 'main:mainpage' user.id %}">Calendar</a>
+                    <a class='nav' href="{% url 'planner:subpage' user.id today %}">BuzzList</a>
+                    <a class='nav' href="{% url 'accounts:buddypage' user.id %}">Buddy page</a>
                 </nav>
             </div>
 
