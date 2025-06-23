@@ -46,8 +46,8 @@ document.addEventListener("DOMContentLoaded", function () {
             display: flex;
             align-items: center;
             justify-content: center;
-            font-family: locus_sangsang;
-            font-size: 20px;
+            font-family: "Jua";
+            font-size: 25px;
             color: #6e5a5a;">
             ${message}
         </div>`;
@@ -94,7 +94,11 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(data => {
                 if (data.success) {
                     followBtn.textContent = data.following ? '언팔로우' : '팔로우';
-
+                    followBtn.dataset.isFollowing = data.following; 
+                    const calendarBtn = profileBox.querySelector(".calendar-button");
+                    if (calendarBtn) {
+                        calendarBtn.dataset.isFollowing = data.following;
+                    }
                     const followingNum = document.querySelector(".following-num");
                     if (followingNum) followingNum.textContent = data.following_count;
 

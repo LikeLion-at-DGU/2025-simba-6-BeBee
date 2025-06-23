@@ -7,7 +7,7 @@
 />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Jua&display=swap" rel="stylesheet">
 
 <title>buddy page</title>
 
@@ -87,7 +87,9 @@
                             <div class="bee-text" style="font-size: 30px;">🐝</div>
                         {% endif %}
                     </div>
-                    <div class="follower-nickname">{{ follower.user.username }}</div>
+                    <div class="follower-nickname" style="cursor: pointer;" onclick="loadAndRenderProfile('{{ follower.user.username }}')">
+                        {{ follower.user.username }}
+                    </div>
                 </div>
                 {% empty %}
                 <div style="margin-left: 10px; font-family: locus_sangsang; color: #999;">팔로워가 없습니다.</div>
@@ -125,7 +127,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-family: locus_sangsang;
             font-size: 20px;
             color: #6e5a5a;">
             친구의 프로필에 방문하여 방명록을 작성해 보세요~
