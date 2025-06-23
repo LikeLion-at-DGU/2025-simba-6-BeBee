@@ -47,7 +47,7 @@ def update_profile(request,user_id):
         profile=user.profile
 
         
-        new_profile_image=request.FILES.get('image')
+        new_profile_image=request.FILES.get('profile_image')
         if new_profile_image:
             profile.profile_image=new_profile_image
             profile.save()
