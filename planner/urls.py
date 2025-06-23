@@ -17,7 +17,7 @@ urlpatterns = [
     path('comment/<str:selected_date>/', view_comment, name='comment'),
     path('comment/delete/<int:comment_id>/', comment_delete , name='comment_delete'),
     path('toggle/<int:user_id>/<int:todo_id>/', todo_complete, name='todo_toggle'),
-
+    path('like/<int:user_id>/<str:selected_date>/', like_subpage , name='like_subpage'),
 ]
 
 
