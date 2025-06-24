@@ -208,6 +208,37 @@ document.addEventListener("DOMContentLoaded", () => {
             window.location.href = `/planner/subpage/${userId}/${formatted}/`;
         });
     });
+    
+    const likeForm = document.querySelector('.box1-right form');
+    if (likeForm) {
+        const likeButton = likeForm.querySelector('.heart-icon');
+        const likeCountSpan = likeForm.querySelector('.heart-label span');
+        const csrfToken = getCookie('csrftoken');
+
+        likeForm.addEventListener('submit', function (e) {
+            e.preventDefault();  // 기본 제출 막기
+
+            fetch(likeForm.action, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': csrfToken,
+                    'Accept': 'application/json'
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.liked) {
+                        likeButton.innerText = '❤️';
+                    } else {
+                        likeButton.innerText = '🤍';
+                    }
+                    likeCountSpan.innerText = data.like_count;
+                })
+                .catch(error => {
+                    console.error('좋아요 처리 중 오류 발생:', error);
+                });
+        });
+    }
 });
 
 
