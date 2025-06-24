@@ -95,6 +95,7 @@
                     action="{% if daily_goal %}{% url 'planner:update_goal' login_user.id selected_date %}{% else %}{% url 'planner:write_goal' login_user.id selected_date %}{% endif %}"
                     class="goal-form">
                     {% csrf_token %}
+                    <p class="goal">오늘의 다짐</p>
                     <input type="text" name="goal" value="{{ daily_goal.goal|default:'' }}" class="goal-input"
                         placeholder="오늘의 다짐을 입력하세요" />
                     <div class="goal-button-group">
@@ -119,7 +120,7 @@
     <!-- ✅ box3-->
 
 
-    <div class="box3">
+    <div class="box3 {% if todos %}has-todos{% endif %}">
         {% if todos %}
         <ul class="todo-list" id="todo-list">
             {% for todo in todos %}
@@ -206,9 +207,9 @@
         <div class="right-box1">
             <div class="weekday-grid">
                 <div class="honeycomb-weekdays">
-                    <div class="weekday-row top-row">
-                        <div class="hexagon-wrapper"><button class="hexagon-inner" data-day="MON">MON</button></div>
-                        <div class="hexagon-wrapper"><button class="hexagon-inner" data-day="WED">WED</button></div>
+                    <!-- <div class="weekday-row top-row">
+                        <div class="hexagon-wrapper"><button v">MON</button></div>
+                        <div class="hexagon-wrapper"><button cc>WED</button></div>
                         <div class="hexagon-wrapper"><button class="hexagon-inner" data-day="FRI">FRI</button></div>
                         <div class="hexagon-wrapper"><button class="hexagon-inner" data-day="SUN">SUN</button></div>
                     </div>
@@ -216,6 +217,15 @@
                         <div class="hexagon-wrapper"><button class="hexagon-inner" data-day="TUE">TUE</button></div>
                         <div class="hexagon-wrapper"><button class="hexagon-inner" data-day="THU">THU</button></div>
                         <div class="hexagon-wrapper"><button class="hexagon-inner" data-day="SAT">SAT</button></div>
+                    </div> -->
+                    <div class="weekday-row staggered">
+                        <div class="hexagon-wrapper"><button class="hexagon-inner" data-day="FRI">MON</button></div>
+                        <div class="hexagon-wrapper offset"><button class="hexagon-inner" data-day="TUE">TUE</button></div>
+                        <div class="hexagon-wrapper"><button class="hexagon-inner" data-day="WED">WED</button></div>
+                        <div class="hexagon-wrapper offset"><button class="hexagon-inner" data-day="THU">THU</button></div>
+                        <div class="hexagon-wrapper"><button class="hexagon-inner" data-day="FRI">FRI</button></div>
+                        <div class="hexagon-wrapper offset"><button class="hexagon-inner" data-day="SAT">SAT</button></div>
+                        <div class="hexagon-wrapper"><button class="hexagon-inner" data-day="SUN">SUN</button></div>
                     </div>
                 </div>
 
