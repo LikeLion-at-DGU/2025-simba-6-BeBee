@@ -12,7 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
     <link href="https://webfontworld.github.io/Jalnan2/Jalnan2.css" rel="stylesheet">
-
+    <link href="https://fonts.cdnfonts.com/css/e1234" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 </head>
@@ -31,9 +31,13 @@
             <a href="{% url 'users:mypage' login_user.id %}" class="nav-link">My page</a>
             <!-- 로그인 사용자 정보 표시 -->
             <div class="login-user-info" data-user-id="{{ login_user.id }}">
-                <p>현재 로그인: <strong>{{ login_user.username }}</strong> (ID: {{ login_user.id }}) <br>
-                    🐝 꿀 보유량: <strong id="honey-count">{{ login_user.profile.honey_count }}g</strong></p>
+                <p>
+                    <strong>{{ login_user.username }} 님</strong>
+                    <img src="{% static 'assets/planner/honey-icon.png' %}" alt="honey" class="inline-honey-icon">
+                    <strong id="honey-count">{{ login_user.profile.honey_count }}g</strong>
+                </p>
             </div>
+
 
         </div>
 
@@ -43,7 +47,7 @@
 
         <!-- 메인 콘텐츠 -->
         <main class="main-content">
-            <h1 class="logo">BuzzList</h1>
+            <img class="logo" src="{% static 'assets/planner/BuzzList.png' %}" alt="icon" class="honey-icon" />
             {% if login_user.id != target_user.id %}
             <a href="{% url 'main:mainpage' target_user.id %}" style="text-decoration: none; font-size: 24px;"
                 class="back-link">
@@ -140,7 +144,7 @@
                             <button type="submit" class="delete-btn">
                                 <i class="fas fa-trash"></i>
                             </button>
-                            <button type="button" class="show-timer-btn" data-todo-id="{{ todo.id }}">⏱️</button>
+                            <button type="button" id="show-timer-btn" class="show-timer-btn" data-todo-id="{{ todo.id }}">⏱️</button>
                         </div>
                         {% endif %}
                     </div>
@@ -231,7 +235,14 @@
             <div class="timer-label">집중 타이머 <span class="bulb">💡</span></div>
             <div class="counter" id="timer-display-{{ todo.id }}"
                 data-elapsed-seconds="{{ todo.total_elapsed_time.total_seconds|default:0|floatformat:0 }}">
-                00 : 00 : 00
+                <span class="digit-box">0</span>
+                <span class="digit-box">0</span>
+                <span class="colon">:</span>
+                <span class="digit-box">0</span>
+                <span class="digit-box">0</span>
+                <span class="colon">:</span>
+                <span class="digit-box">0</span>
+                <span class="digit-box">0</span>
             </div>
 
             <button class="start-btn" data-todo-id="{{ todo.id }}"
@@ -244,7 +255,7 @@
         <!-- ✅ 버디 메시지 박스 (한 번만) -->
         <div class="buddy-box" id="buddy-box" style="display: flex;">
             <div class="message-box">
-                <div class="buddy-title">Buddies say 🐝</div>
+                <div class="buddy-title">Buddies say 🪽</div>
                 <ul class="buddy-messages" id="buddy-message-list">
                     {% for comment in comments %}
                     <li class="buddy-message-item">
