@@ -3,7 +3,7 @@
 {% load static %}
 <link
     rel="stylesheet"
-    type="text/css"
+    type="text/css" 
     href="{% static 'css/mainpage.css'%}"
 />
 <head>
@@ -31,7 +31,7 @@
                 </div>
 
                 <div class="month-header-text">
-                    {{ user_id }}님, 환영합니다.<br>오늘 수집할 일들을 확인해보세요! 🍯
+                    {{ user.username }}님, 환영합니다.<br>오늘 수집할 일들을 확인해보세요! 🍯
                 </div>
             </div>
             <div class="top-bar">

@@ -72,7 +72,7 @@ document.addEventListener("DOMContentLoaded", function () {
         <div class="friend-honey">
             <img src="/static/assets/images/mainpage_honeypot_img.png" class="honeypot-icon">
             <div class="honey-amount">
-                <div style="font-size: 25px;">현재 버디의 꿀</div>
+                <div style="font-size: 15px;">현재 버디의 꿀</div>
 
                 <div class="honey-value">${data.honey_count}g</div>
             </div>
