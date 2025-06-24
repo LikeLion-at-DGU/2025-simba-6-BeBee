@@ -3,13 +3,11 @@ from django.utils import timezone
 from .models import *
 from django.http import JsonResponse, HttpResponseForbidden
 from datetime import datetime, timedelta
-from accounts.models import Profile
 from django.contrib.auth.models import User
-from django.views.decorators.csrf import csrf_exempt
-from django.http import HttpResponse
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.db.models import Case, When, Value, IntegerField
+from .models import DailyHoney
 
 # ⭐ user_id 변경: 전체 뷰에게 적용
 # 시간+분 으로 바꿔주는 함수
@@ -62,7 +60,9 @@ def subpage(request, user_id, selected_date):
     is_liked = False
     if like_obj and request.user in like_obj.like.all():
         is_liked = True
-    
+    daily_honey = DailyHoney.objects.filter(user=target_user, date=date_obj).first()
+    earned = daily_honey.honey_earned if daily_honey else 0
+
     return render(request, 'planner/subpage.html', {
         'todos': todos,
         'selected_date': selected_date,
@@ -73,6 +73,7 @@ def subpage(request, user_id, selected_date):
         'like_obj': like_obj,
         'formatted_time_hm': formatted_time_hm,
         'is_liked': is_liked,
+        'earned': earned, 
     })
 
 
@@ -176,48 +177,40 @@ def todo_delete(request, user_id, todo_id):
 
 @require_POST
 def todo_complete(request, user_id, todo_id):
-    if not request.user.is_authenticated:
-        return HttpResponseForbidden("로그인이 필요합니다.")
-
-    if request.user.id != user_id:
+    if not request.user.is_authenticated or request.user.id != user_id:
         return HttpResponseForbidden("권한이 없습니다.")
 
     todo = get_object_or_404(Todo, id=todo_id, user_id=user_id)
-    profile = todo.user.profile
-    today = timezone.now().date()
+    today = todo.date or timezone.now().date()  # 🟡 중요: Todo의 date 기준
+
+    daily_honey, created = DailyHoney.objects.get_or_create(user=request.user, date=today)
+    profile = request.user.profile
     HONEY_PER_TODO = 10
 
-    # ✅ 날짜가 바뀌면 일일 꿀 초기화
-    if profile.last_honey_earned_date != today:
-        profile.daily_honey_earned = 0
-        profile.last_honey_earned_date = today
-
     if todo.status == 'completed':
-        # ✅ 체크 해제 → 꿀 차감
+        # 체크 해제
         todo.status = 'not_completed'
         profile.completed_todo_count = max(0, profile.completed_todo_count - 1)
         profile.honey_count = max(0, profile.honey_count - HONEY_PER_TODO)
-        profile.daily_honey_earned = max(0, profile.daily_honey_earned - HONEY_PER_TODO)
+        daily_honey.honey_earned = max(0, daily_honey.honey_earned - HONEY_PER_TODO)
     else:
-        # ✅ 체크 → 꿀 지급
+        # 체크
         todo.status = 'completed'
         profile.completed_todo_count += 1
-
-        if profile.daily_honey_earned < 50:
-            give = min(HONEY_PER_TODO, 50 - profile.daily_honey_earned)
+        if daily_honey.honey_earned < 50:
+            give = min(HONEY_PER_TODO, 50 - daily_honey.honey_earned)
             profile.honey_count += give
-            profile.daily_honey_earned += give
+            daily_honey.honey_earned += give
 
     todo.save()
     profile.save()
-    print("🔁 상태 저장됨:", todo.id, todo.status)
+    daily_honey.save()
 
     return JsonResponse({
-    'status': todo.status,
-    'honey_count': profile.honey_count,  # ✅ 꿀 정보 추가
-    'daily_earned': profile.daily_honey_earned,
-    
-})
+        'status': todo.status,
+        'honey_count': profile.honey_count,
+        'daily_earned': daily_honey.honey_earned,
+    })
 
 
 
