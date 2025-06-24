@@ -38,10 +38,11 @@ def subpage(request, user_id, selected_date):
             seconds = int(todo.total_elapsed_time.total_seconds())
             h, r = divmod(seconds, 3600)
             m, s = divmod(r, 60)
-            todo.formatted_time = f"{h:02}:{m:02}:{s:02}"
+            todo.formatted_time = f"{h:02}:{m:02}:{s:02}" #서브페이지용
+            todo.formatted_time_hm = f"{h}시간 {m}분" #마이페이지용
         else:
-            todo.formatted_time = "00:00:00"
-
+            todo.formatted_time = "00:00:00" #서브페이지
+            todo.formatted_time_hm = "0시간 0분" #마이페이지
     comments = Comment.objects.filter(user_id=target_user.id, date=date_obj).order_by('created_at')
     daily_goal = DailyGoal.objects.filter(user=target_user, date=date_obj).first()
     like_obj = Like.objects.filter(target_user=target_user, date=date_obj).first()
@@ -70,7 +71,7 @@ def start_timer(request, user_id, todo_id, selected_date):
     return JsonResponse({"message": "타이머 시작됨", "started_at": todo.started_at})
 
 # 시간+분 으로 바꿔주는 함수
-def format_timedelta(td):
+def format_timedelta(td):   
     total_seconds = int(td.total_seconds())
     hours, remainder = divmod(total_seconds, 3600)
     minutes, _ = divmod(remainder, 60)
