@@ -14,8 +14,9 @@ from .models import DailyHoney
 def format_timedelta(td):   
     total_seconds = int(td.total_seconds())
     hours, remainder = divmod(total_seconds, 3600)
-    minutes, _ = divmod(remainder, 60)
-    return f"{hours}시간 {minutes}분"
+    minutes, seconds = divmod(remainder, 60)
+    return f"{hours}시간 {minutes}분 {seconds}초"# 시간+분 으로 바꿔주는 함수
+
 
 
 def subpage(request, user_id, selected_date):
@@ -42,11 +43,14 @@ def subpage(request, user_id, selected_date):
             seconds = int(todo.total_elapsed_time.total_seconds())
             h, r = divmod(seconds, 3600)
             m, s = divmod(r, 60)
-            todo.formatted_time = f"{h:02}:{m:02}:{s:02}"  # 서브페이지용
-            todo.formatted_time_hm = f"{h}시간 {m}분"     # 마이페이지용
+            todo.formatted_time = f"{h:02}:{m:02}:{s:02}"  # 디지털 타이머용
+            todo.formatted_time_hms = f"{h}시간 {m}분 {s}초"  # ✅ 서브페이지 리스트용
+            todo.formatted_time_hm = f"{h}시간 {m}분"         # ✅ 마이페이지용
         else:
             todo.formatted_time = "00:00:00"
+            todo.formatted_time_hms = "0시간 0분 0초"
             todo.formatted_time_hm = "0시간 0분"
+
 
     comments = Comment.objects.filter(user_id=target_user.id, date=date_obj).order_by('created_at')
     daily_goal = DailyGoal.objects.filter(user=target_user, date=date_obj).first()
@@ -123,6 +127,7 @@ def stop_timer(request, user_id, todo_id, selected_date):
             "ended_at": todo.ended_at,
             "elapsed": str(elapsed_time),
             "total_elapsed": format_timedelta(todo.total_elapsed_time),
+            "total_seconds": int(todo.total_elapsed_time.total_seconds()), 
         })
 
     return JsonResponse({"error": "타이머가 시작되지 않았습니다."}, status=400)
