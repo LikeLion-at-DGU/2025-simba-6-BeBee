@@ -1,0 +1,102 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Be BEE </title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: url("{% static 'assets/images/firstpage.jpg' %}") no-repeat center center fixed;
+            background-size: cover;
+            font-family: 'Jua', sans-serif;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-30px); }
+            100% { transform: translateY(0); }
+        }
+
+        /* 왼쪽 위 꿀벌*/
+        .bee-top-left {
+            position: absolute;
+            top: 100px;     
+            left: 50px;
+            width: 260px;
+            transform: scaleX(-1);
+            animation: float 3.2s ease-in-out infinite;
+            z-index: 2;
+        }
+
+        /* 오른쪽 아래 꿀벌 */
+        .bee-bottom-right {
+            position: absolute;
+            bottom: 100px;
+            right: 80px;
+            width: 240px;
+            animation: float 2.8s ease-in-out infinite;
+            z-index: 2;
+        }
+
+        .btn-container {
+            position: absolute;
+            bottom: 50px;
+            width: 100%;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .btn-login {
+            font-size: 20px;
+            padding: 14px 60px;
+            border: none;
+            border-radius: 30px;
+            background-color: #FEC85C;
+            color: #294936;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 3px 5px rgba(0,0,0,0.1);
+            transition: background 0.3s;
+        }
+
+        .btn-login:hover {
+            background-color: #f5b53e;
+        }
+
+        .signup-link {
+            font-size: 20px;
+            color: #294936;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .signup-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <!--  왼쪽 위 꿀벌-->
+    <img src="{% static 'assets/images/firstpage_bee2.png' %}" alt="bee" class="bee-top-left">
+
+    <!--  오른쪽 아래 꿀벌  -->
+    <img src="{% static 'assets/images/firstpage_bee.png' %}" alt="bee" class="bee-bottom-right">
+
+    <!--  로그인 / 회원가입 -->
+    <div class="btn-container">
+        <a href="{% url 'accounts:login' %}">
+            <button class="btn-login">로그인</button>
+        </a>
+        <a href="{% url 'accounts:signup' %}" class="signup-link">회원가입</a>
+    </div>
+
+</body>
+</html>
