@@ -29,6 +29,16 @@ def subpage(request, user_id, selected_date):
     except ValueError:
         return redirect('planner:subpage', user_id=user_id, selected_date=timezone.now().strftime('%Y-%m-%d'))
 
+    # ✅ 할 일 없으면 자동 생성
+    if not Todo.objects.filter(user=target_user, date=date_obj).exists():
+        Todo.objects.create(
+            user=target_user,
+            content="첫 번째 미션: 오늘의 할 일 입력하기!",
+            status="not_completed",
+            category="기타",
+            date=date_obj
+        )
+
     # ✅ 상태 정렬 우선순위 지정
     todos = Todo.objects.filter(user=target_user, date=date_obj).annotate(
         status_order=Case(
@@ -51,19 +61,17 @@ def subpage(request, user_id, selected_date):
             todo.formatted_time_hms = "0시간 0분 0초"
             todo.formatted_time_hm = "0시간 0분"
 
-
     comments = Comment.objects.filter(user_id=target_user.id, date=date_obj).order_by('created_at')
     daily_goal = DailyGoal.objects.filter(user=target_user, date=date_obj).first()
     like_obj = Like.objects.filter(target_user=target_user, date=date_obj).first()
 
-    # ✅ 총 공부 시간 포맷해서 넘기기
     profile = target_user.profile
     formatted_time_hm = format_timedelta(profile.total_study_time or timedelta())
 
-    
     is_liked = False
     if like_obj and request.user in like_obj.like.all():
         is_liked = True
+
     daily_honey = DailyHoney.objects.filter(user=target_user, date=date_obj).first()
     earned = daily_honey.honey_earned if daily_honey else 0
 
@@ -77,8 +85,9 @@ def subpage(request, user_id, selected_date):
         'like_obj': like_obj,
         'formatted_time_hm': formatted_time_hm,
         'is_liked': is_liked,
-        'earned': earned, 
+        'earned': earned,
     })
+
 
 
 
@@ -151,22 +160,6 @@ def todo_create(request, user_id, selected_date):
             deadline=datetime.strptime(raw_deadline, '%Y-%m-%d').date() if raw_deadline else None
         )
     return redirect('planner:subpage', user_id=user_id, selected_date=selected_date)
-
-def todo_update(request, user_id, todo_id):
-    if not request.user.is_authenticated:
-        return redirect('accounts:login')
-
-    if request.user.id != user_id:
-        return HttpResponseForbidden("권한이 없습니다.")
-
-    todo = get_object_or_404(Todo, id=todo_id, user_id=user_id)
-    if request.method == 'POST':
-        todo.content = request.POST['content']
-        todo.category = request.POST['category']
-        raw_deadline = request.POST.get('deadline')
-        todo.deadline = datetime.strptime(raw_deadline, '%Y-%m-%d').date() if raw_deadline else None
-        todo.save()
-    return redirect('planner:subpage', user_id=user_id, selected_date=todo.date.strftime('%Y-%m-%d'))
 
 def todo_delete(request, user_id, todo_id):
     if not request.user.is_authenticated:
