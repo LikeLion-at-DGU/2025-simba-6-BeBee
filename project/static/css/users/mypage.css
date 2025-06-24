@@ -27,7 +27,7 @@ body {
     position: relative;
 }
 
-/* ✅ 1. 헤더 전체 */
+/* 1. 헤더 전체 */
 .header-wrapper {
     display: flex;
     flex-direction: column;
@@ -72,7 +72,7 @@ body {
 
 
 
-/* ✅ 2. 타이틀 & 인삿말 */
+/*  2. 타이틀 & 인삿말 */
 .header-title-bar {
     display: flex;
     justify-content: space-between;
@@ -106,7 +106,7 @@ body {
     color: #eec54a;
     }
 
-/* ✅ 3. 상단 메뉴 */
+/*  3. 상단 메뉴 */
 .header-nav {
     display: flex;
     gap: 20px;
@@ -123,7 +123,7 @@ body {
     text-decoration: underline;
 }
 
-/* ✅ 4. 메인 컨텐츠 wrapper (좌우) */
+/*  4. 메인 컨텐츠 wrapper (좌우) */
 .content-wrapper {
     display: flex;
     flex: 1 1 auto;
@@ -169,7 +169,7 @@ body {
     gap: 0px;
 }
 
-/* ✅ 프로필 카드 */
+/*  프로필 카드 */
 .profile-info {
     display: flex;
     padding: 17px 23px;
@@ -285,7 +285,7 @@ body {
 /* .profile-top-right {} */
 
 
-/* ✅ 요약 통계 */
+/* 요약 통계 */
 .summary-box {
     padding-left: 0px;
     padding-right: 0px;
@@ -373,7 +373,7 @@ body {
     color: #5c4500;
 }
 
-/* ✅ 상점 */
+/* 상점 */
 .shop-box {
     /* flex: 1.6; */
     padding: 10px;
@@ -512,11 +512,12 @@ body {
     border-radius: 20px;
     cursor: pointer;
     margin-top: 6px;
+    text-align: center;
 }
 
-/* .hidden-input {
+.hidden-input {
     display:none;
-} */
+} 
 
 
 
@@ -680,4 +681,10 @@ body {
 
 .gifticon-modal-content button:disabled {
     cursor: not-allowed;
+}
+
+#gifticonForm {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from datetime import timedelta
 from django.utils import timezone
 
-# 카테고리 모델: 이름만 저장
+# 카테고리 모델
 class Category(models.Model):
     name = models.CharField(max_length=30)
 
@@ -46,14 +46,14 @@ class Todo(models.Model):
 
 class DailyGoal(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    date = models.DateField()  # 목표가 적용되는 날짜
-    goal = models.CharField(max_length=200)  # 오늘의 목표 내용
+    date = models.DateField()  # 목표 날짜
+    goal = models.CharField(max_length=200)  # 오늘의 목표
 
 
     
 class Comment(models.Model):
     writer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='written_comments')
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments_on_page', null=True)  # 🐝 이 줄이 있어야 함
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments_on_page', null=True)  #
     content = models.TextField()
     date = models.DateField()
     created_at = models.DateTimeField(auto_now_add=True)

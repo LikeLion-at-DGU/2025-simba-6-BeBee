@@ -24,7 +24,7 @@
     <!-- 전체 3분할 콘텐츠 -->
     <div class="wrapper">
 
-        <!-- ✅ 상단 네비게이션 -->
+        <!--  상단 네비게이션 -->
         <div class="top-nav">
             <a href="{% url 'main:mainpage' login_user.id %}" class="nav-link">Calendar</a>
             <a href="{% url 'accounts:buddypage' login_user.id %}" class="nav-link">Buddy page</a>
@@ -57,7 +57,7 @@
 
 
 
-            <!-- ✅ box1 -->
+            <!--  box1 -->
             <div class="box1">
 
                 <div class="box1-left">
@@ -122,7 +122,7 @@
 
 
 
-    <!-- ✅ box3-->
+    <!-- box3-->
 
 
     <div class="box3 {% if todos %}has-todos{% endif %}">
@@ -133,10 +133,12 @@
                 <form method="POST" action="{% url 'planner:todo_delete' request.user.id todo.id %}">
                     {% csrf_token %}
 
-                    <!-- ✅ 1줄: 체크박스 + 내용 + 버튼 -->
+                    <!-- 1줄: 체크박스 + 내용 + 버튼 -->
                     <div class="todo-top-row">
+                        {% if login_user.id == target_user.id %}
                         <input type="checkbox" class="todo-status-toggle" data-user-id="{{ request.user.id }}"
                             data-todo-id="{{ todo.id }}" {% if todo.status == "completed" %}checked{% endif %}>
+                        {% endif %}
                         <span class="todo-content">{{ todo.content }}</span>
 
                         {% if login_user.id == target_user.id %}
@@ -144,12 +146,13 @@
                             <button type="submit" class="delete-btn">
                                 <i class="fas fa-trash"></i>
                             </button>
-                            <button type="button" id="show-timer-btn" class="show-timer-btn" data-todo-id="{{ todo.id }}">⏱️</button>
+                            <button type="button" id="show-timer-btn" class="show-timer-btn"
+                                data-todo-id="{{ todo.id }}">⏱️</button>
                         </div>
                         {% endif %}
                     </div>
 
-                    <!-- ✅ 2줄: 기한 + 카테고리 뱃지 -->
+                    <!-- 2줄: 기한 + 카테고리 뱃지 -->
                     <div class="todo-bottom-row">
                         <span class="todo-deadline">기한: {{ todo.deadline|date:"Y-m-d" }}</span>
                         {% if todo.total_elapsed_time %}
@@ -171,7 +174,7 @@
 
 
 
-    <!-- ✅ box4 -->
+    <!--  box4 -->
     {% if login_user.id == target_user.id %}
     <div class="box4">
         <form method="POST" action="{% url 'planner:todo_create' request.user.id selected_date %}"
@@ -208,7 +211,7 @@
 
     <!-- 오른쪽 패널 -->
     <aside class="right-panel">
-        <!-- ✅ right box1: 요일 선택 -->
+        <!--  right box1: 요일 선택 -->
         <div class="right-box1">
             <div class="weekday-grid">
                 <div class="honeycomb-weekdays">
@@ -230,7 +233,7 @@
         </div>
 
         {% for todo in todos %}
-        <!-- ✅ right box2: 집중 타이머 -->
+        <!--  right box2: 집중 타이머 -->
         <div class="right-box2" id="timer-box-{{ todo.id }}">
             <div class="timer-label">집중 타이머 <span class="bulb">💡</span></div>
             <div class="counter" id="timer-display-{{ todo.id }}"
@@ -252,7 +255,7 @@
         </div>
         {% endfor %}
 
-        <!-- ✅ 버디 메시지 박스 (한 번만) -->
+        <!--  버디 메시지 박스 (한 번만) -->
         <div class="buddy-box" id="buddy-box" style="display: flex;">
             <div class="message-box">
                 <div class="buddy-title">Buddies say 🪽</div>
@@ -260,7 +263,7 @@
                     {% for comment in comments %}
                     <li class="buddy-message-item">
                         <div>
-                            <strong>{{ comment.writer.username }}</strong> <!-- ✅ 닉네임 출력 -->
+                            <strong>{{ comment.writer.username }}</strong> <!--  닉네임 출력 -->
                             <span>{{ comment.content }}</span>
                         </div>
 
@@ -277,7 +280,7 @@
                     {% endfor %}
                 </ul>
 
-                <!-- ✅ 메시지 입력 폼 -->
+                <!-- 메시지 입력 폼 -->
                 <form method="POST" action="{% url 'planner:comment' selected_date %}" class="buddy-form">
                     {% csrf_token %}
                     <input type="hidden" name="user_id" value="{{ target_user.id }}">
