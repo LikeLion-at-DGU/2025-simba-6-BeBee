@@ -331,7 +331,6 @@ body {
 
 .todo-input-inline {
     width: 300px;
-    /* ✅ 고정 크기 지정 */
     min-width: 300px;
     flex-shrink: 0;
     flex: 1;
@@ -364,10 +363,7 @@ body {
     color: #444;
 }
 
-/* 
-.goal-input {
-    min-width: 200px;
-} */
+
 
 .todo-list {
     list-style: none;
@@ -406,6 +402,7 @@ body {
     flex: 1.0;
     padding: 40px 40px 40px 0;
     display: flex;
+    min-height: 100vh; 
     flex-direction: column;
     align-items: center;
     gap: 30px;
@@ -652,6 +649,7 @@ body {
     width: 90%;
     padding: 10px;
     height: 100%;
+    min-height: 300px;
 }
 
 .message-box {
@@ -666,9 +664,8 @@ body {
     padding: 20px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
     width: 100%;
-    height: 400px;
-    /* 원하는 높이 */
-    overflow: hidden;
+    /* height: 400px; */
+    overflow-y: auto;
 }
 
 .buddy-messages {
@@ -680,16 +677,10 @@ body {
     color: #444;
     overflow-y: auto;
     flex-grow: 1;
-    /* 남는 공간을 모두 사용 */
     min-height: 0;
 }
 
-/* 
-.buddy-messages {
-    list-style: none;
-    padding: 0;
-    margin: 0 0 10px 0;
-} */
+
 
 .buddy-messages li {
     background-color: #fff8cc;
@@ -819,7 +810,6 @@ body {
     width: 20px;
     height: 20px;
     border: 2px solid #f5c400;
-    /* 꿀 느낌 색 */
     border-radius: 4px;
     background-color: white;
     cursor: pointer;
@@ -913,3 +903,26 @@ body {
     transform: scale(1.3);
     transition: transform 0.2s ease;
 }
+
+.back-link {
+    display: inline-flex;         /* ✅ block이나 flex 대신 inline-flex */
+    width: fit-content;           /* ✅ 내용 크기만큼만 넓이 */
+    padding: 4px 10px;
+    border-radius: 20px;
+    background-color: #fff2aa;
+    color: #6b4f1d;
+    font-family: 'Jua', sans-serif;
+    font-size: 14px;
+    text-decoration: none;
+    border: 1.5px solid #e6c252;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
+}
+
+.back-link:hover {
+    background-color: #ffe48f;
+    color: #4e3b0c;
+    transform: translateY(-1px);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.12);
+}
+

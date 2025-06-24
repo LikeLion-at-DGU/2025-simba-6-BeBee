@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 from datetime import timedelta
+from planner.models import Todo
+from django.utils import timezone
 
 # Create your models here.
 class Profile(models.Model):
@@ -30,8 +32,19 @@ class Profile(models.Model):
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
+        # 프로필 생성
         Profile.objects.create(user=instance)
-        
+
+        # 오늘 날짜 기준으로 기본 할일 생성
+        today = timezone.now().date()
+        Todo.objects.create(
+            user=instance,
+            content="첫 번째 미션: 오늘의 할 일 입력하기!",
+            status="not_completed",
+            category="기타",  # 카테고리 중에 "기타" 있지?
+            date=today
+        )
+
 
 class GiftExchange(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
