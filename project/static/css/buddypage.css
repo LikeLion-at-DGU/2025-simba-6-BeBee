@@ -1,23 +1,38 @@
 body {
     background-image: linear-gradient(#fffacd, #f4cd69);
-    width: 1920px;
-    height: 1080px;
+    width: 100vw;
+    height: 100vh;
+    overflow-x: hidden;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.main-wrapper {
+    width: 85%;
+    max-width: 1600px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 }
 
 .honey-head {
     display: flex;
     flex-direction: row;
+    overflow: hidden;
 }
 
 .honey-drip-img {
-    max-width: 100%;
-    width: 960px;
+    width: 50vw;         
+    height: auto;     
+    object-fit: cover;    
+    display: block;
 }
 
 .buddypage-logo {
-    margin-top: 55px;
-    margin-left: 100px;
-    width: 500px;
+    margin-top: 45px;
+    width: 280px;
 }
 
 .amount-of-honey {
@@ -46,18 +61,45 @@ body {
     -1px -1px 1px rgba(255, 255, 255, 0.6); 
 }
 
+.left-wrapper {
+    width: 600px;
+    height: 500px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+    margin-top: 28px;
+}
+
 .buddypage-header {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
     display: flex;
     flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: space-between; /* 또는 flex-start도 가능 */
+    box-sizing: border-box;
 }
 
-.calender-button {
+.top-buttons {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex-wrap: nowrap;           
+    padding: 0;             
+    margin: 0;              
+    box-sizing: border-box;
+}
+
+.calendar-button1 {
     all: unset; /* 모든 기본 스타일 제거 */
     cursor: pointer; /* 마우스 커서 변경 */
     color: #FFD640; /* 원하는 색상 지정 */
-    font-size: 32px;
+    font-size: 26px;
     font-family: "Bagel Fat One";
-    margin-left: 250px;
+    margin-left: 50px;
     height: 35px;
     margin-top: 10px;
     text-shadow:
@@ -65,25 +107,12 @@ body {
     -1px -1px 1px rgba(255, 255, 255, 0.6); 
 }
 
-.buzzlist-button {
-    all: unset; /* 모든 기본 스타일 제거 */
-    cursor: pointer; /* 마우스 커서 변경 */
-    color: #FFD640; /* 원하는 색상 지정 */
-    font-size: 32px;
-    font-family: "Bagel Fat One";
-    height: 35px;
-    margin-left: 15px;
-    margin-top: 10px;
-    text-shadow:
-    2px 2px 4px rgba(0, 0, 0, 0.3), 
-    -1px -1px 1px rgba(255, 255, 255, 0.6); 
-}
 
 .mypage-button {
     all: unset; /* 모든 기본 스타일 제거 */
     cursor: pointer; /* 마우스 커서 변경 */
     color: #FFD640; /* 원하는 색상 지정 */
-    font-size: 32px;
+    font-size: 26px;
     font-family: "Bagel Fat One";
     height: 35px;
     margin-left: 15px;
@@ -100,10 +129,10 @@ body {
     border-radius: 50px;
     padding: 10px 20px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    width: 500px;
-    height: 40px;
-    margin-top: 85px;
-    margin-left: 30px;
+    width: 300px;
+    height: 20px;
+    margin-top: 55px;
+    margin-left: 10px;
 }
 
 .search-box input {
@@ -111,14 +140,14 @@ body {
     border: none;
     outline: none;
     background: transparent;
-    font-size: 16px;
+    font-size: 13px;
     color: #333;
 }
 
 .search-box input::placeholder {
     color: #888;
     font-family: locus_sangsang;
-    font-size: larger;
+    font-size: 13px;
 }
 
 .search-box button {
@@ -137,32 +166,18 @@ body {
 
 .my-profile {
     display: flex;
-    width: 900px;
-    padding: 21px 23px;
+    align-items: center;
+    width: 600px;
+    height: 90px;
     flex-direction: row;
     justify-content: space-evenly;
     gap: 10px;
     border-radius: 30px;
     background: #FFFEEC;
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-    margin-top: 100px;
-    margin-left: 100px;
 }
 
 .profile-border {
-    display: flex;
-    width: 80px;
-    padding: 15px;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    border-radius: 100px;
-    background: #FFEF96;
-    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
-}
-
-.profile-border2 {
     display: flex;
     width: 40px;
     height: 40px;
@@ -171,7 +186,21 @@ body {
     justify-content: center;
     align-items: center;
     gap: 10px;
-    border-radius: 100px;
+    border-radius: 50%;
+    background: #FFEF96;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+}
+
+.profile-border2 {
+    display: flex;
+    width: 25px;
+    height: 25px;
+    padding: 15px;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border-radius: 100%;
     background: #FFEF96;
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
 }
@@ -186,16 +215,11 @@ body {
     line-height: normal;
 }
 
-.column-container {
-    display: flex;
-    flex-direction: column;
-}
-
 .user-id {
     align-self: stretch;
     color: #FFC74D;
     font-family: "Bagel Fat One";
-    font-size: 35px;
+    font-size: 22px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
@@ -208,7 +232,7 @@ body {
     color: #6E5A5A;
     text-align: center;
     font-family: "Jua";
-    font-size: 22px;
+    font-size: 15px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
@@ -221,12 +245,20 @@ body {
     text-align: center;
 }
 
+.myclass2 {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
 .follower-num {
     align-self: stretch;
     color: #787468;
     text-align: center;
     font-family: locus_sangsang;
-    font-size: 40px;
+    font-size: 30px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
@@ -244,7 +276,7 @@ body {
     color: #787468;
     text-align: center;
     font-family: locus_sangsang;
-    font-size: 40px;
+    font-size: 30px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
@@ -260,8 +292,8 @@ body {
 .follower-list {
     display: flex;
     flex-direction: column;
-    width: 374px;
-    height: 362px;
+    width: 280px;
+    height: 300px;
     padding: 37px 31px 36px 32px;
     align-items: flex-start;
     gap: 20px;
@@ -270,17 +302,15 @@ body {
     background: rgba(255, 255, 255, 0.60);
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
     margin-top: 25px;
-    margin-left: 100px;
     overflow-y: scroll;
-    height: 360px;
-    padding: 20px;
+    padding: 10px;
     scrollbar-width: thin;
 }
 
 
 .follower-title {
     font-family: "Bagel Fat One";
-    font-size: 30px;
+    font-size: 25px;
     color: #5e4a00;
     margin-bottom: 10px;
     margin-left: 5px;
@@ -317,18 +347,18 @@ body {
 }
 
 .friend-profile {
-    width: 687px;
-    height: 520px;
+    width: 400px;
+    height: 300px;
     border-radius: 40px;
     background: rgba(255, 255, 255, 0.6);
     box-shadow: 0 4px 4px rgba(0,0,0,0.25);
-    position: absolute;
-    top: 370px;
-    left: 1100px;
-    padding: 30px;
+    padding: 15px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    align-items: center;
+    margin-left: 80px;
+    margin-bottom: 30px;
 }
 
 .friend-top {
@@ -351,14 +381,13 @@ body {
 
 .follow-button {
     margin-left: auto;
-    margin-right: 27px;
     padding: 8px 16px;
     background-color: #FFD640;
     border: none;
     border-radius: 12px;
     font-weight: bold;
     cursor: pointer;
-    font-size: 25px;
+    font-size: 18px;
 }
 
 .friend-honey {
@@ -369,8 +398,8 @@ body {
 }
 
 .honeypot-icon {
-    width: 200px;
-    height: 200px;
+    width: 130px;
+    height: 130px;
 }
 
 .honey-value {
@@ -389,15 +418,10 @@ body {
     font-family: "Bagel Fat One";
     cursor: pointer;
     justify-content: center;
-    height: 70px;
-    width: 300px;
-    font-size: 28px;
+    height: 60px;
+    width: 200px;
+    font-size: 17px;
 }   
-
-.row {
-    display: flex;
-    flex-direction: row;
-}
 
 .profile-img {
     width: 70px;

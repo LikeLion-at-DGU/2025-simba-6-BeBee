@@ -21,11 +21,6 @@ body {
     display: block;
 }
 
-.honey-foot {
-    display: flex;
-    flex-direction: row;
-}
-
 .main-wrapper {
     width: 85%;
     max-width: 1600px;
