@@ -8,6 +8,7 @@ from django.contrib import messages
 from accounts.models import GiftExchange
 
 
+
 def format_timedelta(td):
     total_seconds = int(td.total_seconds())
     hours, remainder = divmod(total_seconds, 3600)
@@ -22,18 +23,18 @@ def mypage(request, user_id):
     profile = user.profile
 
     today = date.today()
-    start_of_month = today.replace(day=1)  # 이번 달 1일을 만드는 코드 날짜만 1일로 바꿈
-    end_of_range = today  # 오늘까지
+    start_of_month = today.replace(day=1)  
+    end_of_range = today  
     current_month = today.month
     
-    #한 달 단위 초기화 로직, 한 달이 지나면 총 공부시간 초기화 됨
+    #한 달이 지나면 총 공부시간 초기화 
     if profile.last_reset_date != start_of_month:
         profile.total_study_time = timedelta()  # 시간 초기화
-        profile.last_reset_date = start_of_month  # 마지막 초기화 날짜 갱신
+        profile.last_reset_date = start_of_month  # 마지막 초기화 날짜
         profile.save()
 
 
-    # 이번 달 1일부터 오늘까지의 투두 필터링
+    # 이번 달 1일부터 오늘까지의 투두 
     todos = Todo.objects.filter(user=user, date__range=[start_of_month, end_of_range])
     completed_todos = todos.filter(status='completed').count()
     total_todos = todos.count()

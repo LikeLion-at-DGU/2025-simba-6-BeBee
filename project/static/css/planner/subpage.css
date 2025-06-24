@@ -273,7 +273,7 @@ body {
     scroll-padding-top: 20px;             /* ✅ 스크롤 위치 버퍼 추가 */
 }
 
-/* ✅ 할일이 없을 때만 회색 박스 배경 보이도록 설정 */
+/* 할일이 없을 때만 회색 박스 배경 보이도록 설정 */
 .box3:not(.has-todos) {
     background: rgba(217, 217, 217, 0.30);
     align-items: center;
