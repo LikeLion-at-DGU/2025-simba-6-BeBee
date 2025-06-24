@@ -43,9 +43,9 @@
             </a>
             <img src="{% static 'assets/images/mainpage_honeypot_img.png' %}"
             class="honeypot-img">
-            <div clsass="amount-of-honey">
+            <div class="amount-of-honey">
                 <div class="amount-of-honey-text">현재 수집된 꿀</div>
-                <div class="amount-of-honey-num">50g</div>
+                <div class="amount-of-honey-num">{{ honey_count }}g</div>
             </div>
         </div>
 
@@ -84,6 +84,7 @@
     </div>
 
     <script src="https://kit.fontawesome.com/c8e7849976.js" crossorigin="anonymous"></script>
+    {{ daily_success_list|json_script:"success-rates-data" }}
     <script src="{% static 'js/main/mainpage.js' %}"></script>
 </body>
 
