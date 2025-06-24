@@ -64,8 +64,7 @@
                 <div class="box1-middle">
                     <p class="goal-text">오늘도 꿀을 모아볼까요? 🐝</p>
                     <p class="honey-progress">
-                        <progress value="{{ earned }}" max="50"
-                            class="{% if earned == 50 %}full-honey{% endif %}"></progress>
+                        <progress value="{{ earned }}" max="50"></progress>
                         <span class="honey-label">{{ earned }} / 50g</span>
                     </p>
                 </div>
@@ -83,7 +82,7 @@
                             🤍
                             {% endif %}
                         </button>
-                        <div class="heart-label">응원 <span>{{ like_obj.like_count|default:0 }}</span></div>
+                        <div class="heart-label">좋아요 <span>{{ like_obj.like_count|default:0 }}</span></div>
                     </form>
                 </div>
 
@@ -151,7 +150,7 @@
                         <span class="todo-deadline">기한: {{ todo.deadline|date:"Y-m-d" }}</span>
                         {% if todo.total_elapsed_time %}
                         <div class="todo-studytime" id="study-time-{{ todo.id }}">
-                            공부 시간: {{ todo.formatted_time }}
+                            공부 시간: {{ todo.formatted_time_hms }}
                         </div>
                         {% endif %}
                         <span class="todo-category">{{ todo.category }}</span>
