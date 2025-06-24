@@ -66,3 +66,11 @@ class Like(models.Model):
 
     class Meta:
         unique_together = ('target_user', 'date')
+
+class DailyHoney(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    date = models.DateField()
+    honey_earned = models.PositiveIntegerField(default=0)  # 날짜별 획득한 꿀
+
+    class Meta:
+        unique_together = ('user', 'date')
