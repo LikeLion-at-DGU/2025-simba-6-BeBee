@@ -31,7 +31,11 @@
                 </div>
 
                 <div class="month-header-text">
-                    {{ user.username }}님, 환영합니다.<br>오늘 수집할 일들을 확인해보세요! 🍯
+                    {% if request.user.username == target_user.username %}
+                        {{ request.user.username }}님, 환영합니다!<br>오늘 수집할 일들을 확인해보세요! 🍯
+                    {% else %}
+                        {{ target_user.username }}님의 현재 캘린더 상태입니다!
+                    {% endif %}
                 </div>
             </div>
             <div class="top-bar">
@@ -65,7 +69,7 @@
                         <div class="day">WED</div>
                         <div class="day">THU</div>
                         <div class="day">FRI</div>
-                        <div class="day" style="color: blue;">SUN</div>
+                        <div class="day" style="color: blue;">SAT</div>
                     </div>
                     <div class="calendar-dates" id="calendarDates"></div>
                 </div>

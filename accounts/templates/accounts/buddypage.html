@@ -58,16 +58,18 @@
         <div class="myclass2">
             <div class="left-wrapper">
                 <div class="my-profile">
-                    <div class="profile-border">
-                        {% if user.profile.profile_image %}
-                            <img src="{{ user.profile.profile_image.url }}" alt="내 프로필 이미지" class="profile-img" />
-                        {% else %}
-                            <div class="bee-text">🐝</div>
-                        {% endif %}
-                    </div>
-                    <div class="column-container">
-                        <div class="user-id">{{ user.username }}</div>
-                        <div class="fighting">오늘 하루도 화이팅!</div>
+                    <div class="myclass3" style="display: flex; flex-direction: row; gap: 20px;">
+                        <div class="profile-border">
+                            {% if user.profile.profile_image %}
+                                <img src="{{ user.profile.profile_image.url }}" alt="내 프로필 이미지" class="profile-img" />
+                            {% else %}
+                                <div class="bee-text">🐝</div>
+                            {% endif %}
+                        </div>
+                        <div class="column-container">
+                            <div class="user-id">{{ user.username }}</div>
+                            <div class="fighting">{{ univ }}</div>
+                        </div>
                     </div>
                     <div class="column-center">
                         <div class="follower-num">{{ follower_count }}</div>

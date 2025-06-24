@@ -79,10 +79,10 @@ label {
 
 .check-button {
   border-radius: 20px;
-  font-family: "Hahmlet", serif;
+  font-family: Jua;
   background: gold;
   border: none;
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .input-group {

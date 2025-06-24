@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", function () {
             </div>
             <div class="friend-info">
                 <div class="friend-nickname">${data.username}</div>
-                <div class="cheer-msg">오늘 하루도 화이팅!</div>
+                <div class="cheer-msg">${data.univ}</div>
             </div>
             <button class="follow-button" data-user-id="${data.id}">
                 ${data.is_following ? '언팔로우' : '팔로우'}

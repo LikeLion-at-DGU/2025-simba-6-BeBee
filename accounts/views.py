@@ -107,6 +107,7 @@ def buddypage(request, user_id):
         'following_count': following_count,
         'page_user': page_user,
         'honey_count': profile.honey_count,
+        'univ': profile.univ,
     }
 
     return render(request, 'accounts/buddypage.html', context)
@@ -134,6 +135,7 @@ def follow(request, id):
         'follower_count': followed_user.profile.followers.count(),
         'following_count': user.profile.followings.count(),
         'honey_count': user.profile.honey_count,
+        'univ' : user.profile.univ,
     })
 
 
@@ -163,7 +165,8 @@ def friend_profile_api(request):
         'username': user.username,
         'honey_count': profile.honey_count,
         'is_following': is_following,
-        'profile_image_url': profile.profile_image.url if profile.profile_image else ''
+        'profile_image_url': profile.profile_image.url if profile.profile_image else '',
+        'univ': profile.univ,  # ✅ 추가
     })
 
     

@@ -223,7 +223,6 @@ body {
     font-style: normal;
     font-weight: 400;
     line-height: normal;
-    margin-left: 25px;
     margin-top: 10px;
 }
 
@@ -236,7 +235,6 @@ body {
     font-style: normal;
     font-weight: 400;
     line-height: normal;
-    margin-left: 25px;
 }
 
 .column-center {
@@ -257,8 +255,8 @@ body {
     align-self: stretch;
     color: #787468;
     text-align: center;
-    font-family: locus_sangsang;
-    font-size: 30px;
+    font-family: Jua;
+    font-size: 25px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
@@ -267,16 +265,17 @@ body {
 
 .follower-list-text {
     color: #8A8A8A;
-    font-size: 20px;
+    font-size: 15px;
     margin-left: 20px;
+    font-family: Jua;
 }
 
 .following-num {
     align-self: stretch;
     color: #787468;
     text-align: center;
-    font-family: locus_sangsang;
-    font-size: 30px;
+    font-family: Jua;
+    font-size: 25px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
@@ -285,8 +284,9 @@ body {
 
 .following-list-text {
     color: #8A8A8A;
-    font-size: 20px;
+    font-size: 15px;
     margin-left: 13px;
+    font-family: Jua;
 }
 
 .follower-list {
@@ -365,6 +365,7 @@ body {
     display: flex;
     align-items: center;
     gap: 20px;
+    width: 290px;
 }
 
 .friend-info .friend-nickname {
@@ -385,9 +386,9 @@ body {
     background-color: #FFD640;
     border: none;
     border-radius: 12px;
-    font-weight: bold;
     cursor: pointer;
     font-size: 18px;
+    font-family: Jua;
 }
 
 .friend-honey {
