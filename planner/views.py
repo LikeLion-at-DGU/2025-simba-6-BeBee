@@ -175,34 +175,46 @@ def todo_delete(request, user_id, todo_id):
     todo.delete()
     return redirect('planner:subpage', user_id=user_id, selected_date=selected_date)
 
+
 @require_POST
 def todo_complete(request, user_id, todo_id):
     if not request.user.is_authenticated or request.user.id != user_id:
         return HttpResponseForbidden("권한이 없습니다.")
 
     todo = get_object_or_404(Todo, id=todo_id, user_id=user_id)
-    today = todo.date or timezone.now().date()  # 🟡 중요: Todo의 date 기준
+    today = todo.date or timezone.now().date()
 
-    daily_honey, created = DailyHoney.objects.get_or_create(user=request.user, date=today)
+    daily_honey, _ = DailyHoney.objects.get_or_create(user=request.user, date=today)
     profile = request.user.profile
     HONEY_PER_TODO = 10
 
     if todo.status == 'completed':
-        # 체크 해제
+    # 체크 해제
         todo.status = 'not_completed'
         profile.completed_todo_count = max(0, profile.completed_todo_count - 1)
-        profile.honey_count = max(0, profile.honey_count - HONEY_PER_TODO)
-        daily_honey.honey_earned = max(0, daily_honey.honey_earned - HONEY_PER_TODO)
+        todo.save()
+
+        # 해제 후 현재 완료된 todo 수 다시 확인
+        remaining_completed = Todo.objects.filter(user=request.user, date=today, status='completed').count()
+
+        # ✅ 5개 이하일 때는 계속 깎이게 하되, 0 이하로는 안 내려가게
+        if remaining_completed < 5 and daily_honey.honey_earned > 0:
+            profile.honey_count = max(0, profile.honey_count - HONEY_PER_TODO)
+            daily_honey.honey_earned = max(0, daily_honey.honey_earned - HONEY_PER_TODO)
+
+
     else:
-        # 체크
+        # ✅ 체크
         todo.status = 'completed'
         profile.completed_todo_count += 1
+
         if daily_honey.honey_earned < 50:
             give = min(HONEY_PER_TODO, 50 - daily_honey.honey_earned)
             profile.honey_count += give
             daily_honey.honey_earned += give
 
-    todo.save()
+        todo.save()
+
     profile.save()
     daily_honey.save()
 
@@ -211,7 +223,6 @@ def todo_complete(request, user_id, todo_id):
         'honey_count': profile.honey_count,
         'daily_earned': daily_honey.honey_earned,
     })
-
 
 
 
