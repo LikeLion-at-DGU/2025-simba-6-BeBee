@@ -32,6 +32,15 @@ def subpage(request, user_id, selected_date):
         )
     ).order_by('status_order', 'id')
 
+    for todo in todos:
+        if todo.total_elapsed_time:
+            seconds = int(todo.total_elapsed_time.total_seconds())
+            h, r = divmod(seconds, 3600)
+            m, s = divmod(r, 60)
+            todo.formatted_time = f"{h:02}:{m:02}:{s:02}"
+        else:
+            todo.formatted_time = "00:00:00"
+
     comments = Comment.objects.filter(user_id=target_user.id, date=date_obj).order_by('created_at')
     daily_goal = DailyGoal.objects.filter(user=target_user, date=date_obj).first()
     like_obj = Like.objects.filter(target_user=target_user, date=date_obj).first()
@@ -190,6 +199,7 @@ def todo_complete(request, user_id, todo_id):
     return JsonResponse({
     'status': todo.status,
     'honey_count': profile.honey_count,  # ✅ 꿀 정보 추가
+    'daily_earned': profile.daily_honey_earned,
     
 })
 

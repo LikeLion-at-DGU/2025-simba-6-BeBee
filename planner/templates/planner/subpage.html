@@ -43,25 +43,51 @@
         <!-- 메인 콘텐츠 -->
         <main class="main-content">
             <h1 class="logo">BuzzList</h1>
+            {% if login_user.id != target_user.id %}
+            <a href="{% url 'main:mainpage' target_user.id %}" style="text-decoration: none; font-size: 24px;"
+                class="back-link">
+                ⬅ 이전
+            </a>
+            {% endif %}
+
+
 
             <!-- ✅ box1 -->
+            <div class="box1">
 
-            <div class="box1-right">
-                <form method="POST"
-                    action="{% url 'planner:like_subpage' user_id=target_user.id selected_date=selected_date %}"
-                    style="display: flex; flex-direction: column; align-items: center;">
-                    {% csrf_token %}
-                    <button type="submit" class="heart-icon"
-                        style="background: none; border: none; font-size: 2rem; cursor: pointer;">
-                        {% if is_liked %}
-                        ❤️
-                        {% else %}
-                        🤍
-                        {% endif %}
-                    </button>
-                    <div class="heart-label">좋아요 <span>{{ like_obj.like_count|default:0 }}</span></div>
-                </form>
+                <div class="box1-left">
+                    <!-- <img src="{% static 'assets/planner/buzzlist-logo.png' %}" alt="logo" class="buzzlist-logo" /> -->
+                    <img src="{% static 'assets/planner/honey-icon.png' %}" alt="icon" class="honey-icon" />
+                </div>
+
+                <div class="box1-middle">
+                    <p class="goal-text">오늘도 꿀을 모아볼까요? 🐝</p>
+                    <p class="honey-progress">
+                        <progress value="{{ login_user.profile.daily_honey_earned }}" max="50"></progress>
+                        <span class="honey-label">{{ login_user.profile.daily_honey_earned }} / 50g</span>
+                    </p>
+                </div>
+
+                <div class="box1-right">
+                    <form method="POST"
+                        action="{% url 'planner:like_subpage' user_id=target_user.id selected_date=selected_date %}"
+                        style="display: flex; flex-direction: column; align-items: center;">
+                        {% csrf_token %}
+                        <button type="submit" class="heart-icon"
+                            style="background: none; border: none; font-size: 2rem; cursor: pointer;">
+                            {% if is_liked %}
+                            ❤️
+                            {% else %}
+                            🤍
+                            {% endif %}
+                        </button>
+                        <div class="heart-label">좋아요 <span>{{ like_obj.like_count|default:0 }}</span></div>
+                    </form>
+                </div>
+
             </div>
+
+
 
 
             <div class="box2">
@@ -72,6 +98,7 @@
                     <input type="text" name="goal" value="{{ daily_goal.goal|default:'' }}" class="goal-input"
                         placeholder="오늘의 다짐을 입력하세요" />
                     <div class="goal-button-group">
+                        {% if login_user.id == target_user.id %}
                         {% if daily_goal %}
                         <button type="submit" class="submit-button"><i class="fas fa-pen"></i></button>
                 </form>
@@ -82,6 +109,7 @@
                 {% else %}
                 <button type="submit" class="submit-button"><i class="fas fa-arrow-right"></i></button>
                 </form>
+                {% endif %}
                 {% endif %}
             </div>
     </div>
@@ -98,7 +126,7 @@
             <li class="todo-item {% if todo.status == 'completed' %}completed{% endif %}">
                 <form method="POST" action="{% url 'planner:todo_delete' request.user.id todo.id %}">
                     {% csrf_token %}
-                    
+
                     <!-- ✅ 1줄: 체크박스 + 내용 + 버튼 -->
                     <div class="todo-top-row">
                         <input type="checkbox" class="todo-status-toggle" data-user-id="{{ request.user.id }}"
@@ -118,6 +146,11 @@
                     <!-- ✅ 2줄: 기한 + 카테고리 뱃지 -->
                     <div class="todo-bottom-row">
                         <span class="todo-deadline">기한: {{ todo.deadline|date:"Y-m-d" }}</span>
+                        {% if todo.total_elapsed_time %}
+                        <div class="todo-studytime">
+                            공부 시간: {{ todo.formatted_time }}
+                        </div>
+                        {% endif %}
                         <span class="todo-category">{{ todo.category }}</span>
                     </div>
                 </form>
@@ -245,13 +278,14 @@
 
     <!-- 오른쪽 하단에 띄우는 아이콘 -->
     <div class="floating-icons">
-        <img src="{% static 'assets/planner/bulb.png' %}" id="show-timer-btn" alt="타이머" />
         <img src="{% static 'assets/planner/wing.png' %}" id="show-buddy-btn" alt="버디 메시지" />
+        <p class="buddy-message">버디메세지</p>
     </div>
 
 
     </div>
     <script src="{% static 'js/planner/subpage.js' %}"></script>
+
 </body>
 
 </html>
