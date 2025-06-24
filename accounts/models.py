@@ -18,7 +18,7 @@ class Profile(models.Model):
     daily_honey_earned = models.IntegerField(default=0)
     last_honey_earned_date = models.DateField(null=True, blank=True)
 
-    total_study_time = models.DurationField(default=timedelta) #총 공부 시간 필드
+    total_study_time = models.DurationField(default=timedelta()) #총 공부 시간 필드
     last_reset_date = models.DateField(null=True, blank=True) #한 달마다 공부시간 갱신하기 위한 필드
 
 
