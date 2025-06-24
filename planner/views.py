@@ -7,6 +7,7 @@ from accounts.models import Profile
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
+from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.db.models import Case, When, Value, IntegerField
 
@@ -301,19 +302,27 @@ def comment_delete(request, comment_id):
     
     return redirect('planner:subpage',user_id=comment.user.id, selected_date=timezone.now().strftime('%Y-%m-%d'))
 
+@require_POST
 def like_subpage(request, user_id, selected_date):
     target_user = get_object_or_404(User, id=user_id)
     date_obj = datetime.strptime(selected_date, '%Y-%m-%d').date()
 
     like_obj, created = Like.objects.get_or_create(target_user=target_user, date=date_obj)
 
+    liked = False
     if request.user in like_obj.like.all():
         like_obj.like.remove(request.user)
         like_obj.like_count -= 1
     else:
         like_obj.like.add(request.user)
         like_obj.like_count += 1
+        liked = True
 
     like_obj.save()
-    return redirect('planner:subpage', user_id=user_id, selected_date=selected_date)
+
+    return JsonResponse({
+        "liked": liked,
+        "like_count": like_obj.like_count
+    })
+
 
