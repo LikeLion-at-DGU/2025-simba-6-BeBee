@@ -2,7 +2,7 @@ html {
     height: 100vh;
     margin: 0;
     padding: 0;
-    /* overflow: hidden; */
+    overflow: hidden;
 }
 
 body {
@@ -11,19 +11,19 @@ body {
     width: 100vw;
     font-family: 'yg-jalnan', sans-serif;
     height: 100vh;
-    /* overflow: hidden; */
+    overflow: hidden;
 }
 
 .wrapper {
     max-width: 100vh;
-    height: 100vh;
-    display:flex;
+    height: 90vh;
+    display: flex;
     flex-direction: column;
     margin: 0 2rem 0 2rem;
     padding: 0;
     /* 여백은 최소화 */
-    /* width: 90%;
-    height: 90%; */
+    width: 100%;
+    height: 100%;
     position: relative;
 }
 
@@ -31,7 +31,7 @@ body {
 .header-wrapper {
     display: flex;
     flex-direction: column;
-    flex: 0 0 auto;
+    flex: 0 0 180px;
     align-items: center;
     width: 90vw;
     padding: 0;
@@ -77,7 +77,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 20px;
+    /* margin-top: 20px; */
     width: 100%;
 }
 
@@ -140,50 +140,57 @@ body {
 /* ✅ 4. 메인 컨텐츠 wrapper (좌우) */
 .content-wrapper {
     display: flex;
+    flex: 1 1 auto;
     justify-content: space-between;
-    gap: 90px;
-    margin-top: 30px;
+    gap: 2vw;
+    /* margin-top: 30px; */
     width: 90vw;
-    height: calc(100vh - 20rem);
-    /* height: 60vh; */
+    /* margin-right:20px;
+    height: auto;
+    max-height: calc(100vh - 200px); */
 }
 
-/* ✅ 4-1. 왼쪽: 프로필 + 요약 */
+
 .left-panel {
     flex: 1.5;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 30px;
+    height: 100%;
 }
 
-/* ✅ 4-2. 오른쪽: 상점 */
+
 .right-panel {
     flex: 2;
     height: 100%;
-    margin-top: 8rem;
+    margin-top: 5rem;
 }
 
 .profile-box {
     display: flex;
     flex-direction: column;
-    margin-bottom: 20px;
+    margin: 0px;
+    padding: 0px;
+    gap: 15px;
+    height: auto;
 }
 
 .profile-header {
-    padding: 0;
-    margin: 0;
-    flex: 1.2;
+    padding: 0px;
+    margin: 0px;
+    gap: 0px;  
 }
 
 /* ✅ 프로필 카드 */
 .profile-info {
     background: #fffbe1;
-    flex: 2.4;
-    padding: 10px;
+    margin: 0px;
+    padding: 0px;
     border-radius: 16px;
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.05);
     display: flex;
-    width: 60%;
+    width: 70%;
+    /* height: 30%; */
     justify-content: space-between;
     align-items: center;
     gap: 0px;
@@ -192,9 +199,11 @@ body {
 
 .profile-title {
     font-family: 'yg-jalnan', sans-serif;
-    font-size: 18px;
+    font-size: 15px;
     padding-bottom: 1.2rem;
-    margin: 0;
+    margin: 0px;
+    gap: 0px;
+    padding: 0px;
 }
 
 .profile-text {
@@ -249,7 +258,7 @@ body {
     background: #FFFEEC;
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25), 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
     width: 90%;
-    min-height: 400px;
+    height: 300px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -282,12 +291,35 @@ body {
 
 /* ✅ 상점 */
 .shop-box {
+    /* flex: 1.6; */
     background: #fff5cc;
     padding: 10px;
     border-radius: 16px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    width: 100%;
+    height: auto;
+    margin: 0px;
 
 }
+
+
+.shop-title {
+    color: #736153;
+    text-align: center;
+    font-family: 'yg-jalnan', sans-serif;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin: 0px;
+}
+
+.need-more-honey {
+    margin: 5px;
+    padding: 5px;
+}
+
+
 
 @font-face {
     font-family: 'yg-jalnan';
@@ -297,25 +329,16 @@ body {
     font-style: normal;
 }
 
-h2.shop-title {
-    color: #736153;
-    text-align: center;
-    font-family: 'yg-jalnan', sans-serif;
-    font-size: 2rem;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-    margin-bottom: 1rem;
-}
 
 .honey-progress {
     position: relative;
     width: 100%;
     max-width: 500px;
-    background-color: #fff9dc;
-    padding: 10px 0;
+    /* background-color: #fff9dc; */
+    background: none;
+    padding: 0px;
     border-radius: 20px;
-    margin: 10px auto;
+    margin: 5px auto;
 }
 
 /* 커스텀 progress 바 */
@@ -323,7 +346,7 @@ h2.shop-title {
     -webkit-appearance: none;
     appearance: none;
     width: 100%;
-    height: 2.5rem;
+    height: 2.0rem;
     border-radius: 20px;
     overflow: hidden;
     background-color: #eee;
