@@ -2,7 +2,7 @@ html {
     height: 100vh;
     margin: 0;
     padding: 0;
-    /* overflow: hidden; */
+    overflow: hidden;
 }
 
 body {
@@ -11,19 +11,19 @@ body {
     width: 100vw;
     font-family: 'yg-jalnan', sans-serif;
     height: 100vh;
-    /* overflow: hidden; */
+    overflow: hidden;
 }
 
 .wrapper {
     max-width: 100vh;
-    height: 100vh;
-    display:flex;
+    height: 90vh;
+    display: flex;
     flex-direction: column;
     margin: 0 2rem 0 2rem;
     padding: 0;
     /* 여백은 최소화 */
-    /* width: 90%;
-    height: 90%; */
+    width: 100%;
+    height: 100%;
     position: relative;
 }
 
@@ -31,7 +31,7 @@ body {
 .header-wrapper {
     display: flex;
     flex-direction: column;
-    flex: 0 0 auto;
+    flex: 0 0 180px;
     align-items: center;
     width: 90vw;
     padding: 0;
@@ -77,7 +77,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 20px;
+    /* margin-top: 20px; */
     width: 100%;
 }
 
@@ -140,82 +140,134 @@ body {
 /* ✅ 4. 메인 컨텐츠 wrapper (좌우) */
 .content-wrapper {
     display: flex;
+    flex: 1 1 auto;
     justify-content: space-between;
-    gap: 90px;
-    margin-top: 30px;
+    gap: 2vw;
+    /* margin-top: 30px; */
     width: 90vw;
-    height: calc(100vh - 20rem);
-    /* height: 60vh; */
+    /* margin-right:20px;
+    height: auto;
+    max-height: calc(100vh - 200px); */
 }
 
-/* ✅ 4-1. 왼쪽: 프로필 + 요약 */
+
 .left-panel {
     flex: 1.5;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 30px;
+    height: 100%;
 }
 
-/* ✅ 4-2. 오른쪽: 상점 */
+
 .right-panel {
     flex: 2;
     height: 100%;
-    margin-top: 8rem;
+    margin-top: 5rem;
+    padding-right: 0px;
 }
 
 .profile-box {
     display: flex;
     flex-direction: column;
-    margin-bottom: 20px;
+    margin: 0px;
+    padding: 0px;
+    gap: 15px;
+    height: auto;
 }
 
 .profile-header {
-    padding: 0;
-    margin: 0;
-    flex: 1.2;
+    padding: 0px;
+    margin: 0px;
+    gap: 0px;
 }
 
 /* ✅ 프로필 카드 */
 .profile-info {
-    background: #fffbe1;
-    flex: 2.4;
-    padding: 10px;
-    border-radius: 16px;
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.05);
     display: flex;
-    width: 60%;
-    justify-content: space-between;
+    padding: 17px 23px;
+    flex-direction: row;
     align-items: center;
-    gap: 0px;
+    justify-content: center;
+    gap: 40px;
+    width: 60%;
+    align-self: stretch;
+    border-radius: 30px;
+    background: #FFFEEC;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 }
 
 
 .profile-title {
     font-family: 'yg-jalnan', sans-serif;
-    font-size: 18px;
+    font-size: 15px;
     padding-bottom: 1.2rem;
-    margin: 0;
+    margin: 0px;
+    gap: 0px;
+    padding: 0px;
 }
 
 .profile-text {
     display: flex;
     flex-direction: column;
     margin-left: 0px;
+    gap: 10px;
 }
 
 .profile-img {
-    width: 60px;
-    height: 60px;
+    display: flex;
+    width: 40px;
+    height: 40px;
+    padding: 15px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
     border-radius: 50%;
-    object-fit: cover;
-    margin: 0px;
-    padding: 0px;
+    background: #FFEF96;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+}
+
+.logout {
+    color: #000;
+    background: none;
+    border: none;
+    font-family: 'yg-jalnan', sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 200;
+    line-height: 160%;
+    /* 25.6px */
+    text-decoration-line: underline;
+    text-decoration-style: solid;
+    text-decoration-skip-ink: auto;
+    text-decoration-thickness: auto;
+    text-underline-offset: auto;
+    text-underline-position: from-font;
+
 }
 
 .nickname {
+    color: #FFC74D;
+    font-family: 'yg-jalnan';
     font-size: 18px;
-    font-weight: bold;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    display:flex;
+    /* justify-content: center; */
 }
+
+.nickname-label {
+    display: block;
+    text-align: right;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
 
 .status {
     font-size: 14px;
@@ -231,45 +283,60 @@ body {
 
 .profile-top {
     display: flex;
+    flex-direction: row;
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    gap: 20px;
 }
 
-/* .profile-top-left {}
+.profile-top-right {
+    display: flex;
+    flex-direction: row;
+}
 
-.profile-top-right {} */
+/* .profile-top-right {} */
 
 
 /* ✅ 요약 통계 */
 .summary-box {
-    padding: 2rem;
+    padding-left: 0px;
+    padding-right: 0px;
     /* box-shadow: 0 0 15px rgba(0, 0, 0, 0.05); */
     border-radius: 30px;
     background: #FFFEEC;
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25), 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
     width: 90%;
-    min-height: 400px;
+    height: 300px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-left: 5rem;
-    margin-right: 5rem;
+    margin-left: 3rem;
+    margin-right: 1rem;
+    padding-bottom: 2rem;
 
 }
 
 .summary-title {
     font-size: 18px;
     margin-bottom: 16px;
+    color: #736153;
+    font-family: 'Jua', sans-serif;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
 }
 
 .summary-stats {
     display: flex;
-    justify-content: space-between;
-    gap: 12px;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 2rem;
 }
 
+/* 
 .stat {
     flex: 1;
     background: #fae5a3;
@@ -278,16 +345,73 @@ body {
     border-radius: 12px;
     font-size: 14px;
     font-weight: bold;
+} */
+
+
+.stat.hex {
+    width: 175px;
+    height: 150px;
+    /* background-color: #f2d479;  */
+    clip-path: polygon(25% 0%, 75% 0%,
+            100% 50%, 75% 100%,
+            25% 100%, 0% 50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-weight: bold;
+    font-size: 18px;
+    padding: 10px;
+    /* box-shadow: 2px 4px 8px rgba(0,0,0,0.2); */
+    color: #5c4500;
+    line-height: 1.4;
+    /* border-radius: 30px; */
+    background: #FFFEEC;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25), 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+}
+
+/* 원하는 육각형마다 색 다르게 지정 */
+.stat.hex:nth-child(1) {
+    background-color: #6b5547;
+    color: #fff;
+}
+
+.stat.hex:nth-child(2) {
+    background-color: #f2d479;
+    color: #5c4500;
+}
+
+.stat.hex:nth-child(3) {
+    background-color: #f7d3a3;
+    color: #5c4500;
 }
 
 /* ✅ 상점 */
 .shop-box {
-    background: #fff5cc;
+    /* flex: 1.6; */
     padding: 10px;
-    border-radius: 16px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
-
+    width: 100%;
+    height: auto;
+    margin: 0px;
+    border-radius: 30px;
+    background: #FFFEEC;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25), 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
 }
+
+
+.shop-title {
+    color: #736153;
+    text-align: center;
+    font-family: 'yg-jalnan', sans-serif;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin: 0px;
+}
+
+
+
 
 @font-face {
     font-family: 'yg-jalnan';
@@ -297,25 +421,18 @@ body {
     font-style: normal;
 }
 
-h2.shop-title {
-    color: #736153;
-    text-align: center;
-    font-family: 'yg-jalnan', sans-serif;
-    font-size: 2rem;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-    margin-bottom: 1rem;
-}
+
 
 .honey-progress {
+
     position: relative;
     width: 100%;
     max-width: 500px;
-    background-color: #fff9dc;
-    padding: 10px 0;
+    /* background-color: #fff9dc; */
+    background: none;
+    padding: 0px;
     border-radius: 20px;
-    margin: 10px auto;
+    margin: 5px auto;
 }
 
 /* 커스텀 progress 바 */
@@ -323,14 +440,14 @@ h2.shop-title {
     -webkit-appearance: none;
     appearance: none;
     width: 100%;
-    height: 2.5rem;
+    height: 2.0rem;
     border-radius: 20px;
     overflow: hidden;
-    background-color: #eee;
+    background: #e6e3d7;
 }
 
 .honey-progress progress::-webkit-progress-bar {
-    background-color: #f2efef;
+    background-color: #e6e3d7;
     border-radius: 20px;
 }
 
@@ -363,23 +480,37 @@ h2.shop-title {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: #fff;
     border-radius: 12px;
     padding: 20px;
 }
 
-.reward-honey,
-.reward-item {
+.reward-honey {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.reward-honey img,
-.reward-item img {
-    width: 60px;
+.reward-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+
+.reward-honey img {
+    width: 150px;
     margin-bottom: 6px;
 }
+
+.reward-item img {
+    width: 150px;
+    margin-bottom: 6px;
+    border-radius: 20px;
+    background: #FFEF96;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
 
 .reward-arrow {
     font-size: 24px;
