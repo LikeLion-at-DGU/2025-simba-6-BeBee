@@ -63,12 +63,16 @@ body {
 }
 
 .logo {
-    font-family: 'Bagel Fat One', cursive;
-    font-size: 65px;
-    font-weight: 400;
-    line-height: 60px;
-    color: #000;
+    width: 300px;
+    height: auto;
 }
+
+.login-user-info {
+    font-family: 'Do Hyeon', sans-serif;
+    font-size: 20px;
+    color: #444;
+}
+
 
 .box1 {
     display: flex;
@@ -138,10 +142,17 @@ body {
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25), 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
 }
 
-
+.buddy-title {
+    color: #574c4c;
+    font-family: 'Do Hyeon', sans-serif;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
 
 .goal-text {
-    font-size: 20px;
+    font-size: 15px;
     font-family: 'yg-jalnan', sans-serif;
     color: #6E5A5A;
     margin: 0;
@@ -183,12 +194,12 @@ body {
     align-items: flex-start;
     margin-top: 10px;
     gap: 4px;
-    width: 200px;
+    width: 350px;
 }
 
 .honey-progress progress {
     width: 100%;
-    height: 20px;
+    height: 30px;
     appearance: none;
     -webkit-appearance: none;
     border-radius: 10px;
@@ -206,7 +217,7 @@ body {
 }
 
 .honey-label {
-    font-size: 14px;
+    font-size: 20px;
     font-family: 'Do Hyeon', sans-serif;
     color: #6e5a5a;
 }
@@ -469,62 +480,38 @@ body {
 
 
 
-
+/* 타이머 */
 .right-box2 {
     display: flex;
     flex-direction: column;
-    flex: 2;
+    /* justify-content: space-between;  */
+    /* flex: 2; */
     align-items: center;
     gap: 20px;
-    background-color: #fdf6e3;
-    border-radius: 15px;
-    padding: 30px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    padding: 20px 20px 30px 30px;
+    margin: 0 auto;
     display: none;
     width: fit-content;
+    height: auto;
+    border-radius: 20px;
+    background: rgba(255, 203, 92, 0.30);
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset, 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 }
-
-
-
-/* 집중 타이머 디자인 */
 
 .timer-label {
-    /* background-color: #6B4F1D;
-    color: white;
-    padding: 6px 16px;
-    font-weight: bold;
-    font-size: 16px;
-    border-radius: 12px;
-    display: inline-block;
-    margin-bottom: 12px; */
-
-    display: flex;
-    color: white;
-    width: 490px;
-    height: 67px;
-    padding: 2px 126px;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    border-radius: 20px;
-    background: #736153;
-    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
-}
-
-
-
-
-.buddy-title {
-    padding: 6px 16px;
-    border-radius: 10px;
-    color: #6E5A5A;
-    font-family: 'Bagel Fat One', cursive;
+    color: #FFF;
+    text-align: center;
+    font-family: 'Jua', sans-serif;
     font-size: 30px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
+    border-radius: 10px;
+    background: #736153;
+    justify-content: center;
+    /* 가로 중앙 정렬 */
+    align-items: center;
 }
-
 
 
 #timer-display {
@@ -552,11 +539,41 @@ body {
 
 .counter {
     font-size: 40px;
-    font-family: monospace;
+    font-family: E1234;
     color: #444;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin: 20px 0;
 }
 
+.digit-box {
+    width: 80px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'DS-Digital', monospace;
+    font-size: 48px;
+    color: #6E5A5A;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+    background: rgba(255, 203, 92, 0.30);
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25), 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+}
+
+.colon {
+    font-size: 48px;
+    font-weight: bold;
+    color: #6b4f1d;
+    padding: 0 8px;
+} 
+
+
 .start-btn {
+    display: block; 
+    margin: 20px auto 0;
     background-color: #f1c40f;
     border: none;
     padding: 10px 30px;
@@ -579,8 +596,16 @@ body {
     gap: 16px;
     z-index: 10;
     align-items: flex-start;
-    height: 50px;
+    height: 60px;
 }
+
+.inline-honey-icon {
+    width: 30px;
+    height: 30px;
+    vertical-align: middle;
+    margin: 0 4px;
+}
+
 
 .nav-link {
     font-size: 16px;
