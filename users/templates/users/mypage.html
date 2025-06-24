@@ -24,7 +24,7 @@
 
 
             <div class="header-title-bar">
-                <h1 class="mypage-title">My page</h1>
+                <img src="{% static 'assets/users/mypage.png' %}" alt="mypage" class="mypage-title">
                 {% now "Y-m-d" as today %}
                 <nav class="mypage-nav">
                     <a class='nav' href="{% url 'main:mainpage' user.id %}">Calendar</a>
