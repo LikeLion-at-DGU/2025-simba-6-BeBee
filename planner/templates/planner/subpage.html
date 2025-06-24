@@ -64,9 +64,9 @@
                 <div class="box1-middle">
                     <p class="goal-text">오늘도 꿀을 모아볼까요? 🐝</p>
                     <p class="honey-progress">
-                        <progress value="{{ earned }}" max="50"></progress>
+                        <progress value="{{ earned }}" max="50"
+                            class="{% if earned == 50 %}full-honey{% endif %}"></progress>
                         <span class="honey-label">{{ earned }} / 50g</span>
-
                     </p>
                 </div>
 
@@ -255,7 +255,8 @@
                         </div>
 
                         {% if comment.writer == request.user %}
-                        <form method="POST" action="{% url 'planner:comment_delete' comment.id %}" style="display:inline;">
+                        <form method="POST" action="{% url 'planner:comment_delete' comment.id %}"
+                            style="display:inline;">
                             {% csrf_token %}
                             <button type="submit" class="buddy-delete-btn" style="background: none; border: none;">
                                 <i class="fas fa-trash"></i>
@@ -265,7 +266,7 @@
                     </li>
                     {% endfor %}
                 </ul>
-        
+
                 <!-- ✅ 메시지 입력 폼 -->
                 <form method="POST" action="{% url 'planner:comment' selected_date %}" class="buddy-form">
                     {% csrf_token %}
@@ -279,7 +280,7 @@
         </div>
 
         <!-- 오른쪽 날개 아이콘 -->
-        <div class="floating-icons">   
+        <div class="floating-icons">
             <img src="{% static 'assets/planner/wing.png' %}" id="show-buddy-btn" alt="버디 메시지" />
             <p class="buddy-message">버디메세지</p>
         </div>
@@ -292,4 +293,5 @@
     <script src="{% static 'js/planner/subpage.js' %}"></script>
 
 </body>
+
 </html>
