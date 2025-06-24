@@ -56,23 +56,20 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    // ✅ 타이머/버디 토글 버튼
+    const timerBtn = document.getElementById("show-timer-btn");
     const buddyBtn = document.getElementById("show-buddy-btn");
-    if (buddyBtn) {
+
+    if (timerBtn && buddyBtn) {
+        timerBtn.addEventListener("click", () => {
+            document.querySelectorAll(".right-box2").forEach(box => box.style.display = "block");
+            document.getElementById("buddy-box").style.display = "none";
+        });
         buddyBtn.addEventListener("click", () => {
             document.querySelectorAll(".right-box2").forEach(box => box.style.display = "none");
             document.getElementById("buddy-box").style.display = "flex";
         });
     }
-
-    const timerBtn = document.getElementById("show-timer-btn");
-    if (timerBtn) {
-        timerBtn.addEventListener("click", () => {
-            document.querySelectorAll(".right-box2").forEach(box => box.style.display = "block");
-            document.getElementById("buddy-box").style.display = "none";
-        });
-    }
-
-
 
     // ✅ 개별 타이머 박스 토글 버튼
     document.querySelectorAll(".show-timer-btn").forEach((btn) => {
@@ -113,18 +110,18 @@ document.addEventListener("DOMContentLoaded", () => {
             startTimer();
         }
 
-        // button.addEventListener("click", () => {
-        //     const isStart = button.textContent.trim() === "START";
-        //     const url = isStart ? "start" : "stop";
+        button.addEventListener("click", () => {
+            const isStart = button.textContent.trim() === "START";
+            const url = isStart ? "start" : "stop";
 
-        //     fetch(`/planner/${url}/${userId}/${todoId}/${selectedDate}/`)
-        //         .then(res => res.json())
-        //         .then(() => {
-        //             button.textContent = isStart ? "STOP" : "START";
-        //             isStart ? startTimer() : stopTimer();
-        //         })
-        //         .catch(err => console.error(`${url.toUpperCase()} 오류:`, err));
-        // });
+            fetch(`/planner/${url}/${userId}/${todoId}/${selectedDate}/`)
+                .then(res => res.json())
+                .then(() => {
+                    button.textContent = isStart ? "STOP" : "START";
+                    isStart ? startTimer() : stopTimer();
+                })
+                .catch(err => console.error(`${url.toUpperCase()} 오류:`, err));
+        });
     });
 
 
@@ -208,37 +205,35 @@ document.addEventListener("DOMContentLoaded", () => {
             window.location.href = `/planner/subpage/${userId}/${formatted}/`;
         });
     });
-    
-    const likeForm = document.querySelector('.box1-right form');
-    if (likeForm) {
-        const likeButton = likeForm.querySelector('.heart-icon');
-        const likeCountSpan = likeForm.querySelector('.heart-label span');
-        const csrfToken = getCookie('csrftoken');
-
-        likeForm.addEventListener('submit', function (e) {
-            e.preventDefault();  // 기본 제출 막기
-
-            fetch(likeForm.action, {
-                method: 'POST',
-                headers: {
-                    'X-CSRFToken': csrfToken,
-                    'Accept': 'application/json'
-                }
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.liked) {
-                        likeButton.innerText = '❤️';
-                    } else {
-                        likeButton.innerText = '🤍';
-                    }
-                    likeCountSpan.innerText = data.like_count;
-                })
-                .catch(error => {
-                    console.error('좋아요 처리 중 오류 발생:', error);
-                });
-        });
-    }
 });
 
+const likeForm = document.querySelector('.box1-right form');
+if (likeForm) {
+    const likeButton = likeForm.querySelector('.heart-icon');
+    const likeCountSpan = likeForm.querySelector('.heart-label span');
+    const csrfToken = getCookie('csrftoken');
 
+    likeForm.addEventListener('submit', function (e) {
+        e.preventDefault();  // 기본 제출 막기
+
+        fetch(likeForm.action, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': csrfToken,
+                'Accept': 'application/json'
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.liked) {
+                    likeButton.innerText = '❤️';
+                } else {
+                    likeButton.innerText = '🤍';
+                }
+                likeCountSpan.innerText = data.like_count;
+            })
+            .catch(error => {
+                console.error('좋아요 처리 중 오류 발생:', error);
+            });
+    });
+};
