@@ -1,9 +1,13 @@
+const timerIntervals = {};  // 각 todoId별 intervalId 저장
+const timerSeconds = {};    // 각 todoId별 초 저장
+
+
 // ⏱ 시간 포맷 함수
 function formatTime(seconds) {
     const h = String(Math.floor(seconds / 3600)).padStart(2, '0');
     const m = String(Math.floor((seconds % 3600) / 60)).padStart(2, '0');
     const s = String(seconds % 60).padStart(2, '0');
-    return `${h} : ${m} : ${s}`;
+    return `${h}시간 ${m}분 ${s}초`;
 }
 
 // ✅ CSRF 토큰 함수
@@ -23,6 +27,19 @@ function getCookie(name) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+    // ✅ Todo별 타이머 시작 함수
+    const startTimer = (todoId, display) => {
+        timerIntervals[todoId] = setInterval(() => {
+            timerSeconds[todoId] += 1;
+            display.textContent = formatTime(timerSeconds[todoId]);
+        }, 1000);
+    };
+
+    // ✅ Todo별 타이머 종료 함수
+    const stopTimer = (todoId) => {
+        clearInterval(timerIntervals[todoId]);
+    };
+
     // ✅ 안정적인 방식으로 userId 가져오기
     const userId = document.body.dataset.userid;
     const pathParts = window.location.pathname.split("/");
@@ -70,6 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("buddy-box").style.display = "flex";
         });
     }
+    
 
     // ✅ 개별 타이머 박스 토글 버튼
     document.querySelectorAll(".show-timer-btn").forEach((btn) => {
@@ -88,26 +106,12 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll(".start-btn").forEach(function (button) {
         const todoId = button.dataset.todoId;
         const display = document.getElementById(`timer-display-${todoId}`);
-        let totalSeconds = parseInt(display.dataset.elapsedSeconds || '0', 10);
-        let intervalId = null;
+        timerSeconds[todoId] = parseInt(display.dataset.elapsedSeconds || '0', 10);
+        display.textContent = formatTime(timerSeconds[todoId]);
 
-        display.textContent = formatTime(totalSeconds);
-
-        const startTimer = () => {
-            intervalId = setInterval(() => {
-                totalSeconds += 1;
-                display.textContent = formatTime(totalSeconds);
-            }, 1000);
-        };
-
-        const stopTimer = () => {
-            clearInterval(intervalId);
-        };
-
-        // ✅ 초기 로딩 시 started인 경우 자동 실행
         if (button.dataset.started === "true") {
             button.textContent = "STOP";
-            startTimer();
+            startTimer(todoId, display);
         }
 
         button.addEventListener("click", () => {
@@ -116,13 +120,47 @@ document.addEventListener("DOMContentLoaded", () => {
 
             fetch(`/planner/${url}/${userId}/${todoId}/${selectedDate}/`)
                 .then(res => res.json())
-                .then(() => {
+                .then(data => {
                     button.textContent = isStart ? "STOP" : "START";
-                    isStart ? startTimer() : stopTimer();
+
+                    if (isStart) {
+                        startTimer(todoId, display);
+                    } else {
+                        stopTimer(todoId);
+
+                        // 공부 시간 텍스트 갱신
+                        const studyTimeText = document.getElementById(`study-time-${todoId}`);
+                        if (studyTimeText && data.total_elapsed) {
+                            studyTimeText.textContent = `공부 시간: ${data.total_elapsed}`;
+                        } else if (data.total_elapsed) {
+                            // ✅ 왼쪽 리스트 영역에서 해당 Todo item 찾기
+                            const todoItem = document.querySelector(`li.todo-item button[data-todo-id="${todoId}"]`)?.closest("li.todo-item");
+                            const bottomRow = todoItem?.querySelector(".todo-bottom-row");
+
+                            if (bottomRow) {
+                                const newDiv = document.createElement("div");
+                                newDiv.id = `study-time-${todoId}`;
+                                newDiv.className = "todo-studytime";
+                                newDiv.textContent = `공부 시간: ${data.total_elapsed}`;
+
+                                // ✅ '기한'과 '카테고리' 사이에 끼워넣기
+                                const deadlineSpan = bottomRow.querySelector(".todo-deadline");
+                                bottomRow.insertBefore(newDiv, deadlineSpan.nextSibling);
+                            }
+                        }
+
+
+                        // 디지털 타이머 갱신
+                        if (data.total_seconds !== undefined) {
+                            timerSeconds[todoId] = parseInt(data.total_seconds, 10);
+                            display.textContent = formatTime(timerSeconds[todoId]);
+                        }
+                    }
                 })
                 .catch(err => console.error(`${url.toUpperCase()} 오류:`, err));
         });
     });
+
 
 
     // ✅ 할일 상태 토글 + 꿀 업데이트 + 시각 효과

@@ -50,6 +50,7 @@ def mypage(request, user_id):
         'honey_count': profile.honey_count,
         'formatted_time': formatted_time,
         'current_month': current_month,
+        'univ': profile.univ,
     }
 
     return render(request, 'users/mypage.html', context)
