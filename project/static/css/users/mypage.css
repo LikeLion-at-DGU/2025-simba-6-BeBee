@@ -98,16 +98,13 @@ body {
 
 .nav {
     font-size: 24px;
-    color: #000000;
+    
     text-decoration: none;
-    text-shadow:
-        0 1px 0 #f6b700,
-        0 2px 0 #e9a700,
-        0 3px 0 #ce9103,
-        0 4px 0 #be7f01,
-        0 5px 0 #bf7f07,
-        0 6px 1px rgba(0, 0, 0, 0.2);
-}
+    transition: background-color 0.3s ease;
+    font-family: 'Bagel Fat One', cursive;
+    font-weight: 400;
+    color: #eec54a;
+    }
 
 /* ✅ 3. 상단 메뉴 */
 .header-nav {
