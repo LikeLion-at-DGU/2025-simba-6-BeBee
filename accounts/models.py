@@ -20,8 +20,8 @@ class Profile(models.Model):
     daily_honey_earned = models.IntegerField(default=0)
     last_honey_earned_date = models.DateField(null=True, blank=True)
 
-    total_study_time = models.DurationField(default=timedelta()) #총 공부 시간 필드
-    last_reset_date = models.DateField(null=True, blank=True) #한 달마다 공부시간 갱신하기 위한 필드
+    total_study_time = models.DurationField(default=timedelta()) #총 공부 시간 
+    last_reset_date = models.DateField(null=True, blank=True) #한 달마다 공부시간 갱신
 
 
     def __str__(self):
@@ -35,13 +35,13 @@ def create_user_profile(sender, instance, created, **kwargs):
         # 프로필 생성
         Profile.objects.create(user=instance)
 
-        # 오늘 날짜 기준으로 기본 할일 생성
+        # default 할일 생성
         today = timezone.now().date()
         Todo.objects.create(
             user=instance,
             content="첫 번째 미션: 오늘의 할 일 입력하기!",
             status="not_completed",
-            category="기타",  # 카테고리 중에 "기타" 있지?
+            category="기타",  
             date=today
         )
 

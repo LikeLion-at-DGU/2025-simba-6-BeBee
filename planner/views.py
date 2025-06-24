@@ -9,13 +9,12 @@ from django.views.decorators.http import require_POST
 from django.db.models import Case, When, Value, IntegerField
 from .models import DailyHoney
 
-# ⭐ user_id 변경: 전체 뷰에게 적용
 # 시간+분 으로 바꿔주는 함수
 def format_timedelta(td):   
     total_seconds = int(td.total_seconds())
     hours, remainder = divmod(total_seconds, 3600)
     minutes, seconds = divmod(remainder, 60)
-    return f"{hours}시간 {minutes}분 {seconds}초"# 시간+분 으로 바꿔주는 함수
+    return f"{hours}시간 {minutes}분 {seconds}초" # 시간+분 으로 바꿔주는 함수
 
 
 
@@ -29,7 +28,7 @@ def subpage(request, user_id, selected_date):
     except ValueError:
         return redirect('planner:subpage', user_id=user_id, selected_date=timezone.now().strftime('%Y-%m-%d'))
 
-    # ✅ 할 일 없으면 자동 생성
+    # 디폴트 할 일 생성
     if not Todo.objects.filter(user=target_user, date=date_obj).exists():
         Todo.objects.create(
             user=target_user,
@@ -39,7 +38,7 @@ def subpage(request, user_id, selected_date):
             date=date_obj
         )
 
-    # ✅ 상태 정렬 우선순위 지정
+    # 완료한 할 일 내려보내는 함수
     todos = Todo.objects.filter(user=target_user, date=date_obj).annotate(
         status_order=Case(
             When(status='completed', then=Value(1)),
@@ -54,8 +53,8 @@ def subpage(request, user_id, selected_date):
             h, r = divmod(seconds, 3600)
             m, s = divmod(r, 60)
             todo.formatted_time = f"{h:02}:{m:02}:{s:02}"  # 디지털 타이머용
-            todo.formatted_time_hms = f"{h}시간 {m}분 {s}초"  # ✅ 서브페이지 리스트용
-            todo.formatted_time_hm = f"{h}시간 {m}분"         # ✅ 마이페이지용
+            todo.formatted_time_hms = f"{h}시간 {m}분 {s}초"  # 서브페이지 리스트용
+            todo.formatted_time_hm = f"{h}시간 {m}분"         # 마이페이지용
         else:
             todo.formatted_time = "00:00:00"
             todo.formatted_time_hms = "0시간 0분 0초"
@@ -116,10 +115,9 @@ def stop_timer(request, user_id, todo_id, selected_date):
     if todo.started_at:
         now = timezone.now()
 
-        # ✅ datetime 필드이므로 바로 사용
         start_dt = todo.started_at
         
-        #할 일마다 timer 시간 저장
+        # 할 일마다 timer 시간 저장
         elapsed_time = now - start_dt
         todo.ended_at = now
         todo.total_elapsed_time = (todo.total_elapsed_time or timedelta()) + elapsed_time
@@ -195,14 +193,13 @@ def todo_complete(request, user_id, todo_id):
         # 해제 후 현재 완료된 todo 수 다시 확인
         remaining_completed = Todo.objects.filter(user=request.user, date=today, status='completed').count()
 
-        # ✅ 5개 이하일 때는 계속 깎이게 하되, 0 이하로는 안 내려가게
+        # 5개 이하일 때는 계속 깎이게 하되, 0 이하로는 안 내려가게
         if remaining_completed < 5 and daily_honey.honey_earned > 0:
             profile.honey_count = max(0, profile.honey_count - HONEY_PER_TODO)
             daily_honey.honey_earned = max(0, daily_honey.honey_earned - HONEY_PER_TODO)
 
 
     else:
-        # ✅ 체크
         todo.status = 'completed'
         profile.completed_todo_count += 1
 
@@ -257,19 +254,6 @@ def update_goal(request, user_id, selected_date):
             goal_obj.save()
     return redirect('planner:subpage', user_id=user_id, selected_date=selected_date)
 
-# def delete_goal(request, user_id, selected_date):
-#     if not request.user.is_authenticated:
-#         return redirect('accounts:login')
-
-#     if request.user.id != user_id:
-#         return HttpResponseForbidden("권한이 없습니다.")
-
-#     date_obj = datetime.strptime(selected_date, '%Y-%m-%d').date()
-#     goal_obj = DailyGoal.objects.get(user_id=user_id, date=date_obj)
-#     goal_obj.delete()
-#     return redirect('planner:subpage', user_id=user_id, selected_date=selected_date)
-
-
 def delete_goal(request, user_id, selected_date):
     if not request.user.is_authenticated:
         return redirect('accounts:login')
@@ -291,12 +275,12 @@ def view_comment(request, selected_date):
     date_obj = datetime.strptime(selected_date, '%Y-%m-%d').date()
 
     if request.method == 'POST':
-        target_user_id = request.POST.get('user_id')  # ✅ 폼에서 숨겨서 전달받기
+        target_user_id = request.POST.get('user_id') 
         target_user = get_object_or_404(User, id=target_user_id)
 
         Comment.objects.create(
             writer=request.user,
-            user=target_user,  # ⭐ target_user 기준으로 저장
+            user=target_user,
             content=request.POST['content'],
             date=date_obj,
             created_at=timezone.now()

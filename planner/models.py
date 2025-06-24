@@ -53,7 +53,7 @@ class DailyGoal(models.Model):
     
 class Comment(models.Model):
     writer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='written_comments')
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments_on_page', null=True)  # 🐝 이 줄이 있어야 함
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments_on_page', null=True)
     content = models.TextField()
     date = models.DateField()
     created_at = models.DateTimeField(auto_now_add=True)

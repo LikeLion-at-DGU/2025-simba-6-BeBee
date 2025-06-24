@@ -60,7 +60,7 @@ def signup(request):
             password=password
         )
 
-        # 시그널로 생성된 Profile 수정
+        
         profile = user.profile
         profile.univ = univ
         if image:
@@ -88,7 +88,7 @@ def buddypage(request, user_id):
     following_count = request.user.profile.followings.count()
     
     page_user = get_object_or_404(User, id=user_id)
-    profile = page_user.profile  # ✅ 수정: 페이지 주인의 프로필 가져오기
+    profile = page_user.profile  
 
     if query:
         users = User.objects.filter(
@@ -99,9 +99,9 @@ def buddypage(request, user_id):
         users = [request.user]
 
     context = {
-        'user': request.user,         # ✅ 현재 로그인한 사용자
-        'users': users,               # ✅ 검색 또는 전체 유저 리스트
-        'profile': profile,           # ✅ 현재 페이지 주인의 프로필
+        'user': request.user,         #  현재 로그인한 사용자
+        'users': users,               #  전체 유저 리스트
+        'profile': profile,           #  현재 페이지 주인의 프로필
         'following_ids': following_ids,
         'follower_count': follower_count,
         'following_count': following_count,
@@ -147,7 +147,7 @@ def friend_profile_api(request):
     if not query:
         return JsonResponse({'exists': False})
     
-    # 자기 자신
+
     if query == 'me':
         user = request.user
     else:
@@ -166,7 +166,7 @@ def friend_profile_api(request):
         'honey_count': profile.honey_count,
         'is_following': is_following,
         'profile_image_url': profile.profile_image.url if profile.profile_image else '',
-        'univ': profile.univ,  # ✅ 추가
+        'univ': profile.univ,  
     })
 
     
