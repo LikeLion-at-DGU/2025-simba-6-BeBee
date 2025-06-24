@@ -44,3 +44,7 @@ def get_daily_success_rate(user, target_date):
     total = todos.count()
     completed = todos.filter(status='completed').count()
     return round((completed / total) * 100, 1) if total else 0
+
+def firstpage(request):
+    return render(request, 'main/firstpage.html')
+
