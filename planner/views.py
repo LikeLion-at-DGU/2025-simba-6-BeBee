@@ -58,6 +58,11 @@ def subpage(request, user_id, selected_date):
     profile = target_user.profile
     formatted_time_hm = format_timedelta(profile.total_study_time or timedelta())
 
+    
+    is_liked = False
+    if like_obj and request.user in like_obj.like.all():
+        is_liked = True
+    
     return render(request, 'planner/subpage.html', {
         'todos': todos,
         'selected_date': selected_date,
@@ -67,6 +72,7 @@ def subpage(request, user_id, selected_date):
         'login_user': request.user,
         'like_obj': like_obj,
         'formatted_time_hm': formatted_time_hm,
+        'is_liked': is_liked,
     })
 
 
@@ -333,5 +339,3 @@ def like_subpage(request, user_id, selected_date):
         "liked": liked,
         "like_count": like_obj.like_count
     })
-
-

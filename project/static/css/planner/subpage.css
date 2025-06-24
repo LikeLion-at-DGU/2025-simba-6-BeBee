@@ -891,3 +891,8 @@ body {
     gap: 8px;
 
 }
+
+.heart-icon:hover {
+    transform: scale(1.3);
+    transition: transform 0.2s ease;
+}
