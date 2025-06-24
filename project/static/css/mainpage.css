@@ -58,7 +58,7 @@ body {
     flex-direction: row;
     flex-wrap: nowrap;
     align-items: center;
-    justify-content: space-between; /* 또는 flex-start도 가능 */
+    justify-content: space-between; 
     box-sizing: border-box;
 }
 
@@ -113,7 +113,7 @@ body {
     font-size: 12px;
     font-style: normal;
     font-weight: 400;
-    line-height: 160%; /* 19.2px */
+    line-height: 160%; 
     margin-top: 10px;
 }
 
@@ -213,7 +213,7 @@ body {
 .calendar-container {
     width: 80%;
     max-width: 1100px;
-    margin: 1vh auto 0 auto; /* 위 여백은 vh로 설정 */
+    margin: 1vh auto 0 auto; 
     position: relative;
 }
 
@@ -256,9 +256,6 @@ body {
 
 .date {
     position: relative;
-    /*
-    width: 90px;
-    height: 105px; */
     width: 64.8px;
     height: 75.6px;
     background-color: #FFFDC2;

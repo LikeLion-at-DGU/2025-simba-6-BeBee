@@ -16,7 +16,6 @@ function renderCalendar() {
   const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
   const startDayOfWeek = firstDayOfMonth.getDay();
 
-  // 월 표시 (영문 → 한글 월명 원한다면 변환 가능)
   const monthName = new Intl.DateTimeFormat('en-US', { month: 'short' }).format(
     new Date(currentYear, currentMonth)
   );

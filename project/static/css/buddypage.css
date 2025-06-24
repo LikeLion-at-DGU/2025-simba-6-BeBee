@@ -45,7 +45,7 @@ body {
     font-size: 12px;
     font-style: normal;
     font-weight: 400;
-    line-height: 160%; /* 19.2px */
+    line-height: 160%; 
     margin-top: 10px;
 }
 
@@ -79,7 +79,7 @@ body {
     flex-direction: row;
     flex-wrap: nowrap;
     align-items: center;
-    justify-content: space-between; /* 또는 flex-start도 가능 */
+    justify-content: space-between; 
     box-sizing: border-box;
 }
 
@@ -95,8 +95,8 @@ body {
 
 .calendar-button1 {
     all: unset; /* 모든 기본 스타일 제거 */
-    cursor: pointer; /* 마우스 커서 변경 */
-    color: #FFD640; /* 원하는 색상 지정 */
+    cursor: pointer;
+    color: #FFD640; 
     font-size: 26px;
     font-family: "Bagel Fat One";
     margin-left: 50px;
@@ -110,8 +110,8 @@ body {
 
 .mypage-button {
     all: unset; /* 모든 기본 스타일 제거 */
-    cursor: pointer; /* 마우스 커서 변경 */
-    color: #FFD640; /* 원하는 색상 지정 */
+    cursor: pointer; 
+    color: #FFD640; 
     font-size: 26px;
     font-family: "Bagel Fat One";
     height: 35px;
