@@ -68,9 +68,9 @@
                 <div class="box1-middle">
                     <p class="goal-text">오늘도 꿀을 모아볼까요? 🐝</p>
                     <p class="honey-progress">
-                        <progress value="{{ earned }}" max="50"></progress>
+                        <progress value="{{ earned }}" max="50"
+                            class="{% if earned == 50 %}full-honey{% endif %}"></progress>
                         <span class="honey-label">{{ earned }} / 50g</span>
-
                     </p>
                 </div>
 
