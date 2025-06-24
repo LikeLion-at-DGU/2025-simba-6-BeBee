@@ -12,6 +12,12 @@ from django.views.decorators.http import require_POST
 from django.db.models import Case, When, Value, IntegerField
 
 # ⭐ user_id 변경: 전체 뷰에게 적용
+# 시간+분 으로 바꿔주는 함수
+def format_timedelta(td):   
+    total_seconds = int(td.total_seconds())
+    hours, remainder = divmod(total_seconds, 3600)
+    minutes, _ = divmod(remainder, 60)
+    return f"{hours}시간 {minutes}분"
 
 
 def subpage(request, user_id, selected_date):
@@ -24,7 +30,7 @@ def subpage(request, user_id, selected_date):
     except ValueError:
         return redirect('planner:subpage', user_id=user_id, selected_date=timezone.now().strftime('%Y-%m-%d'))
 
-    # ✅ 여기에 status 정렬 우선순위 지정
+    # ✅ 상태 정렬 우선순위 지정
     todos = Todo.objects.filter(user=target_user, date=date_obj).annotate(
         status_order=Case(
             When(status='completed', then=Value(1)),
@@ -38,14 +44,20 @@ def subpage(request, user_id, selected_date):
             seconds = int(todo.total_elapsed_time.total_seconds())
             h, r = divmod(seconds, 3600)
             m, s = divmod(r, 60)
-            todo.formatted_time = f"{h:02}:{m:02}:{s:02}" #서브페이지용
-            todo.formatted_time_hm = f"{h}시간 {m}분" #마이페이지용
+            todo.formatted_time = f"{h:02}:{m:02}:{s:02}"  # 서브페이지용
+            todo.formatted_time_hm = f"{h}시간 {m}분"     # 마이페이지용
         else:
-            todo.formatted_time = "00:00:00" #서브페이지
-            todo.formatted_time_hm = "0시간 0분" #마이페이지
+            todo.formatted_time = "00:00:00"
+            todo.formatted_time_hm = "0시간 0분"
+
     comments = Comment.objects.filter(user_id=target_user.id, date=date_obj).order_by('created_at')
     daily_goal = DailyGoal.objects.filter(user=target_user, date=date_obj).first()
     like_obj = Like.objects.filter(target_user=target_user, date=date_obj).first()
+
+    # ✅ 총 공부 시간 포맷해서 넘기기
+    profile = target_user.profile
+    formatted_time_hm = format_timedelta(profile.total_study_time or timedelta())
+
     return render(request, 'planner/subpage.html', {
         'todos': todos,
         'selected_date': selected_date,
@@ -53,8 +65,10 @@ def subpage(request, user_id, selected_date):
         'comments': comments,
         'target_user': target_user,
         'login_user': request.user,
-        'like_obj': like_obj
+        'like_obj': like_obj,
+        'formatted_time_hm': formatted_time_hm,
     })
+
 
 
 
@@ -70,12 +84,6 @@ def start_timer(request, user_id, todo_id, selected_date):
         todo.save()
     return JsonResponse({"message": "타이머 시작됨", "started_at": todo.started_at})
 
-# 시간+분 으로 바꿔주는 함수
-def format_timedelta(td):   
-    total_seconds = int(td.total_seconds())
-    hours, remainder = divmod(total_seconds, 3600)
-    minutes, _ = divmod(remainder, 60)
-    return f"{hours}시간 {minutes}분"
 
 
 def stop_timer(request, user_id, todo_id, selected_date):
