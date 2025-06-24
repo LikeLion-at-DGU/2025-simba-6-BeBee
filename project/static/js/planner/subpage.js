@@ -56,20 +56,23 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // ✅ 타이머/버디 토글 버튼
-    const timerBtn = document.getElementById("show-timer-btn");
     const buddyBtn = document.getElementById("show-buddy-btn");
-
-    if (timerBtn && buddyBtn) {
-        timerBtn.addEventListener("click", () => {
-            document.querySelectorAll(".right-box2").forEach(box => box.style.display = "block");
-            document.getElementById("buddy-box").style.display = "none";
-        });
+    if (buddyBtn) {
         buddyBtn.addEventListener("click", () => {
             document.querySelectorAll(".right-box2").forEach(box => box.style.display = "none");
             document.getElementById("buddy-box").style.display = "flex";
         });
     }
+
+    const timerBtn = document.getElementById("show-timer-btn");
+    if (timerBtn) {
+        timerBtn.addEventListener("click", () => {
+            document.querySelectorAll(".right-box2").forEach(box => box.style.display = "block");
+            document.getElementById("buddy-box").style.display = "none";
+        });
+    }
+
+
 
     // ✅ 개별 타이머 박스 토글 버튼
     document.querySelectorAll(".show-timer-btn").forEach((btn) => {
@@ -110,73 +113,73 @@ document.addEventListener("DOMContentLoaded", () => {
             startTimer();
         }
 
-        button.addEventListener("click", () => {
-            const isStart = button.textContent.trim() === "START";
-            const url = isStart ? "start" : "stop";
+        // button.addEventListener("click", () => {
+        //     const isStart = button.textContent.trim() === "START";
+        //     const url = isStart ? "start" : "stop";
 
-            fetch(`/planner/${url}/${userId}/${todoId}/${selectedDate}/`)
-                .then(res => res.json())
-                .then(() => {
-                    button.textContent = isStart ? "STOP" : "START";
-                    isStart ? startTimer() : stopTimer();
-                })
-                .catch(err => console.error(`${url.toUpperCase()} 오류:`, err));
-        });
+        //     fetch(`/planner/${url}/${userId}/${todoId}/${selectedDate}/`)
+        //         .then(res => res.json())
+        //         .then(() => {
+        //             button.textContent = isStart ? "STOP" : "START";
+        //             isStart ? startTimer() : stopTimer();
+        //         })
+        //         .catch(err => console.error(`${url.toUpperCase()} 오류:`, err));
+        // });
     });
 
 
     // ✅ 할일 상태 토글 + 꿀 업데이트 + 시각 효과
-document.querySelectorAll(".todo-status-toggle").forEach(checkbox => {
-    checkbox.addEventListener("change", () => {
-        const todoId = checkbox.dataset.todoId;
+    document.querySelectorAll(".todo-status-toggle").forEach(checkbox => {
+        checkbox.addEventListener("change", () => {
+            const todoId = checkbox.dataset.todoId;
 
-        fetch(`/planner/toggle/${userId}/${todoId}/`, {
-            method: "POST",
-            headers: {
-                "X-CSRFToken": getCookie("csrftoken")
-            },
-        })
-        .then(res => {
-            if (!res.ok) throw new Error("상태 변경 실패");
-            return res.json();  // ✅ JSON 응답 파싱
-        })
-        .then(data => {
-            // ✅ 꿀 수치 업데이트
-            const honeyElement = document.getElementById("honey-count");
-            if (honeyElement && data.honey_count !== undefined) {
-                honeyElement.textContent = `${data.honey_count}g`;
-            }
+            fetch(`/planner/toggle/${userId}/${todoId}/`, {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": getCookie("csrftoken")
+                },
+            })
+                .then(res => {
+                    if (!res.ok) throw new Error("상태 변경 실패");
+                    return res.json();  // ✅ JSON 응답 파싱
+                })
+                .then(data => {
+                    // ✅ 꿀 수치 업데이트
+                    const honeyElement = document.getElementById("honey-count");
+                    if (honeyElement && data.honey_count !== undefined) {
+                        honeyElement.textContent = `${data.honey_count}g`;
+                    }
 
-            // ✅ 리스트 항목 시각 업데이트 및 재정렬
-            const listItem = checkbox.closest("li.todo-item");
-            const ul = document.getElementById("todo-list");
+                    // ✅ 리스트 항목 시각 업데이트 및 재정렬
+                    const listItem = checkbox.closest("li.todo-item");
+                    const ul = document.getElementById("todo-list");
 
-            // ✅ 하루 수확 프로그레스 바 업데이트
-            const progressElem = document.querySelector("progress");
-            const progressLabel = document.querySelector(".honey-label");
-            if (progressElem && progressLabel && data.daily_earned !== undefined) {
-                progressElem.value = data.daily_earned;
-                progressLabel.textContent = `${data.daily_earned} / 50g`;
-            }
-            
+                    // ✅ 하루 수확 프로그레스 바 업데이트
+                    const progressElem = document.querySelector("progress");
+                    const progressLabel = document.querySelector(".honey-label");
+                    if (progressElem && progressLabel && data.daily_earned !== undefined) {
+                        progressElem.value = data.daily_earned;
+                        progressLabel.textContent = `${data.daily_earned} / 50g`;
+                    }
 
-            if (data.status === "completed") {
-                listItem.classList.add("completed");   // 흐림 효과
-                ul.appendChild(listItem);              // 맨 아래로 이동
-            } else {
-                listItem.classList.remove("completed"); // 흐림 제거
-                ul.prepend(listItem);                  // 맨 위로 복귀 (선택)
-            }
-        })
-        .catch(err => console.error("Toggle error:", err));
+
+                    if (data.status === "completed") {
+                        listItem.classList.add("completed");   // 흐림 효과
+                        ul.appendChild(listItem);              // 맨 아래로 이동
+                    } else {
+                        listItem.classList.remove("completed"); // 흐림 제거
+                        ul.prepend(listItem);                  // 맨 위로 복귀 (선택)
+                    }
+                })
+                .catch(err => console.error("Toggle error:", err));
+        });
     });
-});
 
 
 
 
-        // ✅ baseDate 기준으로 해당 주의 '월요일' 찾기
-// ✅ 요일 버튼 클릭 시 이동
+    // ✅ baseDate 기준으로 해당 주의 '월요일' 찾기
+    // ✅ 요일 버튼 클릭 시 이동
     document.querySelectorAll(".hexagon-inner").forEach((button) => {
         button.addEventListener("click", function () {
             const dayMap = {

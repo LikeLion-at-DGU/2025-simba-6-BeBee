@@ -124,6 +124,22 @@ body {
     aspect-ratio: 1 / 1;
 }
 
+
+/* 버디 메세지 입력 영억 */
+.buddy-form {
+    display: flex;
+    width: 90%;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    border-radius: 50px;
+    background: rgba(255, 254, 236, 0.55);
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25), 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+}
+
+
+
 .goal-text {
     font-size: 20px;
     font-family: 'yg-jalnan', sans-serif;
@@ -132,22 +148,20 @@ body {
     align-items: flex-end;
 }
 
-.goal-input {
-    width: 100%;
+.buddy-input {
+    width: 90%;
+    height: 35px;
     max-width: 400px;
     font-family: 'Do Hyeon', sans-serif;
     font-size: 18px;
-    border: none;
-    border-bottom: 2px solid #5a4a42;
+    border: none !important;
     background-color: transparent;
-    padding: 10px 5px;
     color: #585555;
     outline: none;
-
     transition: border-color 0.2s ease;
 }
 
-.goal-input::placeholder {
+.buddy-input::placeholder {
     color: #cdcaca;
 }
 
@@ -207,6 +221,17 @@ body {
     height: 30px;
     margin-top: 20px;
     margin-bottom: 20px;
+}
+
+.goal-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    /* flex-grow: 1; */
+}
+
+.goal {
+    white-space: nowrap;
 }
 
 .goal-label {
@@ -330,9 +355,10 @@ body {
     color: #444;
 }
 
+/* 
 .goal-input {
     min-width: 200px;
-}
+} */
 
 .todo-list {
     list-style: none;
@@ -432,14 +458,14 @@ body {
 .hexagon-wrapper {
     width: 10vh;
     /* height: 78px; */
-    aspect-ratio: 1 / 1; 
+    aspect-ratio: 1 / 1;
     clip-path: polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%);
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 6px;
     flex-wrap: nowrap;
-    background: #4e4340;     
+    background: #4e4340;
 }
 
 
@@ -461,7 +487,7 @@ body {
 
 .hexagon-inner:hover {
     background-color: #f4e5c0;
-} 
+}
 
 /*,,,*/
 .weekday-row.staggered {
@@ -494,13 +520,15 @@ body {
     display: none;
 }
 
-.timer-label {
-    font-size: 20px;
-    font-weight: bold;
-    background-color: #816c5b;
-    color: white;
+.buddy-title {
     padding: 6px 16px;
     border-radius: 10px;
+    color: #6E5A5A;
+    font-family: 'Bagel Fat One', cursive;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
 }
 
 
@@ -577,7 +605,7 @@ body {
 
 .floating-icons {
     position: fixed;
-    right: 15px;
+    right: 10px;
     top: 50%;
     transform: translateY(-50%);
     display: flex;
@@ -589,20 +617,41 @@ body {
 
 
 .floating-icons img {
-    width: 40px;
+    width: 45px;
+    height: 45px;
+    flex-shrink: 0;
+    aspect-ratio: 1/1;
     cursor: pointer;
+    background: url(<path-to-image>) rgb(87, 85, 85) 50% / cover no-repeat;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    border-radius: 50%;
 }
 
 .buddy-box {
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 10px;
+    width: 90%;
+    padding: 10px;
+    height: 100%;
+}
+
+.message-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     gap: 20px;
-    background-color: #fffbe5;
+    border-radius: 70px;
+    background: linear-gradient(180deg, #FFEF96 0%, #FFCE8E 100%);
+    box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.25) inset;
     border-radius: 15px;
-    padding: 30px;
+    padding: 20px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
     width: 100%;
+    height: 400px;
+    /* 원하는 높이 */
+    overflow: hidden;
 }
 
 .buddy-messages {
@@ -612,13 +661,18 @@ body {
     text-align: left;
     font-family: 'Do Hyeon', sans-serif;
     color: #444;
+    overflow-y: auto;
+    flex-grow: 1;
+    /* 남는 공간을 모두 사용 */
+    min-height: 0;
 }
 
+/* 
 .buddy-messages {
     list-style: none;
     padding: 0;
     margin: 0 0 10px 0;
-}
+} */
 
 .buddy-messages li {
     background-color: #fff8cc;
@@ -674,7 +728,7 @@ body {
 
 .todo-item {
     background: #FFCB5C;
-    border-radius: 20px;
+    border-radius: 15px;
     padding: 14px 20px;
     margin-bottom: 12px;
     font-family: 'Do Hyeon', sans-serif;
@@ -798,6 +852,7 @@ body {
 .goal-input {
     border: none;
     border-bottom: 3px solid #5a4a42;
+    background-color: transparent;
     flex-grow: 0.7;
     font-family: 'Jua', sans-serif;
     padding: 8px 12px;
@@ -831,7 +886,8 @@ body {
     display: flex;
     flex-direction: column;
     font-family: 'yg-jalnan', sans-serif;
+    font-size: 8px;
     align-items: center;
     gap: 8px;
-    width: 100%;
+
 }
