@@ -19,11 +19,11 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from django.shortcuts import redirect
-from main.views import login_redirect
+from main.views import firstpage
 
 
 urlpatterns = [
-    path('', login_redirect), # default 로 로그인 페이지.
+    path('', firstpage, name='firstpage'), # default 로 로그인 페이지.
     path('admin/', admin.site.urls),
     path('main/', include('main.urls')), 
     path('accounts/', include('accounts.urls')),
