@@ -131,8 +131,10 @@
 
                     <!-- 1줄: 체크박스 + 내용 + 버튼 -->
                     <div class="todo-top-row">
+                        {% if login_user.id == target_user.id %}
                         <input type="checkbox" class="todo-status-toggle" data-user-id="{{ request.user.id }}"
                             data-todo-id="{{ todo.id }}" {% if todo.status == "completed" %}checked{% endif %}>
+                        {% endif %}
                         <span class="todo-content">{{ todo.content }}</span>
 
                         {% if login_user.id == target_user.id %}
@@ -150,8 +152,8 @@
                         <span class="todo-deadline">기한: {{ todo.deadline|date:"Y-m-d" }}</span>
                         {% if todo.total_elapsed_time %}
                         <div class="todo-studytime" id="study-time-{{ todo.id }}">
-                        공부 시간: {{ todo.formatted_time_hms }}
-                    </div>
+                            공부 시간: {{ todo.formatted_time_hms }}
+                        </div>
                         {% endif %}
                         <span class="todo-category">{{ todo.category }}</span>
                     </div>
