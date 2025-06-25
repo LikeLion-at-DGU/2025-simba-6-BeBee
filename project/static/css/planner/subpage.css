@@ -802,7 +802,7 @@ body {
     padding: 2px 10px;
 }
 
-/* 기본 체크박스 숨김 */
+/* 기본 체크박스 숨김 
 .todo-status-toggle {
     appearance: none;
     -webkit-appearance: none;
@@ -814,15 +814,15 @@ body {
     cursor: pointer;
     position: relative;
     transition: background 0.2s, border 0.2s;
-}
+} */
 
-/* 체크되었을 때 배경 및 테두리 변경 */
+/* 체크되었을 때 배경 및 테두리 변경 
 .todo-status-toggle:checked {
     background-color: #f5c400;
     border-color: #f5c400;
-}
+} */
 
-/* 체크 표시 (가상요소로 만들기) */
+/* 체크 표시 (가상요소로 만들기) 
 .todo-status-toggle:checked::after {
     content: "✓";
     color: #fff;
@@ -832,12 +832,80 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-}
+} */
 
-/* 마우스 호버 시 테두리 강조 */
+/* 마우스 호버 시 테두리 강조 
 .todo-status-toggle:hover {
     border-color: #f2b400;
+} */
+
+/* 수정한 css*/
+.todo-status-toggle {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 38px;
+    height: 38px;
+    clip-path: polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%);
+    position: relative;
+    cursor: pointer;
+    border: none;
+    background-color: transparent;
+    z-index: 0;
+    margin-right: 10px;
 }
+
+/* 바깥 테두리 (짙은 회색 배경) */
+.todo-status-toggle::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    clip-path: inherit;
+    background-color: #4e4340;
+    z-index: -2;
+}
+
+/* 내부 배경 (기본: 연노랑, 체크시: 노랑) */
+.todo-status-toggle::after {
+    content: "";
+    position: absolute;
+    inset: 3px;
+    clip-path: inherit;
+    background-color: #f8f3ce;
+    transition: background-color 0.2s ease;
+    z-index: -1;
+}
+
+/* 체크되었을 때 내부 배경 변경 */
+.todo-status-toggle:checked::after {
+    background-color: #f5c400;
+}
+
+/* 체크되었을 때 체크표시 */
+.todo-status-toggle:checked::after {
+    content: "✓";
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+    text-align: center;
+    line-height: 32px;
+    /* 내부 높이 고려해 가운데 정렬 */
+}
+
+.goal-date-display {
+    margin-top: 8px;
+    padding: 4px 10px;
+    background-color: #fff8d6;
+    color: #4e4340;
+    font-size: 20px;
+    font-family: 'Do Hyeon', sans-serif;
+    border: 1px solid #f5c400;
+    border-radius: 8px;
+    display: inline-block;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+
+/* 여기까지--------------------------*/
 
 
 /* 오늘의 목표 영역 */
