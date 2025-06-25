@@ -105,28 +105,28 @@
 | `git push origin develop` | origin develop 브랜치도 최신 상태로 업데이트 |
 
 ---
-### 유저 서버 실행 방법
+# 유저 서버 실행 방법
 
-# Git 초기화 및 클론
+## Git 초기화 및 클론
 git init
 git clone https://github.com/LikeLion-at-DGU/2025-simba-6-BeBee.git
 cd 2025-simba-6-BeBee
 
-# 필요시 Pillow 설치
+## 필요시 Pillow 설치
 pip install Pillow
 
-# 서버 실행
+## 서버 실행
 python manage.py runserver
 
-# ✅ 초기 계정 정보
-# 일반 사용자 계정
-# ID: 효동 | PW: 0000
-# ID: 수민 | PW: 0000
-# ID: 희원 | PW: 0000
-# ID: 현욱 | PW: 0000
-# ID: 서연 | PW: 0000
+## ✅ 초기 계정 정보
+### 일반 사용자 계정
+### ID: 효동 | PW: 0000
+### ID: 수민 | PW: 0000
+### ID: 희원 | PW: 0000
+### ID: 현욱 | PW: 0000
+### ID: 서연 | PW: 0000
 
-# 관리자 계정
-# ID: ted | PW: 0000
+## 관리자 계정
+### ID: ted | PW: 0000
 
 
